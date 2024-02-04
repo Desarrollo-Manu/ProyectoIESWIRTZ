@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="{{root}}login/css/noLogin.css">
+<script type="text/javascript" src="{{root}}login/js/noLogin.js"></script>
+<div id="loginContainer">
+    <div class="card col-12 col-sm-12 col-md-3" id="loginForm">
+        <div class="card-body">
+            <h1>GESTOR CERTIFICADOS PROFESIONALIDAD</h1>
+            <form method="post" action="">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-usuario"><i class="fas fa-user" aria-hidden="true"></i></span>
+                    </div>
+                    <input required type="text" class="form-control" name="user" placeholder="Usuario" aria-label="Usuario" aria-describedby="basic-usuario">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-pass"><i class="fa fa-lock" aria-hidden="true"></i></span>
+                    </div>
+                    <input required type="password" name="pass" id="pass" class="form-control" placeholder="Contraseña" aria-label="Contraseña" aria-describedby="basic-pass">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-passView"><i class="fa fa-eye" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+                {{#errorLog}}
+                    <div class="logError">
+                        <span>Los datos son incorrectos</span>
+                    </div>
+                {{/errorLog}}
+                <div class="sign-up-button">
+                    <button class="btn btn-primary" type="submit">Acceder</button>
+                </div>
+            </form>
+            <div class="forgetLogin">
+                <p><a href="#">¿Has olvidado tus datos de acceso?</a></p>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            <div class="col-sm-5 float-left"><i class="fas fa-phone-alt"></i>&nbsp;982982982</div>
+            <div class="col-sm-7 float-left text-right"><i class="far fa-envelope" aria-hidden="true"></i>&nbsp;informatica@proyectoweb.com </div>
+        </div>
+    </div>
+</div>

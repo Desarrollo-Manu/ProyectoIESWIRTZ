@@ -1,0 +1,166 @@
+<div class="modal fade pl-0" id="modalNewCertificado"  data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl m-0 mw-100" id="modalBodyNewCertificado">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Crear un certificado</h5>
+            </div>
+            <div class="modal-body">
+                <form action="ajax/saveCertificado.php" method="post" id="modalNewCertificadoForm">
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-FamiliaCertM">Familia</span>
+                            </div>
+                            <select class="form-control selectpicker" id="modalNewCertificadoFormIdFam" data-live-search="true" name="IdFamilia" autocomplete="off" title="Selecciona una familia..."></select>
+                        </div>
+                        <div class="input-group mb-2 col-sm-5">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-ÁreaCertM">Área</span>
+                            </div>
+                            <select class="form-control selectpicker" id="modalNewCertificadoFormIdArea" data-live-search="true" name="IdArea" autocomplete="off" title="Selecciona un área..."></select>
+                        </div>
+                        <div class="input-group mb-2 col-sm-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-CualifProfRefCertM">Cual. Prof. Ref.</span>
+                            </div>
+                            <input autocomplete="off"  name="CualifProfRef" id="CualifProfRefCertM" type="text" class="form-control" pattern="[A-Z]{3}[0-9]{3}[_]{1}[1-3]{1}" minlength="8" maxlength="8" aria-label="CualifProfRef" aria-describedby="basic-CualifProfRef">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-CodigoCertM">Código</span>
+                            </div>
+                            <input autocomplete="off"  name="Codigo" id="CodigoCertM" required type="text" class="form-control" pattern="[A-Z]{4}[0-9]{2,4}" minlength="6" maxlength="8" aria-label="CodigoCert" aria-describedby="basic-CodigoCert">
+                        </div>
+                        <div class="input-group mb-2 col-sm-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-NombreCert">Nombre</span>
+                            </div>
+                            <input autocomplete="off"  name="Nombre" required id="NombreCert" type="text" class="form-control" aria-label="NombreCert" aria-describedby="basic-NombreCert">
+                        </div>
+                        <div class="input-group mb-2 col-sm-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-HorasCert">Horas</span>
+                            </div>
+                            <input autocomplete="off"  name="Horas" required id="HorasCert" type="number" min="0" max="1000" step="1" class="form-control" aria-label="HorasCert" aria-describedby="basic-HorasCert">
+                        </div>
+                        <div class="input-group mb-2 col-sm-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-NivelCertM">Nivel</span>
+                            </div>
+                            <select autocomplete="off"  class="form-control" required name="Nivel" id="NivelCert">
+                                <option value="0" selected>0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-12">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-CodigoCertM">Competencia<br>General</span>
+                            </div>
+                            <textarea autocomplete="off"  class="form-control" name="CompGeneral" id="CompGeneralCert"></textarea>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-oficial" title="Guardar">
+                            <i class="far fa-save fa-lg"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $( "#modalNewCertificadoFormIdFam" ).on( "change", function() {
+        if($(this).val()!==''){
+            $.ajax({
+                url : 'ajax/obterAreasFam.php',
+                data : {IdFamilia:$(this).val()}, // la información a enviar.
+                type : 'POST',		//tipo de envio.
+                dataType : 'json', //respuesta esperada.
+                success : function(data) {
+                    if(data){
+
+                        $("#modalNewCertificadoFormIdArea").html(Mustache.render($('#modalNewCertificadoFormIdAreaTem').html(),data));
+                        $('#modalNewCertificadoFormIdArea').selectpicker('refresh');
+                    }else{
+                        alert( 'Se ha producido un error al obtener la información del certificado. Código 3.' );
+                    }
+                }
+            }).fail( function() {
+                alert( 'Se ha producido un error al obtener la información del certificado. Código 2.' );
+            });
+        }
+    });
+    $('#modalNewCertificadoForm').ajaxForm({
+        beforeSubmit : function(formData, $form, options) {
+            var f=$form[0];
+            if (!formData[0].value) {
+                alert('Debes escoger la Familia Profesional.');
+                return false;
+            }
+            if (!formData[1].value) {
+                alert('Debes escoger el Área Profesional.');
+                return false;
+            }
+            if (!formData[3].value) {
+                alert('Debes insertar un Código.');
+                return false;
+            }else{
+                if(validarCodigoCertificado(formData[3].value)){
+                    alert('Debes insertar un Código válido.');
+                    return false;
+                }
+                if(!validarCodCertConArea(formData[3].value,$('#modalNewCertificadoFormIdArea option:selected').text())){
+                    alert('El código del Certificado no pertenece al Área Profesional seleccionada.');
+                    return false;
+                }
+            }
+            if (!f.CualifProfRef.value) {
+                alert('Inserta la Cualificación Profesional de Referencia.');
+                return false;
+            }
+            if (!f.CompGeneral.value) {
+                alert('Inserta la Competencia General');
+                return false;
+            }
+            if (!f.Horas.value) {
+                alert('Inserta las horas del certificado.');
+                return false;
+            }
+            return true;
+        },
+        success: function(data) {
+            if(!data.resultado===false){
+                alert('Algo ha salido mal al crear el Certificado de Profesionalidad o ya existe. Contacta con el CAU. Código 1.');
+            }else{
+                window.location.href = "http://localhost/ProyectoIESWIRTZ/certificados/view.php?id="+data.Id;
+            }
+        }
+    });
+    $('#modalNewCertificado').on('shown.bs.modal', function (e) {
+        $('.loader').removeClass('d-none');
+        $.ajax({
+            url: "ajax/obterFamilias.php",
+            data: {},
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                if(!data.resultado){
+                    $("#modalNewCertificadoFormIdFam").html(Mustache.render($('#modalNewCertificadoFormIdFamTem').html(),data));
+                    $('#modalNewCertificadoFormIdFam').selectpicker('refresh');
+                }else{
+                    alert("No se ha podido cargar las familias formativas. Contacta con el CAU. Código 1.");
+                }
+            }
+        }).fail(function () {
+            alert("No se ha podido cargar las familias formativas. Contacta con el CAU. Código 2.");
+        });
+        $('.loader').addClass('d-none');
+    });
+</script>

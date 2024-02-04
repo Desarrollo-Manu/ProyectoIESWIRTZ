@@ -1,0 +1,16 @@
+<script id="modalNewCertificadoFormIdFamTem" type="text/x-mustache-template">
+    {{#listFamilias}}
+        <option value="{{Id}}">{{Nombre}}</option>
+    {{/listFamilias}}
+    {{^listFamilias}}
+    <option value="">Error al cargar las familias</option>
+    {{/listFamilias}}
+</script>
+<script id="modalNewCertificadoFormIdAreaTem" type="text/x-mustache-template">
+    {{#listAreas}}
+    <option value="{{IdArea}}">{{CodigoArea}} - {{Area}}</option>
+    {{/listAreas}}
+    {{^listAreas}}
+    <option value="">Error al cargar las áreas</option>
+    {{/listAreas}}
+</script>

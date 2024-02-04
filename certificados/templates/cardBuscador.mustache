@@ -1,0 +1,83 @@
+<div class="card rounded-0">
+    <div class="card-header">
+        Buscador Certificados
+        <span class="right">
+            <button class="btn btn-oficial" id="btnNewCert" data-toggle="modal" data-target="#modalNewCertificado">
+                <i class="fas fa-plus"></i>
+            </button>
+        </span>
+    </div>
+    <div class="card-body">
+        <form id="searchForm" method="post" action="ajax/searchCert.php">
+            <div class="row">
+                <div class="input-group mb-2 col-sm-6">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-FamiliaSearch">Familia</span>
+                    </div>
+                    <select class="form-control selectpicker" data-live-search="true" name="IdFamilia" autocomplete="off" title="Selecciona una familia...">
+                        {{#listFamilias}}
+                            <option value="{{Id}}">{{Nombre}}</option>
+                        {{/listFamilias}}
+                        {{^listFamilias}}
+                            <option value="">Error al cargar las familias</option>
+                        {{/listFamilias}}
+                    </select>
+                    <button class="btn btn-oficial btn-lisoIzq" onclick="$('#FamiliaSearch').val('');" type="button">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                </div>
+                <div class="input-group mb-2 col-sm-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-NivelSearch">Nivel</span>
+                    </div>
+                    <select class="form-control" name="Nivel" autocomplete="off">
+                        <option value=""></option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-oficial mt-3" id="sendSearch" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive mt-4">
+            <table id="searchCertTable" class="mb-0 d-none table table-striped table-bordered">
+                <thead>
+                    <tr class="text-center">
+                        <th class="align-middle">Familia</th>
+                        <th class="align-middle">Área</th>
+                        <th class="align-middle">Certificado</th>
+                        <th class="align-middle">Denominación</th>
+                        <th class="align-middle">Nivel</th>
+                        <th class="align-middle">Horas</th>
+                    </tr>
+                </thead>
+                <tbody id="searchCertTableBody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $('#searchForm').ajaxForm({
+        beforeSubmit : function(formData, $form, options) {
+            $('.loader').removeClass('d-none');
+            return true;
+        },
+        success: function(data) {
+            $('#searchCertTableBody').html(Mustache.render($('#searchTableCertTem').html(), data));
+            $('#searchCertTable').removeClass('d-none');
+        }
+    });
+    $( "#delFamiliaInput" ).click(function() {
+        $('#FamiliaSearch').selectpicker('deselectAll');
+        $('#FamiliaSearch').selectpicker('refresh');
+    });
+</script>

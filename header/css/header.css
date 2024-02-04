@@ -1,0 +1,29 @@
+.site-navigation li{
+    margin: auto 1rem;
+    text-align: center;
+}
+.site-navigation li a{
+    color: #0E1655;
+}
+.roundedFull{
+    border-radius: 50%;
+}
+#userMenu:hover {
+    text-decoration: none;
+}
+.userMenuDesplegado{
+    left: -200% !important;
+}
+.multi-column-dropdown {
+    width: max-content;
+    padding-left: 0px;
+}
+.multi-column-dropdown a {
+    display: block;
+    clear: both;
+    white-space: normal;
+}
+.multi-column {
+    width: max-content;
+    padding-left: 0px;
+}

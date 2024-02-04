@@ -1,0 +1,305 @@
+<div class="modal fade" id="modalAddMF" tabindex="-1" aria-labelledby="modalAddMF" aria-hidden="true" data-IdCertificado="{{IdCertificado}}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0" id="formModalAddMFTitle">
+                <h5 class="modal-title" id="modalAddMFTitle1">Añadir Módulo Formativo Existente</h5>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="formModalAddMF" action="ajax/addMFCert.php">
+                    <input type="hidden" name="IdCertificado" value="{{IdCertificado}}">
+                    <input type="hidden" name="Modo" value="2">
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-10">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addMFModal">Módulo</span>
+                            </div>
+                            <input required list="listMFs" minlength="1" type="text" name="Modulo" autocomplete="off"  class="form-control" id="addMFModal">
+                            <datalist id="listMFs">
+
+                            </datalist>
+                        </div>
+                        <div class="input-group mb-2 col-sm-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-OrdenAddMFModal">Orden</span>
+                            </div>
+                            <select required class="form-control" name="Orden" id="OrdenAddMFModal">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                            </select>
+                            <button type="submit" id="sendFormModalAddMF" class="btn btn-oficial btn-lisoIzq">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-header border-top border-bottom-0" id="formModalSaveMFTitle">
+                <h5 class="modal-title" id="modalAddMFTitle2">Crear Módulo Formativo</h5>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="formModalSaveMF" action="http://192.168.2.200/aixa/certificados/ajax/saveMFCert.php">
+                    <input type="hidden" name="IdCertificado" value="{{IdCertificado}}">
+                    <input type="hidden" name="Modo" value="1">
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-CodigoMFModal">Código</span>
+                            </div>
+                            <input required minlength="5" maxlength="8" type="text" name="Codigo" autocomplete="off"  class="form-control" id="CodigoMFModal">
+                        </div>
+                        <div class="input-group mb-2 col-sm-8">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-NombreMFModal">Nombre</span>
+                            </div>
+                            <input required type="text" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ.,\-\s]+" name="Nombre" autocomplete="off"  class="form-control" id="NombreMFModal">
+                        </div>
+                        <div class="input-group mb-2 col-sm-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-transversalCheck1M">
+                                    <input value="1" class="" type="checkbox" id="transversalCheckM" name="Transversal">
+                                </span>
+                            </div>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-transversalCheck1M">Transversal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-NivelMFModal">Nivel</span>
+                            </div>
+                            <select required class="form-control" name="Nivel" id="NivelMFModal">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-2 col-sm-8">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-HorasTextMFModal">Horas:</span>
+                            </div>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-HorasTotalesMFModal">Totales</span>
+                            </div>
+                            <input required pattern="^[0-9]{1,3}" minlength="1" maxlength="3" type="text" name="HorasTotales" autocomplete="off"  class="form-control" id="HorasTotalesMFModal">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-HorasFormacionMFModal">Formación</span>
+                            </div>
+                            <input required pattern="^[0-9]{0,3}" minlength="1" maxlength="3" type="text" name="HorasFormacion" autocomplete="off"  class="form-control" id="HorasFormacionMFModal">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-HorasTutoriasMFModal">Tutorias</span>
+                            </div>
+                            <input required pattern="^[0-9]{1,3}" minlength="1" maxlength="3" type="text" name="HorasTutoria" autocomplete="off"  class="form-control" id="HorasTutoriasMFModal">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-HorasExamenesMFModal">Horas Examenes</span>
+                            </div>
+                            <input required pattern="^[0-9]{1,3}" minlength="1" maxlength="3" type="text" name="HorasExamen" autocomplete="off"  class="form-control" id="HorasExamenesMFModal">
+                        </div>
+                        <div class="input-group mb-2 col-sm-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-OrdenMFModal">Orden</span>
+                            </div>
+                            <select required class="form-control" name="Orden" id="OrdenMFModal">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-12">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-UCMFModal">Unidad de Competencia</span>
+                            </div>
+                            <input list="listUCs" minlength="1" type="text" name="UC" autocomplete="off"  class="form-control" id="UCMFModal">
+                            <datalist id="listUCs"></datalist>
+                            <button type="button" title="Borrar UC" class="btn btn-oficial btn-lisoIzq" onclick="$('#UCMFModal').val(null)">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" id="sendFormModalSaveMF" class="btn btn-oficial">
+                            <i class="far fa-save fa-lg"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #basic-NombreMFModal,#basic-NivelMFModal{
+        min-width: 4rem;
+    }
+    #basic-NombreMFModal,#basic-HorasTextMFModal{
+        min-width: 4.5rem;
+    }
+</style>
+<script>
+    $('#formModalSaveMF').ajaxForm({
+        beforeSubmit : function(formData, $form, options) {
+            var f=$form[0];
+            if (!formData[0].value) {
+                alert('Error en el identificador del Certificado. Contacta con el CAU.');
+                return false;
+            }
+            if (!formData[1].value) {
+                alert('Error en el Modo del formulario. Contacta con el CAU.');
+                return false;
+            }
+            if (!formData[2].value) {
+                alert('Debes insertar el código del Módulo Formativo');
+                return false;
+            }else{
+                if(!(validarMF(formData[2].value) ^ validarMP(formData[2].value)/*^ validarCompClave(formData[2].value)*/ ^ validarMFTransversal(formData[2].value))){
+                    alert('Debes insertar un Código válido.');
+                    return false;
+                }
+            }
+            if (!f.Nivel.value) {
+                alert('Debes elegir el nivel del Módulo Formativo.');
+                return false;
+            }
+            if(!(validarMP(formData[2].value)||validarMFTransversal(formData[2].value)||validarCompClave(formData[2].value))){
+                if (!f.UC.value) {
+                    alert('Selecciona una Unidad de Competencia.');
+                    return false;
+                }else{
+                    if(!checkUC(f.UC.value.split(' - ')[0])){
+                        alert('La Unidad de Competencia seleccionada no es válida.');
+                        return false;
+                    }
+                }
+            }
+            if ((f.HorasFormacion.value)&&(f.HorasExamen.value)&&(f.HorasTotales.value)) {
+                if((parseInt(f.HorasFormacion.value)+parseInt(f.HorasTutoria.value)+parseInt(f.HorasExamen.value))==(parseInt(f.HorasTotales.value))){
+                    return true;
+                }else{
+                    alert('La suma de las horas no coincide. REVISALAS.');
+                    return false;
+                }
+            }else{
+                alert('Debes especificar las horas del Módulo Formativo.');
+                return false;
+            }
+        },
+        success: function(data) {
+            if(data.resultado){
+                alert("Se ha producido un error al guardar el Módulo Formativo. Contacte con el CAU.");
+                $('#sendFormModalSaveMF').html('<i class="fas fa-times fa-lg" style="color:red"></i>');
+            }else{
+                var template=$('#estrCertTem').html();
+                var renderedTemplate = Mustache.render(template,data);
+                $('#tableBodyMFsUFs').html(renderedTemplate);
+                $('#formModalSaveMF').clearForm();
+                $('#modalAddMF').modal('hide');
+                $('[data-toggle="popover"]').popover();
+            }
+        }
+    });
+    $('#formModalAddMF').ajaxForm({
+        beforeSubmit : function(formData, $form, options) {
+            var f=$form[0];
+            if (!formData[0].value) {
+                alert('Error en el identificador del Certificado. Contacta con el CAU.');
+                return false;
+            }
+            if (!formData[1].value) {
+                alert('Error en el Modo del formulario. Contacta con el CAU.');
+                return false;
+            }
+            if (!formData[3].value) {
+                alert('Debes indicar el orden del Módulo.');
+                return false;
+            }
+            if (!formData[2].value) {
+                alert('Debes insertar el código del Módulo Formativo.');
+                return false;
+            }else{
+                if(!checkMF(formData[2].value.split(' - ')[0])){
+                    alert('El Módulo Formativo no es válido.');
+                    return false;
+                }
+                if(checkMFCert(formData[0].value,formData[2].value.split(' - ')[0])){
+                    alert('El Módulo Formativo ya está asignado al Certificado.');
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+        },
+        success: function(data) {
+            if(data.resultado){
+                alert("Se ha producido un error al asignar el Módulo Formativo. Contacte con el CAU. Código 1.");
+                $('#sendFormModalAddMF').html('<i class="fas fa-times fa-lg" style="color:red"></i>');
+            }else{
+                var template=$('#estrCertTem').html();
+                var renderedTemplate = Mustache.render(template,data);
+                $('#tableBodyMFsUFs').html(renderedTemplate);
+                $('#formModalAddMF').clearForm();
+                $('#modalAddMF').modal('hide');
+                $('[data-toggle="popover"]').popover();
+            }
+        }
+    });
+    $('#modalAddMF').on('show.bs.modal', function (e) {
+        $('#formModalAddMF').resetForm();
+        $('#formModalSaveMF').resetForm();
+        $('.loader').removeClass('d-none');
+        $.ajax({
+            url : 'http://192.168.2.200/aixa/certificados/ajax/obterMFsNoCert.php',
+            data : {IdCertificado:$(this).attr('data-IdCertificado') }, // la información a enviar.
+            type : 'POST',		//tipo de envio.
+            dataType : 'json', //respuesta esperada.
+            success : function(data) {
+                if(!data.resultado){
+                    var template=$('#modalAddMFTem').html();
+                    var renderedTemplate = Mustache.render(template,data);
+                    $('#listMFs').html(renderedTemplate);
+                }else{
+                    alert('Se ha producido un error al obtener MFs que no están asociadas al certificado. Código 1.');
+                }
+            }
+        }).fail( function() {
+            alert('Se ha producido un error al obtener MFs que no están asociadas al certificado. Código 2.');
+        });
+        if($('#listUCs').html().length === 0){
+            $.ajax({
+                url : 'http://192.168.2.200/aixa/certificados/ajax/obterUCs.php',
+                data : { }, // la información a enviar.
+                type : 'POST',		//tipo de envio.
+                dataType : 'json', //respuesta esperada.
+                success : function(data) {
+                    if(!data.resultado){
+                        var template=$('#modalAddUCsTem').html();
+                        var renderedTemplate = Mustache.render(template,data);
+                        $('#listUCs').html(renderedTemplate);
+                    }else{
+                        alert('Se ha producido un error al obtener las Unidades de Competencia. Código 1.');
+                    }
+                }
+            }).fail( function() {
+                alert('Se ha producido un error al obtener las Unidades de Competencia. Código 2.');
+            });
+        }
+        $('.loader').addClass('d-none');
+    });
+</script>

@@ -1,0 +1,73 @@
+<div class="card rounded-0" id="cardOcupacionesCertificado">
+    <div class="card-header">
+        Ocupaciones del certificado de profesionalidad
+        <span class="right">
+            <button type="button" class="btn btn-oficial" data-toggle="modal" data-target="#modalAddOcupacion">
+              <i class="fas fa-plus"></i>
+            </button>
+        </span>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-hover table-striped table-bordered text-oficial mb-0" id="OcupCertificadoTable">
+            <thead class="text-center">
+            <tr class="text-center">
+                <th class="align-middle">#</th>
+                <th class="align-middle">Código</th>
+                <th class="align-middle">Denominación</th>
+            </tr>
+            </thead>
+            <tbody id="OcupCertificadoTableBody">
+            {{#listOcupaCert}}
+                <tr>
+                    <td class="align-middle text-center">
+                        <a href="#" class="delOcupaCertSel" data-IdOcupacion='{{IdOcupacion}}' data-IdCertificado='{{IdCertificado}}' data-toggle="popover" data-trigger="click" data-html="true" title="<span class='titlePopover' style='font-size:1rem'>¿Desea borrar la ocupación seleccionada?</span>" data-content="<p class='textPopover d-flex justify-content-around'><a class='delOcupCertButton' aria-Id='{{Id}}'  aria-IdOcupacion='{{IdOcupacion}}' aria-IdCertificado='{{IdCertificado}}' href='#' title='SI' ><i class='far fa-thumbs-up fa-2x text-success'></i></a><a title='NO' href='#' class='noDelOcupCertButton'><i class='far fa-thumbs-down fa-2x text-danger'></i></a></p>">
+                            <i class="far fa-trash-alt"></i>
+                        </a>
+                    </td>
+                    <td class="align-middle text-center">
+                        <a href="#" class="selOcupacion" data-IdOcupacion='{{IdOcupacion}}' data-IdCertificado='{{IdCertificado}}'  data-toggle="modal" data-target="#modalModOcupacion"  title="Modificar ocupación">
+                            {{IdOcupacion}}
+                        </a>
+                    </td>
+                    <td class="align-middle">{{Nombre}}</td>
+                </tr>
+            {{/listOcupaCert}}
+            {{^listOcupaCert}}
+                <tr>
+                    <td colspan="3" class="text-center">Este certificado no tiene ocupaciones.</td>
+                </tr>
+            {{/listOcupaCert}}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $('body').on( 'click', '.delOcupCertButton', function () {
+        $.ajax({
+            url: "ajax/delOcupCert.php",
+            data: {
+                IdOCupa:$(this).attr('aria-IdOcupacion'),
+                IdCert:$(this).attr('aria-IdCertificado'),
+                Id:$(this).attr('aria-Id')
+            },
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                $('[data-toggle="popover"]').popover('hide');
+                if(!data.resultado){
+                    var template=$('#OcupCertificadoTableTem').html();
+                    var renderedTemplate = Mustache.render(template, data);
+                    $("#OcupCertificadoTableBody").html(renderedTemplate);
+                }else{
+                    alert('Se ha producido un error al borrar la ocupación del certificado. Código 1.');
+                }
+                $('[data-toggle="popover"]').popover();
+            }
+        }).fail(function () {
+            alert('Se ha producido un error al borrar la ocupación del certificado. Código 2.');
+        });
+    });
+    $('body').on( 'click', '.noDelOcupCertButton', function () {
+        $('[data-toggle="popover"]').popover('hide');
+    });
+</script>

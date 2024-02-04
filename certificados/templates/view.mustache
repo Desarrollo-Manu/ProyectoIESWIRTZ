@@ -1,0 +1,49 @@
+<ul class="nav nav-tabs ml-3 mr-3 mt-3" id="tabsCertificado" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="datosCertTab-tab" data-toggle="tab" href="#datosCertTab" role="tab" aria-controls="datosCertTab" aria-selected="true">
+            Datos del Certificado
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="EstrucCertTab-tab" data-toggle="tab" href="#EstrucCertTab" role="tab" aria-controls="EstrucCertTab" aria-selected="false">
+            Estructura del certificado
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="OcupacionesCertTab-tab" data-toggle="tab" href="#OcupacionesCertTab" role="tab" aria-controls="OcupacionesCertTab" aria-selected="false">
+            Ocupaciones
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="fichaCertTab-tab" data-toggle="tab" href="#fichaCertTab" role="tab" aria-controls="fichaCertTab" aria-selected="false">
+            Ficha del certificado
+        </a>
+    </li>
+
+    <li class="nav-item" role="presentation">
+        <a href="../index.php" title="Volver" class="btn btn-oficial ml-2" type="button">
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    </li>
+</ul>
+<div class="tab-content ml-3 mr-3 mb-3" id="contenedoresCertificado">
+    <div class="tab-pane fade show active" id="datosCertTab" role="tabpanel" aria-labelledby="datosCertTab-tab">
+        {{{cardDatos}}}
+    </div>
+    <div class="tab-pane fade" id="EstrucCertTab" role="tabpanel" aria-labelledby="EstrucCertTab-tab">
+        {{{cardEstruc}}}
+        {{{modalAddMFs}}}
+        {{{modalAddUFs}}}
+    </div>
+    <div class="tab-pane fade" id="OcupacionesCertTab" role="tabpanel" aria-labelledby="OcupacionesCertTab-tab">
+        {{{cardOcupaciones}}}
+        {{{modalAddOcupaciones}}}
+        {{{modalModOcupaciones}}}
+    </div>
+    <div class="tab-pane fade" id="fichaCertTab" role="tabpanel" aria-labelledby="fichaCertTab-tab">
+        {{{cardFicha}}}
+    </div>
+</div>
+
+
+

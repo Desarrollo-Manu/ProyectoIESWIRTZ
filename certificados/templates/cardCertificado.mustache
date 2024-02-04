@@ -1,0 +1,175 @@
+<div class="card rounded-0" id="cardDatosCertificado">
+    <div class="card-header">
+        Datos del Certificado de Profesionalidad
+        <span class="right">
+            <input id="editarCardDatosCertificado" type="checkbox" data-on='<i class="fas fa-play"></i> Editando' data-off='<i class="fas fa-ban"></i> Sin edición' data-toggle="toggle" data-width="150" data-height="30" data-onstyle="outline-danger" data-offstyle="outline-info">
+        </span>
+    </div>
+    <div class="card-body" id="cardBodyDatosCertificado">
+        {{#datosCertificado}}
+            <form action="ajax/saveCertificado.php" method="post" id="cardCertificadoForm">
+                <input type="hidden" name="IdCert" value="{{IdCert}}">
+                <div class="row">
+                    <div class="input-group mb-2 col-sm-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-FamiliaCertV">Familia</span>
+                        </div>
+                        <select class="form-control selectpicker" id="cardCertificadoFormIdFam" required disabled data-live-search="true" name="IdFamilia" autocomplete="off" title="Selecciona una familia...">
+                            {{#listFamilias}}
+                                <option value="{{Id}}" {{selected}}>{{Nombre}}</option>
+                            {{/listFamilias}}
+                            {{^listFamilias}}
+                                <option value="">Error al cargar las familias</option>
+                            {{/listFamilias}}
+                        </select>
+
+                    </div>
+                    <div class="input-group mb-2 col-sm-5">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-ÁreaCertM">Área</span>
+                        </div>
+                        <select class="form-control selectpicker"  id="cardCertificadoFormIdArea" required disabled data-live-search="true" name="IdArea" autocomplete="off" title="Selecciona un área...">
+                            {{#listAreas}}
+                                <option value="{{IdArea}}" {{selected}}>{{CodigoArea}} - {{Area}}</option>
+                            {{/listAreas}}
+                            {{^listAreas}}
+                                <option value="">Error al cargar las áreas</option>
+                            {{/listAreas}}
+                        </select>
+                    </div>
+                    <div class="input-group mb-2 col-sm-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-CodigoCertV">Cual. Prof. Ref.</span>
+                        </div>
+                        <input name="CualifProfRef" autocomplete="off" disabled value="{{CualifProf}}"  id="CualifProfRefCertM" type="text" class="form-control" pattern="[A-Z]{3}[0-9]{3}[_]{1}[1-3]{1}" minlength="8" maxlength="8" aria-label="CualifProfRef" aria-describedby="basic-CualifProfRef">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group mb-2 col-sm-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-CodigoCertV">Código</span>
+                        </div>
+                        <input name="Codigo" disabled value="{{CodigoCert}}"  autocomplete="off" id="CodigoCertV" required type="text" class="form-control" pattern="[A-Z]{4}[0-9]{2,4}" minlength="6" maxlength="8" aria-label="CodigoCert" aria-describedby="basic-CodigoCert">
+                    </div>
+                    <div class="input-group mb-2 col-sm-6">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-CodigoCertM">Nombre</span>
+                        </div>
+                        <input name="Nombre" autocomplete="off" value="{{Certificado}}" disabled pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ.,\-\s]{0,150}" required id="CodigoCertM" type="text" class="form-control" aria-label="CodigoCert" aria-describedby="basic-CodigoCert">
+                    </div>
+                    <div class="input-group mb-2 col-sm-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-NivelCertV">Nivel</span>
+                        </div>
+                        <select class="form-control" disabled required name="Nivel" id="NivelCertV">
+                            {{#NivelSelect}}
+                                <option value="{{Id}}" {{selected}}>{{Id}}</option>
+                            {{/NivelSelect}}
+                            {{^NivelSelect}}
+                                <option value="">No hay nivel disponible.</option>
+                            {{/NivelSelect}}
+                        </select>
+                    </div>
+                    <div class="input-group mb-2 col-sm-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-CodigoCertHoras">Horas</span>
+                        </div>
+                        <input name="Horas" autocomplete="off" value="{{Horas}}" disabled min="0" max="1000" step="1" required id="CodigoCertHoras" type="number" class="form-control" aria-label="CodigoCertHoras" aria-describedby="basic-CodigoCertHoras">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group mb-2 col-sm-12">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-CodigoCertV">Competencia<br>General</span>
+                        </div>
+                        <textarea autocomplete="off"  disabled class="form-control" name="CompGeneral" id="CompGeneralCert">{{CompGeneral}}</textarea>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-oficial" id="buttonSendCardCertificado" disabled>
+                        <i class="far fa-save fa-lg"></i>
+                    </button>
+                </div>
+            </form>
+        {{/datosCertificado}}
+        {{^datosCertificado}}
+            <div class="alert alert-danger">No se ha podido cargar los datos del Certificado</div>
+        {{/datosCertificado}}
+    </div>
+</div>
+<script>
+    $( "#editarCardDatosCertificado" ).change(function() {
+        if($(this).prop('checked')){
+            $('#cardCertificadoForm').find('input').prop('disabled',false);
+            $('#cardCertificadoForm').find('select').prop('disabled',false);
+            $('#cardCertificadoForm').find('textarea').prop('disabled',false);
+            $('#cardCertificadoForm').find('button').prop('disabled',false);
+
+            $('#cardCertificadoFormIdArea').prop('disabled', false);
+            $('#cardCertificadoFormIdArea').selectpicker('refresh');
+            $('#cardCertificadoFormIdFam').prop('disabled', false);
+            $('#cardCertificadoFormIdFam').selectpicker('refresh');
+        }else{
+            $('#cardCertificadoForm').find('input').prop('disabled','disabled');
+            $('#cardCertificadoForm').find('select').prop('disabled','disabled');
+            $('#cardCertificadoForm').find('textarea').prop('disabled','disabled');
+            $('#cardCertificadoForm').find('button').prop('disabled','disabled');
+            $('#cardCertificadoFormIdArea').prop('disabled', 'disabled');
+            $('#cardCertificadoFormIdArea').selectpicker('refresh');
+            $('#cardCertificadoFormIdFam').prop('disabled', 'disabled');
+            $('#cardCertificadoFormIdFam').selectpicker('refresh');
+        }
+    });
+    $('#cardCertificadoForm').ajaxForm({
+        beforeSubmit : function(formData, $form, options) {
+            var f=$form[0];
+            if (!f.IdCert.value) {
+                alert('Error en el Modo del formulario. Contacta con el CAU.');
+                return false;
+            }
+            if (!f.IdFamilia.value) {
+                alert('Debes escoger la Familia Profesional.');
+                return false;
+            }
+            if (!f.IdArea.value) {
+                alert('Debes escoger el Área Profesional.');
+                return false;
+            }
+            if (!f.Codigo.value) {
+                alert('Debes insertar un Código.');
+                return false;
+            }else{
+                if(validarCodigoCertificado(f.Codigo.value)){
+                    alert('Debes insertar un Código válido.');
+                    return false;
+                }
+                if(!validarCodCertConArea(f.Codigo.value,$('#cardCertificadoFormIdArea option:selected').text())){
+                    alert('El código del Certificado no pertenece al Área Profesional seleccionada.');
+                    return false;
+                }
+            }
+            if (!f.Horas.value) {
+                alert('Debes insertar las horas.');
+                return false;
+            }
+            return true;
+        },
+        success: function(data) {
+            if(data.resultado===false){
+                $('#buttonSendCardCertificado').html('<i class="fas fa-check fa-lg text-success"></i>');
+            }else{
+                alert('Algo ha salido mal al crear el Certificado de Profesionalidad o ya existe. Contacta con el CAU. Código 3.')
+                $('#buttonSendCardCertificado').html('<i class="fas fa-times fa-lg text-danger"></i>');
+            }
+        },
+        error: function() {
+            alert('Algo ha salido mal al crear el Certificado de Profesionalidad o ya existe. Contacta con el CAU. Código 4.');
+            $('#buttonSendCardCertificado').html('<i class="fas fa-times fa-lg text-danger"></i>');
+        }
+    });
+    $( document ).ready(function() {
+        $('#editarCardDatosCertificado').bootstrapToggle();
+    });
+
+</script>
+

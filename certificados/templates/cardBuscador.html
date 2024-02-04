@@ -1,0 +1,17 @@
+<script id="searchTableCertTem" type="text/x-mustache-template">
+    {{#listCertificados}}
+    <tr>
+        <td class="align-middle">{{Familia}}</td>
+        <td class="align-middle">{{CodigoArea}} - {{Area}}</td>
+        <td class="align-middle text-center"><a target="_blank" href="view.php?Id={{IdCert}}">{{CodigoCert}}</a></td>
+        <td class="align-middle">{{Certificado}}</td>
+        <td class="align-middle text-center">{{Nivel}}</td>
+        <td class="align-middle text-center">{{Horas}}</td>
+    </tr>
+    {{/listCertificados}}
+    {{^listCertificados}}
+    <tr>
+        <td colspan="6" class="text-center text-danger">La Familia Profesional seleccionada no tiene ningún Certificado de Profesionalidad asignado.</td>
+    </tr>
+    {{/listCertificados}}
+</script>
