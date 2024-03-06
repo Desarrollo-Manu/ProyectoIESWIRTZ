@@ -1,5 +1,5 @@
 <?php
-function conectarDBSQL(){
+function conectarDBSQLB(){
     $serverName = "DESKTOP-7LOS6MQ\IESFERNANDOWIRTZ";
     $connectionInfo = array("Database"=>"BDIESWIRTZ","CharacterSet" => "UTF-8", "UID"=>"sa", "PWD"=>"05121985");
     $conn = sqlsrv_connect( $serverName, $connectionInfo);
@@ -8,10 +8,10 @@ function conectarDBSQL(){
     }
     return $conn;
 }
-function cerrarDBSQL($conn){
+function cerrarDBSQLB($conn){
     sqlsrv_close($conn);
 }
-function ejecutarConsultaLectura($c,$s,$d){
+function ejecutarConsultaLecturaB($c,$s,$d){
     $resultado = sqlsrv_query($c,$s,$d);
     if( $resultado === false ) {
         die( print_r( sqlsrv_errors(), true));
@@ -19,7 +19,7 @@ function ejecutarConsultaLectura($c,$s,$d){
         return $resultado;
     }
 }
-function ejecutarConsulta($c,$s,$d){
+function ejecutarConsultaB($c,$s,$d){
     $resultado = sqlsrv_query($c,$s,$d);
     if( $resultado === false ) {
         die( print_r( sqlsrv_errors(), true));
@@ -30,7 +30,7 @@ function ejecutarConsulta($c,$s,$d){
     }
 }
 /*SENTENCIA ACTUALIZACIÓN DE DATOS*/
-function DBSQLUpdate($sentencia,$datos){
+function DBSQLUpdateB($sentencia,$datos){
     $con   =    conectarDBSQL();
     if ( sqlsrv_begin_transaction( $con ) === false ) {
         die( print_r( sqlsrv_errors(), true ));
@@ -47,7 +47,7 @@ function DBSQLUpdate($sentencia,$datos){
     }
 }
 /*SENTENCIA INSERCIÓN DE DATOS. DevolverId debera usaer para tablas autoincrementales que desexemos que devolva o ID*/
-function DBSQLInsert($sentencia,$datos,$DevolverId){
+function DBSQLInsertB($sentencia,$datos,$DevolverId){
     $con   =    conectarDBSQL();
     if ( sqlsrv_begin_transaction( $con ) === false ) {
         die( print_r( sqlsrv_errors(), true ));
@@ -76,7 +76,7 @@ function DBSQLInsert($sentencia,$datos,$DevolverId){
     }
 }
 /*SENTENCIA BORRADO DE DATOS*/
-function DBSQLDelete($sentencia,$datos){
+function DBSQLDeleteB($sentencia,$datos){
     $con=conectarDBSQL();
     if ( sqlsrv_begin_transaction( $con ) === false ) {
         die( print_r( sqlsrv_errors(), true ));
@@ -95,7 +95,7 @@ function DBSQLDelete($sentencia,$datos){
     }
 }
 /*SENTENCIA COMPROBA SE TEMOS DATOS*/
-function DBSQLCheck($sentencia,$datos){
+function DBSQLCheckB($sentencia,$datos){
     $con       =   conectarDBSQL();
     $resultado = comprobarSiTieneRegistros($con,$sentencia,$datos);
     cerrarDBSQL($con);
@@ -117,7 +117,7 @@ function DBSQLNumRegistros($sentencia,$datos){
 }
 
 /*FUNCIÓN QUE DEVOLVE O NUMERO DE REGISTROS, IGUAL QUE COUNT PERO APARTANDOI DO CODIGO PRINCIPAL*/
-function numRegistros($c,$s,$d){
+function numRegistrosB($c,$s,$d){
     $o =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
     $resultado = sqlsrv_query($c,$s,$d,$o);
     if( $resultado === false ) {
@@ -132,7 +132,7 @@ function numRegistros($c,$s,$d){
     }
 }
 /*EXISTEN REGISTROS*/
-function comprobarSiTieneRegistros($c,$s,$d){
+function comprobarSiTieneRegistrosB($c,$s,$d){
     $resultado = sqlsrv_query($c,$s,$d);
     if( $resultado === false ) {
         die( print_r( sqlsrv_errors()));
@@ -141,7 +141,7 @@ function comprobarSiTieneRegistros($c,$s,$d){
     }
 }
 /*LEER Y DEVOLVER UN SOLO RESULTADO*/
-function leer1Parametro($c,$s,$d){
+function leer1ParametroB($c,$s,$d){
     $resultado = sqlsrv_query($c,$s,$d);
     if( $resultado === false ) {
         die( print_r( sqlsrv_errors(), true));
@@ -154,7 +154,7 @@ function leer1Parametro($c,$s,$d){
     }
 }
 /*FUNCION QUE COMPROBA SE O USUARIO QUE INTENTA LOGUEARSE EO CORRECTO*/
-function comprobarUserPass($Username,$Password){
-    $sentencia   =   "SELECT Id FROM TM_Usuarios WHERE Username=(?) AND Password=(?)";
+function comprobarUserPassB($Username,$Password){
+    $sentencia   =   "SELECT Id FROM tm_usuarios WHERE Username=(?) AND Password=(?)";
     return DBSQLCheck($sentencia,Array($Username,$Password));
 }

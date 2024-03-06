@@ -1,0 +1,14 @@
+<script id="contactosTableBodyTem" type="text/x-mustache-template">
+    {{#listContactos}}
+        <tr class="text-center">
+            <td><a href="#" class="delContacto" data-IdContacto="{{Id}}" data-IdUsuario="{{IdUsuario}}" title="Borrar"><i class="far fa-trash-alt"></i></a></td>
+            <td>{{Tipo}}</td>
+            <td>{{Valor}}</td>
+        </tr>
+    {{/listContactos}}
+    {{^listContactos}}
+    <tr>
+        <td class="text-center text-danger" colspan="3">Este usuario no tiene contactos</td>
+    </tr>
+    {{/listContactos}}
+</script>

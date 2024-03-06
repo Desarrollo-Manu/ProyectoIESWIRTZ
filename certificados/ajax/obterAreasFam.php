@@ -1,6 +1,6 @@
 <?php
 require_once(realpath($_SERVER["DOCUMENT_ROOT"]).'/ProyectoIESWIRTZ/config/fmaestras.php');
-
+comprobarPermisoAcceso(1,$_SESSION["Id"]);
 $IdFamilia      = obterPost('IdFamilia',true,false,false,false,false);
 
 header('Content-Type: application/json');

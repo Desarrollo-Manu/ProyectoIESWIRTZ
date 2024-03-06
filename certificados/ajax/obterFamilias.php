@@ -1,9 +1,11 @@
 <?php
 require_once(realpath($_SERVER["DOCUMENT_ROOT"]).'/ProyectoIESWIRTZ/config/fmaestras.php');
 
+$listFamilias=obterFamilias(null);
 header('Content-Type: application/json');
 $json = json_encode(
     Array(
+        'resultado'     =>empty($listFamilias),
         'listFamilias'  =>  obterFamilias(null)
     )
 );

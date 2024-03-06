@@ -1,7 +1,10 @@
 <link rel="stylesheet" href="{{root}}login/css/noLogin.css">
 <script type="text/javascript" src="{{root}}login/js/noLogin.js"></script>
+{{#accessLog}}
+    <div class="alert alert-danger text-center">Has intentado acceder a una pagina sin permisos.</div>
+{{/accessLog}}
 <div id="loginContainer">
-    <div class="card col-12 col-sm-12 col-md-3" id="loginForm">
+    <div class="card col-12 col-sm-12 col-md-4" id="loginForm">
         <div class="card-body">
             <h1>GESTOR CERTIFICADOS PROFESIONALIDAD</h1>
             <form method="post" action="">

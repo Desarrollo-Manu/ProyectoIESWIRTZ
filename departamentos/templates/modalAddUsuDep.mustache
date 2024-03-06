@@ -1,0 +1,111 @@
+<div class="modal fade" id="modalAddUsuarioDepartamento" tabindex="-1" aria-labelledby="modalAddUsuarioDepartamentoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-oficial" id="modalAddUsuarioDepartamentoLabel">Añadir usuario al departamento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="modalAddUsuarioDepartamentoForm" method="post" action="ajax/saveUsuarioDepartamento.php">
+                    <div class="row">
+                        <div class="input-group mb-3 col-sm-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Usuario</span>
+                                <label class="sr-only" for="Usuario">Usuario</label>
+                            </div>
+                            <select class="form-control" name="IdUsuario" id="modalAddUsuarioDepartamentoFormListUsu">
+                            </select>
+                        </div>
+                        <div class="input-group mb-3 col-sm-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Departamento</span>
+                                <label class="sr-only" for="IdDepartamento">Departamento</label>
+                            </div>
+                            <select class="form-control" name="IdDepartamento">
+                                <option value="">Selecciona un departamento.</option>
+                                {{#listDepartamentos}}
+                                    <option value="{{Id}}">{{Departamento}}</option>
+                                {{/listDepartamentos}}
+                                {{^listDepartamentos}}
+                                    <option value="">No se han encontrado departamentos.</option>
+                                {{/listDepartamentos}}
+                            </select>
+                        </div>
+                        <div class="input-group mb-3 col-sm-2">
+                            <button class="btn btn-oficial" title="Añadir" type="submit">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button class="btn btn-oficial ml-3" title="Borrar" type="reset">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="modalAddUsuarioDepartamento">
+                        <div class="alert alert-success d-none" role="alert" id="modalAddUsuarioDepartamentoExito">
+                            Se ha asignado el usuario al departamento.
+                        </div>
+                        <div class="alert alert-danger d-none" role="alert" id="modalAddUsuarioDepartamentoError">
+                            <b>¡Error!</b> Se ha producido un error al asignar el usuario al departamento.
+                        </div>
+                        <div class="alert alert-warning d-none" role="alert" id="modalAddUsuarioDepartamentoAsignado">
+                            <b>¡Aviso!</b> El usuario ya está asignado a este departamento.
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#modalAddUsuarioDepartamentoForm').ajaxForm({
+        beforeSubmit : function(formData, $form, options){
+            var f=$form[0];
+            if (!f.IdUsuario.value) {
+                alert('Error. Este usuario no tiene asignado un IdEntidad. Contacta con el CAU. Código 1.');
+                return false;
+            }
+            if (!f.IdDepartamento.value.length) {
+                alert('Debes elegir un departamento.');
+                return false;
+            }
+            return true;
+        },
+        success : function(data){
+            if(data.resultado==2){
+                $("#modalAddUsuarioDepartamentoError").addClass('d-none');
+                $("#modalAddUsuarioDepartamentoError").addClass('d-none');
+                $("#modalAddUsuarioDepartamentoAsignado").removeClass('d-none');
+            }else if(data.resultado===true){
+                $("#modalAddUsuarioDepartamentoExito").removeClass('d-none');
+                $("#modalAddUsuarioDepartamentoError").addClass('d-none');
+                $("#modalAddUsuarioDepartamentoAsignado").addClass('d-none');
+            }else{
+                $("#modalAddUsuarioDepartamentoError").removeClass('d-none');
+                $("#modalAddUsuarioDepartamentoExito").addClass('d-none');
+                $("#modalAddUsuarioDepartamentoAsignado").addClass('d-none');
+            }
+        }
+    });
+    $('#modalAddUsuarioDepartamento').on('show.bs.modal', function (e) {
+        $("#modalAddUsuarioDepartamentoError").addClass('d-none');
+        $("#modalAddUsuarioDepartamentoExito").addClass('d-none');
+        $("#modalAddUsuarioDepartamentoAsignado").addClass('d-none');
+        $.ajax({
+            url: "../usuarios/ajax/obterUsuarios.php",
+            data: {},
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                if(data.resultado===true){
+                    $('#modalAddUsuarioDepartamentoFormListUsu').html(Mustache.render($('#listUsuariosOptionTem').html(),data));
+                }else{
+                    alert("No se ha podido cargar los usuarios. Contacta con el CAU. Código 1.");
+                }
+            }
+        }).fail(function () {
+            alert("No se ha podido cargar los usuarios. Contacta con el CAU. Código 2.");
+        });
+    });
+</script>

@@ -1,10 +1,12 @@
-<script id="modalAddMFTem" type="text/x-mustache-template">
-    {{#listMFs}}
-    <option value="{{TextoModulo}}" class="{{TransversalClass}}">
-        {{/listMFs}}
+<script id="modalAddMFListTem" type="text/x-mustache-template">
+    {{#listModulos}}
+    <option value="{{Id}}" class="{{TransversalClass}}">{{TextoModulo}}</option>
+        {{/listModulos}}
+    <option value="" selected>Selecciona un Modulo Formativo</option>
 </script>
 <script id="modalAddUCsTem" type="text/x-mustache-template">
     {{#listUCs}}
     <option value="{{TextoUC}}">
         {{/listUCs}}
+    <option value="" selected>Selecciona una Unidad de Competencia</option>
 </script>

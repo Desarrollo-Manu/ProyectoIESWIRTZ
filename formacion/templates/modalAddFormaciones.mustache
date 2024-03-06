@@ -1,0 +1,122 @@
+<div class="modal fade" id="ModalAddFormacion" tabindex="-1" aria-labelledby="addformacion2" aria-hidden="true">
+    <div class="modal-dialog modal-xl" id="addformacion2ModalContainer">
+        <div class="modal-content">
+            <div class="modal-header">
+                Añadir Formación
+            </div>
+            <div class="alert alert-warning mb-0">
+                <b>Aviso.</b> Te recomendamos tener creados a todos los usuarios previamente, con el fin de poder realizar la matriculación masiva dentro del plan de formación.
+            </div>
+            <div class="modal-body">
+                <form method="post" action="ajax/addformacionPlan.php" id="ModalAddFormacionForm">
+                    <input type="hidden" name="IdPlan" value='{{#Plan}}{{IdPlan}}{{/Plan}}'>
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-12">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-labelformacionModal">Formación</span>
+                            </div>
+                            <select class="selectpicker form-control show-tick" data-selected-text-format="count > 12" title="Selecciona módulos..." data-style="btn-oficial" data-live-search="true" multiple id="ModalAddFormacionModulos" name="Modulos[]">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-12">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-labelUsuariosModal">Usuarios</span>
+                            </div>
+                            <select class="selectpicker form-control show-tick" data-selected-text-format="count > 10" title="Selecciona usuarios..." data-style="btn-oficial" data-live-search="true" multiple id="ModalAddFormacionUsuarios" name="Usuarios[]">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-labelRolModal">Rol</span>
+                            </div>
+                            <select class="form-control" id="ModalAddFormacionRol" name="IdRol">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-oficial" type="submit" title="Añadir">
+                            <i class="far fa-save fa-lg"></i>
+                        </button>
+                    </div>
+                </form>
+                <div id="crearEntidadContainer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#ModalAddFormacion').on('show.bs.modal', function (e) {
+        $('#ModalAddFormacionModulos').selectpicker('deselectAll');
+        $('#ModalAddFormacionUsuarios').selectpicker('deselectAll');
+        $.ajax({
+            url: "ajax/obterFormsUsuarios.php",
+            data: { {{#Plan}}'Id':{{IdPlan}},'IdCert':{{IdCert}} {{/Plan}} },
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                if(data.resultado===true){
+                    $("#ModalAddFormacionModulos").html(Mustache.render($('#ModalAddFormacionModulosTem').html(),data));
+                    $('#ModalAddFormacionModulos').selectpicker('refresh');
+
+                    $("#ModalAddFormacionUsuarios").html(Mustache.render($('#ModalAddFormacionUsuariosTem').html(),data));
+                    $('#ModalAddFormacionUsuarios').selectpicker('refresh');
+
+                    $("#ModalAddFormacionRol").html(Mustache.render($('#ModalAddFormacionRolTem').html(),data));
+                }else if(data.resultado===false){
+
+                }else{
+                    alert("No se han encontrado usuarios para listar. Contacta con el CAU. Código 1.");
+                }
+            }
+        }).fail(function () {
+            alert("No se han encontrado usuarios para listar. Contacta con el CAU. Código 2.");
+        });
+    });
+    $('#ModalAddFormacionForm').ajaxForm({
+        beforeSubmit : function(formData, $form, options){
+            if(!formData[0].value){
+                alert('Existe un problema con el ID del Plan. Contacte con el CAU. Código 1.');
+                return false;
+            }
+            if(!formData[3].value){
+                alert('Existe un problema con los roles del Plan. Contacte con el CAU. Código 1.');
+                return false;
+            }
+            if($('#ModalAddFormacionUsuarios').val()===''){
+                alert('Debes elegir al menos una formación.');
+                return false;
+            }
+            if($('#ModalAddFormacionModulos').val()===''){
+                alert('Debes elegir al menos una formación.');
+                return false;
+            }else{
+                return true;
+            }
+        },
+        success : function(data){
+            if(data.resultado===true){
+                $("#listformacion").html(Mustache.render($('#formacionListTem').html(), data));
+                $('#ModalAddFormacion').modal('hide');
+                $('#ModalAddFormacionUsuarios').selectpicker('deselectAll');
+                $('#ModalAddFormacionModulos').selectpicker('deselectAll');
+                $('#ModalAddFormacionUsuarios').html('');
+                $('#ModalAddFormacionModulos').html('');
+                $('#ModalAddFormacionForm').resetForm();
+            }else if(data.resultado===false){
+
+            }else{
+                alert('Se ha producido un error al guardar los datos de las formacion.');
+            }
+        }
+    });
+</script>
+<style>
+    #basic-labelformacionModal,#basic-labelUsuariosModal,#basic-labelRolModal{
+        min-width: 5.5rem;
+    }
+</style>

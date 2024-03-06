@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalAddMF" tabindex="-1" aria-labelledby="modalAddMF" aria-hidden="true" data-IdCertificado="{{IdCertificado}}">
+<div class="modal fade" id="modalAddMF" tabindex="-1" aria-labelledby="modalAddMF" aria-hidden="true" data-IdCertificado="{{IdCert}}">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header border-bottom-0" id="formModalAddMFTitle">
@@ -6,17 +6,13 @@
             </div>
             <div class="modal-body">
                 <form method="post" id="formModalAddMF" action="ajax/addMFCert.php">
-                    <input type="hidden" name="IdCertificado" value="{{IdCertificado}}">
-                    <input type="hidden" name="Modo" value="2">
+                    <input type="hidden" name="IdCert" value="{{IdCert}}">
                     <div class="row">
                         <div class="input-group mb-2 col-sm-10">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addMFModal">Módulo</span>
+                                <span class="input-group-text" id="basic-modalAddMFList">Módulo</span>
                             </div>
-                            <input required list="listMFs" minlength="1" type="text" name="Modulo" autocomplete="off"  class="form-control" id="addMFModal">
-                            <datalist id="listMFs">
-
-                            </datalist>
+                            <select required  name="IdModulo" class="form-control selectpicker" id="modalAddMFList" aria-labelledby="basic-modalAddMFList"></select>
                         </div>
                         <div class="input-group mb-2 col-sm-2">
                             <div class="input-group-prepend">
@@ -45,8 +41,8 @@
                 <h5 class="modal-title" id="modalAddMFTitle2">Crear Módulo Formativo</h5>
             </div>
             <div class="modal-body">
-                <form method="post" id="formModalSaveMF" action="http://192.168.2.200/aixa/certificados/ajax/saveMFCert.php">
-                    <input type="hidden" name="IdCertificado" value="{{IdCertificado}}">
+                <form method="post" id="formModalSaveMF" action="ajax/saveMFCert.php">
+                    <input type="hidden" name="IdCertificado" value="{{IdCert}}">
                     <input type="hidden" name="Modo" value="1">
                     <div class="row">
                         <div class="input-group mb-2 col-sm-2">
@@ -128,8 +124,8 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-UCMFModal">Unidad de Competencia</span>
                             </div>
-                            <input list="listUCs" minlength="1" type="text" name="UC" autocomplete="off"  class="form-control" id="UCMFModal">
-                            <datalist id="listUCs"></datalist>
+                            <input list="modalAddUCs" minlength="1" type="text" name="UC" autocomplete="off"  class="form-control" id="UCMFModal">
+                            <datalist id="modalAddUCs"></datalist>
                             <button type="button" title="Borrar UC" class="btn btn-oficial btn-lisoIzq" onclick="$('#UCMFModal').val(null)">
                                 <i class="far fa-trash-alt"></i>
                             </button>
@@ -169,7 +165,7 @@
                 alert('Debes insertar el código del Módulo Formativo');
                 return false;
             }else{
-                if(!(validarMF(formData[2].value) ^ validarMP(formData[2].value)/*^ validarCompClave(formData[2].value)*/ ^ validarMFTransversal(formData[2].value))){
+                if(!(validarMF(formData[2].value) ^ validarMP(formData[2].value) ^ validarMFTransversal(formData[2].value))){
                     alert('Debes insertar un Código válido.');
                     return false;
                 }
@@ -178,15 +174,15 @@
                 alert('Debes elegir el nivel del Módulo Formativo.');
                 return false;
             }
-            if(!(validarMP(formData[2].value)||validarMFTransversal(formData[2].value)||validarCompClave(formData[2].value))){
+            if(!(validarMP(formData[2].value)||validarMFTransversal(formData[2].value))){
                 if (!f.UC.value) {
                     alert('Selecciona una Unidad de Competencia.');
                     return false;
                 }else{
-                    if(!checkUC(f.UC.value.split(' - ')[0])){
+                   /* if(!checkUC(f.UC.value.split(' - ')[0])){
                         alert('La Unidad de Competencia seleccionada no es válida.');
                         return false;
-                    }
+                    }*/
                 }
             }
             if ((f.HorasFormacion.value)&&(f.HorasExamen.value)&&(f.HorasTotales.value)) {
@@ -202,43 +198,36 @@
             }
         },
         success: function(data) {
-            if(data.resultado){
-                alert("Se ha producido un error al guardar el Módulo Formativo. Contacte con el CAU.");
-                $('#sendFormModalSaveMF').html('<i class="fas fa-times fa-lg" style="color:red"></i>');
-            }else{
-                var template=$('#estrCertTem').html();
-                var renderedTemplate = Mustache.render(template,data);
-                $('#tableBodyMFsUFs').html(renderedTemplate);
+            if(data.resultado===true){
+                $('#tableBodyMFsUFs').html(Mustache.render($('#estrCertTem').html(),data));
                 $('#formModalSaveMF').clearForm();
                 $('#modalAddMF').modal('hide');
                 $('[data-toggle="popover"]').popover();
+            }else{
+                alert("Se ha producido un error al guardar el Módulo Formativo. Contacte con el CAU.");
+                $('#sendFormModalSaveMF').html('<i class="fas fa-times fa-lg" style="color:red"></i>');
             }
         }
     });
     $('#formModalAddMF').ajaxForm({
         beforeSubmit : function(formData, $form, options) {
-            var f=$form[0];
             if (!formData[0].value) {
                 alert('Error en el identificador del Certificado. Contacta con el CAU.');
                 return false;
             }
-            if (!formData[1].value) {
-                alert('Error en el Modo del formulario. Contacta con el CAU.');
-                return false;
-            }
-            if (!formData[3].value) {
+            if (!formData[2].value) {
                 alert('Debes indicar el orden del Módulo.');
                 return false;
             }
-            if (!formData[2].value) {
+            if (!formData[1].value) {
                 alert('Debes insertar el código del Módulo Formativo.');
                 return false;
             }else{
-                if(!checkMF(formData[2].value.split(' - ')[0])){
+                if(!checkMF(formData[1].value)){
                     alert('El Módulo Formativo no es válido.');
                     return false;
                 }
-                if(checkMFCert(formData[0].value,formData[2].value.split(' - ')[0])){
+                if(checkMFCert(formData[0].value,formData[1].value)){
                     alert('El Módulo Formativo ya está asignado al Certificado.');
                     return false;
                 }else{
@@ -247,16 +236,14 @@
             }
         },
         success: function(data) {
-            if(data.resultado){
-                alert("Se ha producido un error al asignar el Módulo Formativo. Contacte con el CAU. Código 1.");
-                $('#sendFormModalAddMF').html('<i class="fas fa-times fa-lg" style="color:red"></i>');
-            }else{
-                var template=$('#estrCertTem').html();
-                var renderedTemplate = Mustache.render(template,data);
-                $('#tableBodyMFsUFs').html(renderedTemplate);
+            if(data.resultado===true){
+                $('#tableBodyMFsUFs').html(Mustache.render($('#estrCertTem').html(),data));
                 $('#formModalAddMF').clearForm();
                 $('#modalAddMF').modal('hide');
                 $('[data-toggle="popover"]').popover();
+            }else{
+                alert("Se ha producido un error al asignar el Módulo Formativo. Contacte con el CAU. Código 1.");
+                $('#sendFormModalAddMF').html('<i class="fas fa-times fa-lg" style="color:red"></i>');
             }
         }
     });
@@ -264,16 +251,17 @@
         $('#formModalAddMF').resetForm();
         $('#formModalSaveMF').resetForm();
         $('.loader').removeClass('d-none');
+        $('#modalAddMFList').selectpicker('deselectAll');
+        $('#modalAddMFList').selectpicker('refresh');
         $.ajax({
-            url : 'http://192.168.2.200/aixa/certificados/ajax/obterMFsNoCert.php',
-            data : {IdCertificado:$(this).attr('data-IdCertificado') }, // la información a enviar.
+            url : 'ajax/obterMFsNoCert.php',
+            data : {IdCertificado:'{{IdCert}}' }, // la información a enviar.
             type : 'POST',		//tipo de envio.
             dataType : 'json', //respuesta esperada.
             success : function(data) {
-                if(!data.resultado){
-                    var template=$('#modalAddMFTem').html();
-                    var renderedTemplate = Mustache.render(template,data);
-                    $('#listMFs').html(renderedTemplate);
+                if(data.resultado===true){
+                    $('#modalAddMFList').html(Mustache.render($('#modalAddMFListTem').html(),data));
+                    $('#modalAddMFList').selectpicker('refresh');
                 }else{
                     alert('Se ha producido un error al obtener MFs que no están asociadas al certificado. Código 1.');
                 }
@@ -281,17 +269,15 @@
         }).fail( function() {
             alert('Se ha producido un error al obtener MFs que no están asociadas al certificado. Código 2.');
         });
-        if($('#listUCs').html().length === 0){
+        if($('#modalAddUCs').html().length === 0){
             $.ajax({
-                url : 'http://192.168.2.200/aixa/certificados/ajax/obterUCs.php',
+                url : 'ajax/obterUCs.php',
                 data : { }, // la información a enviar.
                 type : 'POST',		//tipo de envio.
                 dataType : 'json', //respuesta esperada.
-                success : function(data) {
-                    if(!data.resultado){
-                        var template=$('#modalAddUCsTem').html();
-                        var renderedTemplate = Mustache.render(template,data);
-                        $('#listUCs').html(renderedTemplate);
+                success : function(data){
+                    if(data.resultado===true){
+                        $('#modalAddUCs').html(Mustache.render($('#modalAddUCsTem').html(),data));
                     }else{
                         alert('Se ha producido un error al obtener las Unidades de Competencia. Código 1.');
                     }

@@ -1,0 +1,295 @@
+<div class="row m-1" id="CardsContainer">
+    <div class="input-group mb-2 col-sm-6">
+        <div class="card w-100" id="datosGeneralesformacion">
+            <div class="card-header text-oficial">
+                formacion
+                <span class="right">
+                    <button class="btn btn-oficial" id="addformacion" title="Añadir Formación"  data-toggle="modal" data-target="#ModalAddFormacion">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button disabled class="btn btn-oficial" id="delFormacion" data-IdPlan="{{IdPlan}}" data-toggle="popover" data-trigger="click" data-html="true" title="<span class='titlePopover' style='font-size:1rem'>¿Desea borrar la formación seleccionada?</span>" data-content="<p class='textPopover d-flex justify-content-around'><a id='delFormacionButton' href='#' title='SI'><i class='far fa-thumbs-up fa-2x text-success'></i></a><a title='NO' href='#' class='apagarPopOvers'><i class='far fa-thumbs-down fa-2x text-danger'></i></a></p>">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                    <button class="btn btn-oficial" title="Crear un alumno nuevo" data-toggle="modal" data-target="#CardsContainerModalNewUsuario">
+                        <i class="fas fa-user-plus"></i>
+                    </button>
+                    <button disabled id="FechasFormacion" class="btn btn-oficial" title="Asignar Fechas al Módulo" data-toggle="modal" data-target="#CardsContainerModalFechas">
+                        <i class="far fa-calendar-alt"></i>
+                    </button>
+                </span>
+            </div>
+            <ul id="listformacion" class="list-group list-group-flush">
+                {{#listformacion}}
+                    <li class="list-group-item">
+                        <a href="#" class="selFormacion" data-IdPlan="{{IdPlan}}" data-IdModulo="{{IdModulo}}" data-IdFormacion="{{IdFormacion}}">{{TextoModulo}}</a>
+                    </li>
+                {{/listformacion}}
+                {{^listformacion}}
+                    <small id="listformacionHelp" class="text-center form-text text-muted">No se ha podido encontrar formacion.</small>
+                {{/listformacion}}
+            </ul>
+        </div>
+    </div>
+    <div class="input-group mb-2 col-sm-6">
+        <div class="card w-100" id="datosGeneralesAlumnos">
+            <div class="card-header">
+                Tutores
+                <span class="right">
+                    <button disabled  class="btn btn-oficial addUSuariosFormacion"  data-toggle="modal" data-target="#addAlGrupoModal"  id="addTutorFormacion" title="Añadir tutor al grupo" data-IdRol="2">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button disabled  data-toggle="modal" data-target="#modalEditUsuario" class="btn btn-oficial verTutorModal" id="editTutGrupo" title="Editar tutor al grupo">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button disabled class="btn btn-oficial" id="delTutGrupo" data-toggle="popover" data-trigger="click" data-html="true" title="<span class='titlePopover' style='font-size:1rem'>¿Desea quitar al tutor del grupo?</span>" data-content="<p class='textPopover d-flex justify-content-around'><a id='delTutGrupoButton' href='#' title='SI'><i class='far fa-thumbs-up fa-2x text-success'></i></a><a title='NO' href='#' class='apagarPopOvers'><i class='far fa-thumbs-down fa-2x text-danger'></i></a></p>">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                </span>
+            </div>
+            <ul id="listGroupTutor" class="list-group list-group-flush">
+                <small id="listTutoresHelp" class="text-center form-text text-muted">No tiene tutores asignados.</small>
+            </ul>
+            <div class="card-header">
+                Alumnos
+                <span class="right">
+                    <button disabled  data-toggle="modal" data-target="#addAlGrupoModal" class="btn btn-oficial addUSuariosFormacion" id="addAlGrupo" title="Añadir alumno al grupo" data-IdRol="1">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button disabled  data-toggle="modal" data-target="#modalEditUsuario" class="btn btn-oficial verAlumnoModal" id="editAlGrupo" title="Editar alumno al grupo">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button disabled class="btn btn-oficial" id="delAlGrupo" data-toggle="popover" data-trigger="click" data-html="true" title="<span class='titlePopover' style='font-size:1rem'>¿Desea quitar al alumno del grupo?</span>" data-content="<p class='textPopover d-flex justify-content-around'><a id='delAlGrupoButton' href='#' title='SI'><i class='far fa-thumbs-up fa-2x text-success'></i></a><a title='NO' href='#' class='apagarPopOvers'><i class='far fa-thumbs-down fa-2x text-danger'></i></a></p>">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                </span>
+            </div>
+            <ul id="listGroupAls" class="list-group list-group-flush">
+                <small id="listAlumnosHelp" class="text-center form-text text-muted">No tiene alumnos asignados.</small>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('body').on( 'click', '.selFormacion', function (e) {
+        e.preventDefault();
+        $( ".selFormacion" ).each(function( index ) {
+            $(this).removeClass('font-weight-bold');
+        });
+        replicarIdFormacion($(this).attr('data-IdFormacion'));
+        $(this).addClass('font-weight-bold');
+        $.ajax({
+            url: "ajax/obterUsuariosFormacion.php",
+            data: {IdFormacion:$(this).attr('data-IdFormacion')},
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                if(data.resultado===true){
+                    $("#listGroupAls").html(Mustache.render($('#alumnosListTem').html(),data));
+                    $("#listGroupTutor").html(Mustache.render($('#tutoresListTem').html(),data));
+                }else{
+                    $("#listGroupAls").html('<li class="text-center form-text text-muted">Aún no tiene alumnos asignados.</li>');
+                    $("#listGroupTutor").html('<li class="text-center form-text text-muted">Aún no tiene tutores asignados.</li>');
+                }
+            }
+        }).fail(function () {
+            alert("No se ha podido borrar al alumno del Grupo. Contacta con el CAU. Código 3.");
+        });
+        $("#delFormacion").popover();
+    });
+    function replicarIdFormacion(Id){
+        $('#delFormacion').attr('data-IdFormacion',Id);
+        $('#FechasFormacion').attr('data-IdFormacion',Id);
+        $('#addTutorFormacion').attr('data-IdFormacion',Id);
+        $('#addAlGrupo').attr('data-IdFormacion',Id);
+        $('#delTutGrupoButton').attr('data-IdFormacion',Id);
+        $('#delTutGrupo').attr('data-IdFormacion',Id);
+        $("#IdFormModalAlInput").val(Id);
+        $("#addAlGrupo").prop('disabled',false);
+        $("#addTutorFormacion").prop('disabled',false);
+        $("#delFormacion").prop('disabled',false);
+    }
+    $('body').on( 'click', '#delFormacion', function (e) {
+        $("#delFormacionButton").attr('data-IdFormacion',$(this).attr('data-IdFormacion'));
+        $("#delFormacionButton").attr('data-IdPlan',$(this).attr('data-IdPlan'));
+    });
+    $('body').on( 'click', '#delFormacionButton', function (e) {
+        $.ajax({
+            url: "ajax/delFormacion.php",
+            data: {IdFormacion:$(this).attr('data-IdFormacion'),IdPlan:$(this).attr('data-IdPlan')},
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                if(data.resultado===true){
+                    $("#listformacion").html(Mustache.render($('#formacionListTem').html(), data));
+                }else{
+                    $("#listformacion").html('<li class="text-center form-text text-muted">Aún no tiene formacion asignadas.</li>');
+                }
+                $('#delFormacion').popover('hide');
+                $('#delFormacion').prop('disabled','disabled');
+                reiniciarCardAlumnos();
+                reiniciarCardTutores();
+            }
+        }).fail(function () {
+            alert("No se ha podido borrar la formación. Código 4.");
+            $("#listGroupAls").html('<li class="text-center form-text text-muted">Error de carga de las formacion.</li>');
+        });
+    });
+    function reiniciarCardAlumnos(){
+        $("#listGroupAls").html('<small id="listAlumnosHelp" class="text-center form-text text-muted">Selecciona una formación.</small>');
+        $("#editAlGrupo").prop('disabled','disabled');
+        $("#addAlGrupo").prop('disabled',false);
+        $("#delAlGrupo").prop('disabled','disabled');
+        $('#delAlGrupo').popover('hide');
+    }
+    function reiniciarCardTutores(){
+        $("#listGroupTutor").html('<small id="listTutoresHelp" class="text-center form-text text-muted">Selecciona una formación.</small>');
+        $("#editTutGrupo").prop('disabled','disabled');
+        $("#delTutGrupo").prop('disabled','disabled');
+        $("#addTutGrupo").prop('disabled',false);
+        $('#delTutGrupo').popover('hide');
+    }
+    $('body').on( 'click', '.addUSuariosFormacion', function () {
+        $("#IdRolFormModalInput").val($(this).attr('data-IdRol'));
+    });
+    $('body').on( 'click', '.selEstudiante', function (e) {
+        e.preventDefault();
+        $( ".selEstudiante" ).each(function( index ) {
+            $(this).removeClass('font-weight-bold');
+        });
+        $(this).addClass('font-weight-bold');
+        $("#editAlGrupo").attr('data-IdUsuarioFormacion',$(this).attr('data-IdUsuarioFormacion'));
+        $("#modalEditUsuario").attr('data-IdUsuario',$(this).attr('data-IdUsuario'));
+        $("#editAlGrupo").prop('disabled',false);
+
+        $("#delAlGrupo").prop('disabled',false);
+        $("#delAlGrupo").attr('data-IdUsuarioFormacion',$(this).attr('data-IdUsuarioFormacion'));
+        $("#delAlGrupo").attr('data-IdFormacion',$(this).attr('data-IdFormacion'));
+        $("#delAlGrupo").popover();
+
+    });
+    $('body').on( 'click', '#delAlGrupo', function (e) {
+        $("#delAlGrupoButton").attr('data-IdFormacion',$(this).attr('data-IdFormacion'));
+        $("#delAlGrupoButton").attr('data-IdUsuarioFormacion',$(this).attr('data-IdUsuarioFormacion'));
+    });
+
+    $('body').on( 'click', '#delAlGrupoButton', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "ajax/delUsuarioFormacion.php",
+            data: {IdFormacion:$(this).attr('data-IdFormacion'),IdUsuarioFormacion:$(this).attr('data-IdUsuarioFormacion'),IdRol:1},
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                reiniciarCardAlumnos();
+                if(data.resultado===true){
+                    $("#listGroupAls").html(Mustache.render($('#alumnosListTem').html(),data));
+                }else{
+                    $("#listGroupAls").html('<li class="text-center form-text text-muted">Aún no tiene alumnos asignados.</li>');
+                }
+            }
+        }).fail(function () {
+            alert("No se ha podido borrar al alumno del Grupo. Contacta con el CAU. Código 1.");
+        });
+    });
+    $('body').on( 'click', '#delTutGrupo', function (e) {
+        $("#delTutGrupoButton").attr('data-IdFormacion',$(this).attr('data-IdFormacion'));
+        $("#delTutGrupoButton").attr('data-IdUsuarioFormacion',$(this).attr('data-IdUsuarioFormacion'));
+    });
+    $('body').on( 'click', '#delTutGrupoButton', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "ajax/delUsuarioFormacion.php",
+            data: {IdFormacion:$(this).attr('data-IdFormacion'),IdUsuarioFormacion:$(this).attr('data-IdUsuarioFormacion'),IdRol:2},
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                reiniciarCardTutores();
+                if(data.resultado===true){
+                    $("#listGroupTutor").html(Mustache.render($('#tutoresListTem').html(),data));
+                }else{
+                    $("#listGroupTutor").html('<li class="text-center form-text text-muted">Aún no tiene tutores asignados.</li>');
+                }
+            }
+        }).fail(function () {
+            alert("No se ha podido borrar al tutor del Grupo. Contacta con el CAU. Código 1.");
+        });
+    });
+    $('body').on( 'click', '.apagarPopOvers', function (e) {
+        e.preventDefault();
+        $('[data-toggle="popover"]').popover('hide');
+    });
+    $('body').on( 'click', '.selTutor', function (e) {
+        e.preventDefault();
+        $( ".selTutor" ).each(function( index ) {
+            $(this).removeClass('font-weight-bold');
+        });
+        $(this).addClass('font-weight-bold');
+        $("#editTutGrupo").prop('disabled',false);
+        $("#modalEditUsuario").attr('data-IdUsuario',$(this).attr('data-IdUsuario'));
+        $("#modalEditUsuarioFormContactoId").val($(this).attr('data-IdUsuario'));
+
+        $("#delTutGrupo").prop('disabled',false);
+        $("#delTutGrupo").attr('data-IdUsuarioFormacion',$(this).attr('data-IdUsuarioFormacion'));
+        $("#delTutGrupo").attr('data-IdFormacion',$(this).attr('data-IdFormacion'));
+        $("#delTutGrupoButton").attr('data-IdUsuarioFormacion',$(this).attr('data-IdUsuarioFormacion'));
+        $("#delTutGrupoButton").attr('data-IdFormacion',$(this).attr('data-IdFormacion'));
+        $("#delTutGrupo").popover();
+
+    });
+/*
+    $('body').on( 'click', '#searchFamiliasformacionModal', function () {
+        if($('#addFamiliasformacionModal').val()!=''){
+            $.ajax({
+                url: "http://192.168.2.200/aixa/config/funciones/certificados/ajax/obterCertFam.php",
+                data: {IdFamilia:$('#addFamiliasformacionModal').val().split(' - ')[0]},
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
+                    if(data){
+                        $("#listCertificados").html('');
+                        $( data.c ).each(function() {
+                            $("#listCertificados").append(new Option(this['TextoCertificado'], this['TextoCertificado']));
+                        });
+                    }else{
+
+                    }
+                }
+            }).fail(function () {
+                alert("No se han podido encontrar las Unidades Formativas. Código 4.");
+            });
+            $('#CertificadoformacionModal').prop('disabled',false);
+            $('#addAllCertificadoformacionModal').prop('disabled',false);
+            $('#searchCertificadoformacionModal').prop('disabled',false);
+            $('#delCertificadoformacionModal').prop('disabled',false);
+        }
+    });
+    $('body').on( 'click', '#searchCertificadoformacionModal', function () {
+        if($('#CertificadoformacionModal').val()!=''){
+            $.ajax({
+                url: "http://192.168.2.200/aixa/config/funciones/certificados/ajax/obterMFsCert.php",
+                data: {IdCertificado:$('#CertificadoformacionModal').val().split(' - ')[0]},
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
+                    if(data){
+                        $("#listModulos").html('');
+                        $( data.Modulos ).each(function() {
+                            $("#listModulos").append(new Option(this['TextoModulo'], this['TextoModulo']));
+                        });
+                    }else{
+
+                    }
+                }
+            }).fail(function () {
+                alert("No se han podido encontrar las Unidades Formativas. Código 4.");
+            });
+            $('#ModulosModalSelect').prop('disabled',false);
+            $('#addModulosModalSelect').prop('disabled',false);
+            $('#delModulosModalSelect').prop('disabled',false);
+        }
+    });
+    */
+</script>
+
+

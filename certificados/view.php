@@ -1,6 +1,6 @@
 <?php
 require_once(realpath($_SERVER["DOCUMENT_ROOT"]).'/ProyectoIESWIRTZ/config/config.php');
-
+comprobarPermisoAcceso(1,$_SESSION["Id"]);
 $Id= obterGet('Id',true,false,false,false,false);
 
 //CARGAMOS AS PLANTILLAS MUSTACHE PARA OS DATOS
@@ -12,6 +12,8 @@ $modalModOcupaciones= file_get_contents("templates/modalModOcupacion.mustache");
 $view               = file_get_contents("templates/view.mustache");
 $modalAddMFs        = file_get_contents("templates/modalAddMF.mustache");
 $modalAddUFs        = file_get_contents("templates/modalAddUF.mustache");
+
+//var_dump(obterMFsUFsCert(intval($Id)));
 echo $m->render( $view,Array(
     'root'              =>  $relative,
     'IdCert'            =>  $Id,
@@ -24,10 +26,7 @@ echo $m->render( $view,Array(
         'root'              =>  $relative,
         'IdCert'            =>  $Id,
         'listMFsUFs'        =>  obterMFsUFsCert($Id),
-        //'listMFs'           =>  obterNoMFsCert($Id),
-        'listUFs'           =>  obterUFs(),
-        /*'listUCs'           =>  obterUCs()*/
-    )),/*
+    )),
     'modalAddMFs'           =>  $m->render( $modalAddMFs,Array(
         'root'              =>  $relative,
         'IdCert'            =>  $Id
@@ -35,22 +34,20 @@ echo $m->render( $view,Array(
     'modalAddUFs'           =>  $m->render( $modalAddUFs,Array(
         'root'              =>  $relative,
         'IdCert'            =>  $Id
-    )),*/
-   /* 'cardOcupaciones'       =>  $m->render( $cardOcupaciones,Array(
+    )),
+   'cardOcupaciones'       =>  $m->render( $cardOcupaciones,Array(
         'root'              =>  $relative,
         'IdCert'            =>  $Id,
         'listOcupaCert'     =>  obterOcupacionesCert($Id)
     )),
     'modalAddOcupaciones' =>  $m->render( $modalAddOcupaciones,Array(
         'root'              =>  $relative,
-        'IdCert'            =>  $Id,
-        'listModalidades'   =>  obterModalidades('O')
+        'IdCert'            =>  $Id
     )),
     'modalModOcupaciones' =>  $m->render( $modalModOcupaciones,Array(
         'root'              =>  $relative,
-        'IdCert'            =>  $Id,
-        'listModalidades'   =>  obterModalidades('O')
-    ))*/
+        'IdCert'            =>  $Id
+    ))
 
 ));
 

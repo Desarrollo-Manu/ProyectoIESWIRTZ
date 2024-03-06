@@ -1,0 +1,18 @@
+<script id="listUsuariosOptionTem" type="text/x-mustache-template">
+    <option value="">Selecciona un usuario.</option>
+    {{#listUsuarios}}
+        <option value="{{Id}}">{{DNI}} - {{Nombre}} {{Apellidos}}</option>
+    {{/listUsuarios}}
+    {{^listUsuarios}}
+        <option value="">No se han encontrado usuarios.</option>
+    {{/listUsuarios}}
+</script>
+<script id="listDepartamentosOptionTem" type="text/x-mustache-template">
+    <option value="">Selecciona un departamento.</option>
+    {{#listDepartamentos}}
+        <option value="{{Id}}">{{Departamento}}</option>
+    {{/listDepartamentos}}
+    {{^listDepartamentos}}
+        <option value="">No se han encontrado departamentos.</option>
+    {{/listDepartamentos}}
+</script>

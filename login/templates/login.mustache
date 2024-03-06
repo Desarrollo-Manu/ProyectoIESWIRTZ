@@ -1,20 +1,18 @@
 <div class="row row-cols-1 row-cols-md-6" id="menuPrincipal">
-    <div class="card m-2">
-        <img src="config/logos/certificados.jpg" class="card-img-top" alt="Cer Profesionalidad">
-        <div class="card-body">
-            <h5 class="card-title"><a href="certificados/index.php">Certificados Profesionalidad</a></h5>
+    {{#listDepartamentos}}
+        <div class="card m-2">
+            <img src="config/logos/{{Alias}}.jpg" class="card-img-top" alt="{{Titulo}}">
+            <div class="card-body">
+                <h5 class="card-title"><a href="{{Alias}}/index.php">{{Titulo}}</a></h5>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
         </div>
-        <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-        </div>
-    </div>
-    <div class="card m-2">
-        <img src="config/logos/formaciones.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title"><a href="cursos/index.php">Formaciones</a></h5>
-        </div>
-        <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-        </div>
-    </div>
+    {{/listDepartamentos}}
 </div>
+<style>
+    .card-img-top{
+        min-height: 10rem;
+    }
+</style>

@@ -1,53 +1,19 @@
-<script id="modalModOcupacionListFamiliasTem" type="text/x-mustache-template">
-    {{#listFamilias}}
-    <option value="{{TextoFamilia}}" {{#selected}}selected{{/selected}}>
-    {{/listFamilias}}
-</script>
 <script id="modalModOcupacionFormTem" type="text/x-mustache-template">
     {{#Ocupacion}}
-    <input type="hidden" name="IdOcupacion" value="{{IdEspecialidad}}">
-    <input type="hidden" name="IdModalidad" value="{{Modalidad}}" id="modalModOcupacionFormModalidad">
+    <input type="hidden" name="Id" value="{{Id}}">
+    <input type="hidden" name="IdCert" value="{{IdCert}}">
     <div class="row">
-        <div class="input-group mb-2 col-sm-12">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Familia</span>
-            </div>
-            <input type="text" list="modalModOcupacionListFamilias" value="{{TextoFamiliaProfesional}}" id="modalModOcupacionIdFamilia" name="IdFamilia" autocomplete="off"  class="form-control" aria-label="ListFamilias">
-            <datalist id="modalModOcupacionListFamilias">
-            </datalist>
-        </div>
-    </div>
-    <div class="row">
-        <div class="input-group mb-2 col-sm-7">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Nombre</span>
-            </div>
-            <input type="text" name="Nombre" autocomplete="off" value="{{Nombre}}" class="form-control">
-        </div>
         <div class="input-group mb-2 col-sm-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-ModalidadOcupa">Modalidad</span>
+                <span class="input-group-text">Codigo</span>
             </div>
-            <select class="form-control" name="Modalidad" id="modalModOcupacionlistModalidades" aria-label="Modalidad" aria-describedby="basic-ModalidadOcupa">
-            </select>
+            <input type="text" name="Codigo" autocomplete="off" value="{{Codigo}}" class="form-control">
         </div>
-        <div class="input-group mb-2 col-sm-2">
+        <div class="input-group mb-2 col-sm-9">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-PropiaCheckbox">Propia</span>
+                <span class="input-group-text">Denominación</span>
             </div>
-            <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-PropiaCheckbox1">
-                        <input value="1" class="" {{#PropiaChecked}}checked{{/PropiaChecked}} type="checkbox" name="Propia" aria-label="PropiaCheckbox" aria-describedby="basic-PropiaCheckbox">
-                    </span>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="input-group mb-2 col-sm-12">
-            <div class="input-group-prepend">
-                <div class="input-group-text" id="basic-Observaciones">Observaciones</div>
-            </div>
-            <textarea class="form-control" name="observaciones" aria-label="Observaciones" aria-describedby="basic-Observaciones">{{Observaciones}}</textarea>
+            <input type="text" name="Denominacion" autocomplete="off" value="{{Denominacion}}" class="form-control">
         </div>
     </div>
     <div class="text-center">
@@ -56,12 +22,4 @@
         </button>
     </div>
     {{/Ocupacion}}
-</script>
-<script id="modalModOcupacionlistModalidadesTem" type="text/x-mustache-template">
-    {{#listModalidades}}
-    <option value="{{Id}}" {{Selected}}>{{Nombre}}</option>
-    {{/listModalidades}}
-    {{^listModalidades}}
-    <option>No se ha podido cargar las modalidades</option>
-    {{/listModalidades}}
 </script>

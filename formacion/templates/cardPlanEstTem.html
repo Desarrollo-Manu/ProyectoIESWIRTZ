@@ -1,0 +1,80 @@
+<script id="groupsFueraFechaListTem" type="text/x-mustache-template">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <a href="#">
+                Los siguientes grupos están fuera de las fechas del plan de estudios:
+            </a>
+        </li>
+        {{#listGrupFueraFecha}}
+            <li class="list-group-item">
+                <a href="#" data-Nombre="{{IdForm}} - {{NombreForm}}" class="selGroupFFecha alert-link text-danger" data-Tipo="{{Tipo}}" data-IdGrupo="{{IdGrupo}}" data-IdFormacion="{{IdFormacion}}"  data-FecIni="{{FecIniInput}}" data-FecFin="{{FecFinInput}}" data-NodoFormacion="{{NodoFormacion}}" data-IdPlan="{{PlanGrupo}}"  data-NodoGrupo="{{NodoGrupo}}">
+                   {{IdForm}} - {{NombreForm}} ({{FecIni}} - {{FecFin}})
+                </a>
+            </li>
+        {{/listGrupFueraFecha}}
+    </ul>
+</script>
+<script id="datosPlanTem" type="text/x-mustache-template">
+    {{#datosPlan}}
+        <tr class="text-center text-oficial">
+            <td class="campoMod">{{Codigo}}</td>
+            <td class="campoMod">{{Nombre}}</td>
+            <td class="campoMod">{{FecIni}}</td>
+            <td class="campoMod">{{FecFin}}</td>
+            <td class="campoMod">
+                <select size="1" id="TipoGrupoSelect" name="Tipo">
+                    {{#TipoGrupoSelect}}
+                    <option value="{{Id}}" {{Selected}}>{{Nombre}}</option>
+                    {{/TipoGrupoSelect}}
+                    {{^TipoGrupoSelect}}
+                    <option value="">
+                        No se ha podido cargar la lista.
+                    </option>
+                    {{/TipoGrupoSelect}}
+                </select>
+            </td>
+            <td class="campoMod">{{CostePorAlumno}}</td>
+        </tr>
+    {{/datosPlan}}
+</script>
+
+<!--DEFINITIVAS-->
+<script id="formacionListTem" type="text/x-mustache-template">
+    {{#listformacion}}
+    <li class="list-group-item">
+        <a href="#" class="selFormacion" data-IdPlan="{{IdPlan}}" data-IdModulo="{{IdModulo}}" data-IdFormacion="{{IdFormacion}}">{{TextoModulo}}</a>
+    </li>
+    {{/listformacion}}
+    {{^listformacion}}
+    <li id="listformacionHelp" class="text-center form-text text-muted">No tiene formacion asignados.</li>
+    {{/listformacion}}
+</script>
+
+<script id="alumnosListTem" type="text/x-mustache-template">
+    {{#listAlumnos}}
+    <li class="list-group-item">
+        <a href="#" class="sel{{Rol}}" data-IdUsuario="{{IdUsuario}}" data-IdFormacion="{{IdFormacion}}" data-IdUsuarioFormacion="{{IdFormUsuario}}" data-IdPlan="{{IdPlan}}">
+            {{TextoUsuario}}
+        </a>
+    </li>
+    {{/listAlumnos}}
+    {{^listAlumnos}}
+    <li id="listAlumnosHelp" class="text-center form-text text-muted">No tiene alumnos asignados.</li>
+    {{/listAlumnos}}
+</script>
+
+<script id="tutoresListTem" type="text/x-mustache-template">
+    {{#listTutores}}
+    <li class="list-group-item">
+        <a href="#" class="sel{{Rol}}" data-IdUsuario="{{IdUsuario}}" data-IdFormacion="{{IdFormacion}}" data-IdUsuarioFormacion="{{IdFormUsuario}}" data-IdPlan="{{IdPlan}}">
+            {{TextoUsuario}}
+        </a>
+    </li>
+    {{/listTutores}}
+    {{^listTutores}}
+    <li id="listTuoresHelp" class="text-center form-text text-muted">No tiene tutores asignados.</li>
+    {{/listTutores}}
+</script>
+
+
+

@@ -18,12 +18,12 @@
     <!-- Iconos FontAwesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
     {{#logged}}
-        <!-- DataTables
-        <link rel="stylesheet" type="text/css" href="{{root}}header/frameworks/dataTablesJulio/datatables.min.css"/>
-        <link rel="stylesheet" type="text/css" href="{{root}}header/frameworks/dataTablesJulio/Buttons-1.6.2/css/buttons.dataTables.min.css"/>
-        <link rel="stylesheet" type="text/css" href="{{root}}header/frameworks/dataTablesJulio/Select-1.3.1/css/select.dataTables.min.css"/>
-        <link rel="stylesheet" type="text/css" href="{{root}}header/frameworks/dataTablesJulio/Editor-PHP-1.9.4/css/editor.dataTables.min.css"/>
-        <link rel="stylesheet" href="{{root}}header/frameworks/dataTablesJulio/RowReorder-1.2.7/css/rowReorder.dataTables.min.css">-->
+        <!--DataTables-->
+        <link rel="stylesheet" type="text/css" href="{{root}}config/frameworks/dataTables/datatables.min.css"/>
+        <link rel="stylesheet" type="text/css" href="{{root}}config/frameworks/dataTables/Buttons-1.6.2/css/buttons.dataTables.min.css"/>
+        <link rel="stylesheet" type="text/css" href="{{root}}config/frameworks/dataTables/Select-1.3.1/css/select.dataTables.min.css"/>
+        <link rel="stylesheet" type="text/css" href="{{root}}config/frameworks/dataTables/Editor-PHP-1.9.4/css/editor.dataTables.min.css"/>
+        <link rel="stylesheet" href="{{root}}config/frameworks/dataTables/RowReorder-1.2.7/css/rowReorder.dataTables.min.css">
         <!--GESTOR DE FICHEROS
         <link rel="stylesheet" type="text/css" href="{{root}}header/frameworks/uploadFile/css/uploadFile.css"/>-->
         <!--BOTONES DESLIZANTES-->
@@ -44,22 +44,29 @@
         <script src="{{root}}config/frameworks/bootstrap-select-1.13.14/js/bootstrap-select.js"></script>
         <!-- Mustache  -->
         <script src="{{root}}config/frameworks/mustache/lib.js"></script>
-        <!-- Mustache  -->
+        <!-- DataTables-->
+        <script type="text/javascript" src="{{root}}config/frameworks/dataTables/datatables.min.js"></script>
+        <script type="text/javascript" src="{{root}}config/frameworks/dataTables/Buttons-1.6.2/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" src="{{root}}config/frameworks/dataTables/Select-1.3.1/js/dataTables.select.min.js"></script>
+        <script type="text/javascript" src="{{root}}config/frameworks/dataTables/Editor-PHP-1.9.4/js/dataTables.editor.min.js"></script>
+        <script type="text/javascript" src="{{root}}config/frameworks/dataTables/RowReorder-1.2.7/js/dataTables.rowReorder.min.js"></script>
+        <script type="text/javascript" src="{{root}}config/frameworks/dataTables/sorting_date_eu.js"></script>
+        <!-- Funciones básicas  -->
         <script src="{{root}}config/js/patrones.js"></script>
+        <script src="{{root}}certificados/js/lib.js"></script>
         <!-- BOTONES DESLIZANTES -->
         <script src="{{root}}config/frameworks/b4Toggle_3.6.1/js/bootstrap4-toggle.js"></script>
+        <!-- MOMENT JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
     {{/logged}}
 </head>
 <header id="header">
     <nav class="navbar row">
         <div class="navbar-header">
-            <a href="http://localhost/ProyectoIESWIRTZ/index.php" class="navbar-brand"><img src="{{root}}config/logos/logo_redondo.png" alt="Logo" title="Logo"></a>
+            <a href="{{root}}index.php" class="navbar-brand"><img src="{{root}}config/logos/logo_redondo.png" alt="Logo" title="Logo"></a>
         </div>
         <div class="navbar">
             {{#logged}}
-                {{#site_admin}}
-                    <input type="checkbox" id="ModoDesarrolloHeader" {{DesarrolloChecked}} data-toggle="toggle" data-onstyle="success" data-offstyle="outline-danger" data-on="Desarrollo" data-off="Producción">
-                {{/site_admin}}
                 <ul class="site-navigation nav">
                     <li>
                         <div class="dropdown">
@@ -72,7 +79,7 @@
                                 {{/urlImgAvatar}}
                             </a>
                             <div class="dropdown-menu userMenuDesplegado" aria-labelledby="userMenu">
-                                <a class="dropdown-item" href="miArea/index.php">Area personal</a>
+                                <a class="dropdown-item" href="{{root}}miArea/index.php">Area personal</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{root}}login/logout.php">Salir</a>
                             </div>

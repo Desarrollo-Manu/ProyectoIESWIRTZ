@@ -29,31 +29,31 @@
                         <td class="text-center align-middle {{ClassTransversal}}" rowspan="{{numUFs}}">{{Nivel}}</td>
                         <td class="align-middle {{ClassTransversal}}" rowspan="{{numUFs}}">
                             {{#MP}}
-                                <a tabindex="0" data-html="true" role="button" data-toggle="popover" class="textPopover" data-trigger="focus" title="<span class='titlePopover' style='font-size:1rem'>{{TextoModulo}}</span>" data-content="<div class='d-flex justify-content-around'><a href='#' class='editMFModal' title='Editar Módulo Formativo' aria-IdModulo='{{IdModulo}}' aria-IdCertificado='{{IdCertificado}}'><i class='fas fa-pencil-alt fa-lg text-warning'></i></a> <a href='#' aria-IdModulo='{{IdModulo}}'  aria-IdCertificado='{{IdCertificado}}' class='delMFCert' title='Quitar Módulo del Certificado de Profesionalidad'><i class='far fa-trash-alt fa-lg text-danger'></i></a></div>">
+                                <a tabindex="0" data-html="true" role="button" data-toggle="popover" class="textPopover" data-trigger="focus" title="<span class='titlePopover' style='font-size:1rem'>{{TextoModulo}}</span>" data-content="<div class='d-flex justify-content-around'><a href='#' class='editMFModal' title='Editar Módulo Formativo' aria-IdModulo='{{IdModulo}}' aria-IdCertificado='{{IdCert}}'><i class='fas fa-pencil-alt fa-lg text-warning'></i></a> <a href='#' aria-IdModulo='{{IdModulo}}'  aria-IdCertificado='{{IdCert}}' class='delMFCert' title='Quitar Módulo del Certificado de Profesionalidad'><i class='far fa-trash-alt fa-lg text-danger'></i></a></div>">
                                     {{TextoModulo}}
                                 </a>
                             {{/MP}}
                             {{^MP}}
-                                <a tabindex="0" data-html="true" role="button" data-toggle="popover" class="textPopover {{IdMoodleClass}}" data-trigger="focus" title="<span class='titlePopover' style='font-size:1rem'>{{TextoModulo}}</span>" data-content="<div class='d-flex justify-content-around'><a href='#' class='addUFMF' aria-IdModulo='{{IdModulo}}' aria-IdCertificado='{{IdCertificado}}' title='Añadir Unidad Formativa'><i class='fas fa-plus fa-lg'></i></a> <a href='#' class='sincroUFMF' aria-IdModulo='{{IdModulo}}' aria-IdEntidad='{{IdModulo}}' aria-CodMoodle='{{IdCertificado}}/{{IdModulo}}/1C' aria-IdCertificado='{{IdCertificado}}' aria-TipoEntidad='Modulo'  aria-IdMoodleCurso='{{IdMoodleCurso}}' title='Sincronizar con Moodle'><i class='fas fa-spinner fa-lg text-oficial'></i></a> <a href='#' class='editMFModal' title='Editar Módulo Formativo' aria-IdModulo='{{IdModulo}}' aria-IdCertificado='{{IdCertificado}}'><i class='fas fa-pencil-alt fa-lg text-warning'></i></a> <a href='#' aria-IdModulo='{{IdModulo}}'  aria-IdCertificado='{{IdCertificado}}' class='delMFCert' title='Quitar Módulo del Certificado de Profesionalidad'><i class='far fa-trash-alt fa-lg text-danger'></i></a></div>">
+                                <a tabindex="0" data-html="true" role="button" data-toggle="popover" class="textPopover" data-trigger="focus" title="<span class='titlePopover' style='font-size:1rem'>{{TextoModulo}}</span>" data-content="<div class='d-flex justify-content-around'><a href='#' class='addUFMF' aria-IdModulo='{{IdModulo}}' aria-IdCertificado='{{IdCert}}' title='Añadir Unidad Formativa'><i class='fas fa-plus fa-lg'></i></a> <a href='#' class='editMFModal' title='Editar Módulo Formativo' aria-IdModulo='{{IdModulo}}' aria-IdCertificado='{{IdCert}}'><i class='fas fa-pencil-alt fa-lg text-warning'></i></a> <a href='#' aria-IdModulo='{{IdModulo}}'  aria-IdCertificado='{{IdCert}}' class='delMFCert' title='Quitar Módulo del Certificado de Profesionalidad'><i class='far fa-trash-alt fa-lg text-danger'></i></a></div>">
                                     {{TextoModulo}}
                                 </a>
                             {{/MP}}
                         </td>
                         <td class="text-center align-middle {{ClassTransversal}}" rowspan="{{numUFs}}">
                             {{#UC}}
-                                {{IdUC}}
+                                {{Codigo}}
                             {{/UC}}
                         </td>
-                        <td class="text-center align-middle {{ClassTransversal}}" rowspan="{{numUFs}}">{{HorasModTotales}}</td>
-                        <td class="text-center align-middle {{ClassTransversal}}" rowspan="{{numUFs}}">{{HorasModExamen}}</td>
+                        <td class="text-center align-middle {{ClassTransversal}}" rowspan="{{numUFs}}">{{HorasTotales}}</td>
+                        <td class="text-center align-middle {{ClassTransversal}}" rowspan="{{numUFs}}">{{HorasExamen}}</td>
                 {{/datosMFs}}
                 {{#listUFs}}
                         <td class=" {{ClassTransversal}}">
-                            <a tabindex="0" data-html="true" role="button" data-toggle="popover" class="textPopover" data-trigger="focus" title="<span class='titlePopover' style='font-size:1rem'>{{TextoUnidad}}</span>" data-content="<div class='d-flex justify-content-around'><a href='#' class='editUFModal' title='Editar Unidad Formativa' aria-IdUnidad='{{IdUnidad}}' aria-IdModulo='{{IdModulo}}' aria-IdCertificado='{{IdCertificado}}'><i class='fas fa-pencil-alt fa-lg text-warning'></i></a> <a href='#' aria-IdUnidad='{{IdUnidad}}' aria-NodoFormacion='{{IdModulo}}' aria-IdEntidad='{{IdUnidad}}' aria-CodMoodle='{{IdCertificado}}/{{IdModulo}}/{{IdUnidad}}/1C' aria-IdCertificado='{{IdCertificado}}' aria-TipoEntidad='Unidad'  aria-IdMoodleCurso='{{IdMoodleCurso}}' class='sincroUFMF' title='Sincronizar con Moodle'><i class='fas fa-spinner fa-lg text-oficial'></i></a> <a href='#' aria-IdUnidad='{{IdUnidad}}' aria-IdModulo='{{IdModulo}}' aria-IdCertificado='{{IdCertificado}}' class='delUFMF' title='Quitar Unidad Formativa del Módulo Formativo'><i class='far fa-trash-alt fa-lg text-danger'></i></a></div>">{{TextoUnidad}}</a>
+                            <a tabindex="0" data-html="true" role="button" data-toggle="popover" class="textPopover" data-trigger="focus" title="<span class='titlePopover' style='font-size:1rem'>{{TextoUnidad}}</span>" data-content="<div class='d-flex justify-content-around'><a href='#' class='editUFModal' title='Editar Unidad Formativa' aria-IdUnidad='{{IdUF}}' aria-IdModulo='{{IdModulo}}' aria-IdCertificado='{{IdCert}}'><i class='fas fa-pencil-alt fa-lg text-warning'></i></a> <a href='#' aria-IdUnidad='{{IdUF}}' aria-IdModulo='{{IdModulo}}' aria-IdCertificado='{{IdCert}}' class='delUFMF' title='Quitar Unidad Formativa del Módulo Formativo'><i class='far fa-trash-alt fa-lg text-danger'></i></a></div>">{{TextoUnidad}}</a>
                         </td>
-                        <td class="text-center align-middle {{ClassTransversal}}">{{HorasUniFormacion}}</td>
-                        <td class="text-center align-middle {{ClassTransversal}}">{{HorasUniTutoria}}</td>
-                        <td class="text-center align-middle {{ClassTransversal}}">{{HorasUniTotales}}</td>
+                        <td class="text-center align-middle {{UFClassTransversal}}">{{HorasUniFormacion}}</td>
+                        <td class="text-center align-middle {{UFClassTransversal}}">{{HorasUniTutoria}}</td>
+                        <td class="text-center align-middle {{UFClassTransversal}}">{{HorasUniTotales}}</td>
                     </tr>
                 {{/listUFs}}
                 {{^listUFs}}
@@ -103,7 +103,6 @@
     $(function () {
         inicializarPopOver();
     });
-
     $('body').on( 'click', '.addUFMF', function (e) {
         e.preventDefault();
         $('#idMFnewUF').val($(this).attr('aria-IdModulo'));
@@ -117,18 +116,16 @@
     $('body').on( 'click', '.editMFModal', function (e) {
         $.ajax({
             url: "ajax/obterMF.php",
-            data: {IdCertificado:$(this).attr('aria-IdCertificado'),IdModulo:$(this).attr('aria-IdModulo')},
+            data: {IdCertificado:{{IdCert}},IdModulo:$(this).attr('aria-IdModulo')},
             type: "POST",
             dataType: "json",
             success: function (data) {
-                if(data.resultado){
-                    alert("Se ha producido un error al obtener la información del Módulo Formativo. Contacte con el CAU.");
-                }else{
-                    var template=$('#editModalMFTem').html();
-                    var renderedTemplate = Mustache.render(template,data);
-                    $('#modalBodyEditMF').html(renderedTemplate);
+                if(data.resultado===true){
+                    $('#modalBodyEditMF').html(Mustache.render($('#editModalMFTem').html(),data));
                     inicializarEditModalMF();
-                    $('#editModalMFTemIdCert').val($('#CodigoCertV').val());
+                    $('#editModalMFTemIdCert').val({{IdCert}});
+                }else{
+                    alert("Se ha producido un error al obtener la información del Módulo Formativo. Contacte con el CAU.");
                 }
             }
         }).fail(function () {
@@ -143,14 +140,12 @@
             type: "POST",
             dataType: "json",
             success: function (data) {
-                if(data.resultado){
-                    alert("Se ha producido un error al obtener la información de la Unidad Formativa. Contacte con el CAU.");
-                }else{
-                    var template=$('#editModalUFTem').html();
-                    var renderedTemplate = Mustache.render(template,data);
-                    $('#modalBodyEditUF').html(renderedTemplate);
+                if(data.resultado===true){
+                    $('#modalBodyEditUF').html(Mustache.render($('#editModalUFTem').html(),data));
                     inicializarEditModalUF();
-                    $('#formEditModalUFIdCert').val($('#CodigoCertV').val());
+                    $('#formEditModalUFIdCert').val({{IdCert}});
+                }else{
+                    alert("Se ha producido un error al obtener la información de la Unidad Formativa. Contacte con el CAU.");
                 }
             }
         }).fail(function () {
@@ -162,17 +157,15 @@
         e.preventDefault();
         $.ajax({
             url: "ajax/delMFCert.php",
-            data: {IdModulo:$(this).attr('aria-IdModulo'),IdCertificado:$(this).attr('aria-IdCertificado')},
+            data: {IdModulo:$(this).attr('aria-IdModulo'),IdCertificado:{{IdCert}} },
             type: "POST",
             dataType: "json",
             success: function (data) {
-                if(data.resultado){
-                    alert("Se ha producido un error al desasignar el Módulo Formativo del Certificado de Profesionalidad. Contacte con el CAU.");
-                }else{
-                    var template=$('#estrCertTem').html();
-                    var renderedTemplate = Mustache.render(template,data);
-                    $('#tableBodyMFsUFs').html(renderedTemplate);
+                if(data.resultado===true){
+                    $('#tableBodyMFsUFs').html(Mustache.render($('#estrCertTem').html(),data));
                     inicializarPopOver();
+                }else{
+                    alert("Se ha producido un error al desasignar el Módulo Formativo del Certificado de Profesionalidad. Contacte con el CAU.");
                 }
             }
         }).fail(function () {
@@ -183,17 +176,15 @@
         e.preventDefault();
         $.ajax({
             url: "ajax/delUFMF.php",
-            data: {IdModulo:$(this).attr('aria-IdModulo'),IdCertificado:$(this).attr('aria-IdCertificado'),IdUnidad:$(this).attr('aria-IdUnidad')},
+            data: {IdModulo:$(this).attr('aria-IdModulo'),IdCertificado:{{IdCert}},IdUnidad:$(this).attr('aria-IdUnidad')},
             type: "POST",
             dataType: "json",
             success: function (data) {
-                if(data.resultado){
-                    alert("Se ha producido un error al desasignar la Unidad Formativa del Módulo Formativo. Contacte con el CAU.");
-                }else{
-                    var template=$('#estrCertTem').html();
-                    var renderedTemplate = Mustache.render(template,data);
-                    $('#tableBodyMFsUFs').html(renderedTemplate);
+                if(data.resultado===true){
+                    $('#tableBodyMFsUFs').html(Mustache.render($('#estrCertTem').html(),data));
                     inicializarPopOver();
+                }else{
+                    alert("Se ha producido un error al desasignar la Unidad Formativa del Módulo Formativo. Contacte con el CAU.");
                 }
             }
         }).fail(function () {
@@ -206,14 +197,6 @@
                 var f=$form[0];
                 if (!f.IdCertificado.value) {
                     alert('Error en el identificador del Certificado.Contacta con el CAU.');
-                    return false;
-                }
-                if (!f.IdModuloOrig.value) {
-                    alert('Error en el identificador del Módulo.Contacta con el CAU.');
-                    return false;
-                }
-                if (!f.Modo.value) {
-                    alert('Error en el Modo del formulario. Contacta con el CAU.');
                     return false;
                 }
                 if (!f.Codigo.value) {
@@ -238,15 +221,13 @@
                 }
             },
             success: function(data) {
-                if(data.resultado){
-                    alert("Se ha producido un error al guardar la Unidad Formativa. Contacte con el CAU.");
-                }else{
-                    var template=$('#estrCertTem').html();
-                    var renderedTemplate = Mustache.render(template,data);
-                    $('#tableBodyMFsUFs').html(renderedTemplate);
+                if(data.resultado===true){
+                    $('#tableBodyMFsUFs').html(Mustache.render($('#estrCertTem').html(),data));
                     $('#formEditModalMFTem').clearForm();
                     $('#modalEditMF').modal('hide');
                     inicializarPopOver();
+                }else if(data.resultado!==false){
+                    alert("Se ha producido un error al guardar la Unidad Formativa. Contacte con el CAU.");
                 }
             }
         });
@@ -261,14 +242,6 @@
                 }
                 if (!f.IdModulo.value) {
                     alert('Error en el identificador del Módulo Formativo. Contacta con el CAU.');
-                    return false;
-                }
-                if (!f.IdUnidadOrig.value) {
-                    alert('Error en el identificador de la Unidad Formativa. Contacta con el CAU.');
-                    return false;
-                }
-                if (!f.Modo.value) {
-                    alert('Error en el Modo del formulario. Contacta con el CAU.');
                     return false;
                 }
                 if (!f.Codigo.value) {
@@ -293,15 +266,13 @@
                 }
             },
             success: function(data) {
-                if(data.resultado){
-                    alert("Se ha producido un error al guardar la Unidad Formativa. Contacte con el CAU.");
-                }else{
-                    var template=$('#estrCertTem').html();
-                    var renderedTemplate = Mustache.render(template,data);
-                    $('#tableBodyMFsUFs').html(renderedTemplate);
+                if(data.resultado===true){
+                    $('#tableBodyMFsUFs').html(Mustache.render($('#estrCertTem').html(),data));
                     $('#formEditModalMFTem').clearForm();
                     $('#editUFModal').modal('hide');
                     inicializarPopOver();
+                }else{
+                    alert("Se ha producido un error al guardar la Unidad Formativa. Contacte con el CAU.");
                 }
             }
         });

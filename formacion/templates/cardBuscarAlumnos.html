@@ -1,0 +1,26 @@
+<script id="tablaBodyResultadosBusquedaAlumnosTem" type="text/x-mustache-template">
+    {{#listAlumnos}}
+        <tr>
+            <td>{{Nombre}} {{Apellidos}}</td>
+            <td>{{Rol}}</td>
+            <td class="text-center">
+                <a href="view.php?id={{IdPlan}}" target="_blank"  title="Acceder">
+                    {{CodigoPlan}}
+                </a>
+            </td>
+            <td>
+                <a href="../certificados/view.php?Id={{IdCert}}" target="_blank" title="Acceder">
+                    {{CodigoCert}} - {{Certificado}}
+                </a>
+            </td>
+            <td class="text-center">{{Nivel}}</td>
+            <td class="text-center">{{Horas}}</td>
+        </tr>
+    {{/listAlumnos}}
+    {{^listAlumnos}}
+    <tr>
+        <td colspan="6" class="text-center text-danger">No se han encontrado resultados para la busqueda</td>
+    </tr>
+    {{/listAlumnos}}
+</script>
+

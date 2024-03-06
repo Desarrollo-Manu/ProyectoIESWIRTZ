@@ -6,15 +6,13 @@
             </div>
             <div class="modal-body">
                 <form id="addOcupCert" method="post" action="ajax/addOcupCert.php">
-                    <input type="hidden" name="IdCertificado" value="{{IdCertificado}}">
+                    <input type="hidden" name="IdCertificado" value="{{IdCert}}">
                     <div class="row">
                         <div class="input-group mb-2 col-sm-12">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-OcupacionSearch">Ocupación</span>
                             </div>
-                            <input type="text" list="listadoOcupaciones" name="Ocupacion" autocomplete="off"  class="form-control" id="OcupacionSearch" aria-label="Ocupación" aria-describedby="basic-OcupacionSearch">
-                            <datalist id="listadoOcupaciones">
-                            </datalist>
+                            <select name="IdOcupacion" class="form-control selectpicker" id="modalAddOcupacionSelect" aria-label="Ocupación" aria-describedby="basic-OcupacionSearch"></select>
                             <button class="btn btn-oficial btn-lisoIzq" id="addOcupacionButton" type="submit">
                                 <i class="fas fa-plus"></i>
                             </button>
@@ -27,66 +25,21 @@
             </div>
             <div class="modal-body">
                 <form id="newOCupCert" method="post" action="ajax/newOcupAddCert.php">
-                    <input type="hidden" name="IdCertificado" value="{{IdCertificado}}">
+                    <input type="hidden" name="IdCertificado" value="{{IdCert}}">
                     <div class="row">
                         <div class="input-group mb-2 col-sm-12">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Familia</span>
-                            </div>
-                            <input type="text" list="newOCupCertListFamilias" name="IdFamilia" autocomplete="off"  class="form-control" aria-label="ListFamilias">
-                            <datalist id="newOCupCertListFamilias">
-                            </datalist>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-group mb-2 col-sm-2">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-CodigoOcupa">Código</span>
                             </div>
                             <input type="text" pattern="[0-9]{8}" minlength="8" maxlength="8" name="Codigo" autocomplete="off"  class="form-control" aria-label="Código" aria-describedby="basic-CodigoOcupa">
-                        </div>
-                        <div class="input-group mb-2 col-sm-5">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-NombreOcupa">Nombre</span>
                             </div>
-                            <input type="text" name="Nombre" maxlength="100" autocomplete="off" class="form-control" aria-label="Nombre" aria-describedby="basic-NombreOcupa">
+                            <input type="text" name="Nombre" maxlength="250" autocomplete="off" class="form-control" aria-label="Nombre" aria-describedby="basic-NombreOcupa">
+                            <button class="btn btn-oficial btn-lisoIzq" type="submit">
+                                <i class="far fa-save fa-lg" title="Guardar"></i>
+                            </button>
                         </div>
-                        <div class="input-group mb-2 col-sm-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-ModalidadOcupa">Modalidad</span>
-                            </div>
-                            <select class="form-control" name="Modalidad" aria-label="Modalidad" aria-describedby="basic-ModalidadOcupa">
-                                {{#listModalidades}}
-                                    <option value="{{Id}}" {{Selected}}>{{Nombre}}</option>
-                                {{/listModalidades}}
-                                {{^listModalidades}}
-                                    <option>No se ha podido cargar las modalidades</option>
-                                {{/listModalidades}}
-                            </select>
-                        </div>
-                        <div class="input-group mb-2 col-sm-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-PropiaCheckbox">Propia</span>
-                            </div>
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-PropiaCheckbox1">
-                                    <input value="1" class="" type="checkbox" name="Propia" aria-label="PropiaCheckbox" aria-describedby="basic-PropiaCheckbox">
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-group mb-2 col-sm-12">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text" id="basic-Observaciones">Observaciones</div>
-                            </div>
-                            <textarea class="form-control" name="observaciones" aria-label="Observaciones" aria-describedby="basic-Observaciones"></textarea>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <button class="btn btn-oficial" type="submit">
-                            <i class="far fa-save fa-lg" title="Guardar"></i>
-                        </button>
                     </div>
                 </form>
             </div>
@@ -108,10 +61,8 @@
             }
         },
         success : function(data){
-            if(!data.resultado){
-                var template=$('#OcupCertificadoTableTem').html();
-                var renderedTemplate = Mustache.render(template, data);
-                $("#OcupCertificadoTableBody").html(renderedTemplate);
+            if(data.resultado===true){
+                $('#OcupCertificadoTableBody').html(Mustache.render($('#OcupCertificadoTableTem').html(),data));
                 $('#modalAddOcupacion').modal('hide');
                 $('#OcupacionSearch').val('');
                 $('[data-toggle="popover"]').popover();
@@ -127,19 +78,15 @@
                 return false;
             }
             if(!formData[1].value){
-                alert('Debes seleccionar una Familia Profesional.');
-                return false;
-            }
-            if(!formData[2].value){
                 alert('Debes insertar un Código de ocupación');
                 return false;
             }else{
-                if(!validarCodOcupa(formData[2].value)){
+                if(!validarCodOcupa(formData[1].value)){
                     alert('Debes insertar un Código de ocupación válido.');
                     return false;
                 }
             }
-            if(!formData[3].value){
+            if(!formData[2].value){
                 alert('Debes insertar un nombre a la ocupación.');
                 return false;
             }else{
@@ -147,10 +94,8 @@
             }
         },
         success : function(data){
-            if(!data.resultado){
-                var template=$('#OcupCertificadoTableTem').html();
-                var renderedTemplate = Mustache.render(template, data);
-                $("#OcupCertificadoTableBody").html(renderedTemplate);
+            if(data.resultado===true){
+                $('#OcupCertificadoTableBody').html(Mustache.render($('#OcupCertificadoTableTem').html(),data));
                 $('#modalAddOcupacion').modal('hide');
                 $("#newOCupCert")[0].reset();
                 $('[data-toggle="popover"]').popover();
@@ -160,40 +105,25 @@
         }
     });
     $('#modalAddOcupacion').on('show.bs.modal', function (e) {
-        $("#OcupacionSearch").val('');
+        $('#newOCupCert').resetForm();
+        $('#addOcupCert').resetForm();
+        $('#modalAddOcupacionSelect').selectpicker('deselectAll');
+        $('#modalAddOcupacionSelect').selectpicker('refresh');
         $.ajax({
-            url: "ajax/obterOcups.php",
+            url: "ajax/obterOcupaciones.php",
             data: {},
             type: "POST",
             dataType: "json",
-            success: function (data) {
-                if(!data.resultado){
-                    var template=$('#OcupOptionTem').html();
-                    var renderedTemplate = Mustache.render(template, data);
-                    $("#listadoOcupaciones").html(renderedTemplate);
+            success: function (data) {/*modalAddOcupacionSelect*/
+                if(data.resultado===true){
+                    $("#modalAddOcupacionSelect").html(Mustache.render($('#OcupOptionTem').html(), data));
+                    $("#modalAddOcupacionSelect").selectpicker('refresh');
                 }else{
                     alert('Se ha producido un error al listar las ocupaciones. Código 1.');
                 }
             }
         }).fail(function () {
             alert('Se ha producido un error al listar las ocupaciones. Código 2.');
-        });
-        $.ajax({
-            url: "ajax/obterFamilias.php",
-            data: {},
-            type: "POST",
-            dataType: "json",
-            success: function (data) {
-                if(!data.resultado){
-                    var template=$('#newOCupCertListFamiliasTem').html();
-                    var renderedTemplate = Mustache.render(template,data);
-                    $("#newOCupCertListFamilias").html(renderedTemplate);
-                }else{
-                    alert("No se ha podido cargar las familias formativas. Contacta con el CAU. Código 1.");
-                }
-            }
-        }).fail(function () {
-            alert("No se ha podido cargar las familias formativas. Contacta con el CAU. Código 2.");
         });
     })
 </script>

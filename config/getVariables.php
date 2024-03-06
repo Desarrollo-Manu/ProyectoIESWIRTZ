@@ -1,5 +1,5 @@
 <?php
-function obterPost($variable,$die,$mayusculas,$recuperarId,$checkbox,$formatoMoneda){
+function obterPost($variable,$die,$mayusculas,$recuperarId,$checkbox,$intval){
     if(isset($_POST[$variable])&&(!empty($_POST[$variable])||($_POST[$variable]=='0'))){
         if($checkbox){
             return 1;
@@ -7,7 +7,7 @@ function obterPost($variable,$die,$mayusculas,$recuperarId,$checkbox,$formatoMon
             $r= trim($_POST[$variable]);
             $r= ($mayusculas) ? cambiarMinusToMayusTexto($r) : $r;
             $r= ($recuperarId) ? explode(' - ',$r)[0] : $r;
-            $r= ($formatoMoneda) ? cambiarFormatoMoneda($r) : $r;
+            $r= ($intval) ? intval($r) : $r;
             return $r;
         }
     }else{
@@ -18,7 +18,7 @@ function obterPost($variable,$die,$mayusculas,$recuperarId,$checkbox,$formatoMon
         }
     }
 }
-function obterGet($variable,$die,$mayusculas,$recuperarId,$checkbox,$formatoMoneda){
+function obterGet($variable,$die,$mayusculas,$recuperarId,$checkbox,$intval){
     if(isset($_GET[$variable])&&(!empty($_GET[$variable])||($_GET[$variable]=='0'))){
         if($checkbox){
             return 1;
@@ -26,7 +26,7 @@ function obterGet($variable,$die,$mayusculas,$recuperarId,$checkbox,$formatoMone
             $r= trim($_GET[$variable]);
             $r= ($mayusculas) ? cambiarMinusToMayusTexto($r) : $r;
             $r= ($recuperarId) ? explode(' - ',$r)[0] : $r;
-            $r= ($formatoMoneda) ? cambiarFormatoMoneda($r) : $r;
+            $r= ($intval) ? intval($r) : $r;
             return $r;
         }
     }else{
@@ -37,14 +37,14 @@ function obterGet($variable,$die,$mayusculas,$recuperarId,$checkbox,$formatoMone
         }
     }
 }
-function obterArray($variable,$die,$mayusculas,$recuperarId,$formatoMoneda){
+function obterArray($variable,$die,$mayusculas,$recuperarId,$intval){
     if(isset($_POST[$variable])&&!empty($_POST[$variable])){
         $array=Array();
         foreach($_POST[$variable] as $v){
             $r= (is_numeric($v)) ? $v : trim($v);
             $r= ($mayusculas) ? ((is_numeric($r)) ? $r : cambiarMinusToMayusTexto($r)) : $r;
             $r= ($recuperarId) ? ((is_numeric($r)) ? $r : explode(' - ',$r)[0]) : $r;
-            $r= ($formatoMoneda) ? ((is_numeric($r)) ? cambiarFormatoMoneda($r) : $r) : $r;
+            $r= ($intval) ? intval($r) : $r;
             array_push($array,$r);
         }
         return $array;

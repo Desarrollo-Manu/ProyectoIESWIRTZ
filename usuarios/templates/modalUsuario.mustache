@@ -1,0 +1,203 @@
+<div class="modal fade" id="modalEditUsuario" data-IdUsuario="{{Id}}"  data-keyboard="false" tabindex="-1" aria-labelledby="modalEditUsuarioTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-header">
+                        Datos del Usuario
+                        <span class="right">
+                            <input id="modalEditUsuarioEditaDatos" type="checkbox" data-on='<i class="fas fa-play"></i> Editando' data-off='<i class="fas fa-ban"></i> Sin edición' data-toggle="toggle" data-width="150" data-height="30" data-onstyle="outline-danger" data-offstyle="outline-info">
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <form id="modalEditUsuarioForm" method="post" action="../usuarios/ajax/saveUsuario.php">
+
+                        </form>
+                    </div>
+                </div>
+                <div class="card mt-2">
+                    <div class="card-header">
+                        Datos de contacto
+                        <span class="right">
+                            <input id="modalEditUsuarioEditaContactos" type="checkbox" data-on='<i class="fas fa-play"></i> Editando' data-off='<i class="fas fa-ban"></i> Sin edición' data-toggle="toggle" data-width="150" data-height="30" data-onstyle="outline-danger" data-offstyle="outline-info">
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <form id="modalEditUsuarioContactosForm" method="post" action="../usuarios/ajax/saveContacto.php">
+                            <input type="hidden" name="IdUsuario" id="modalEditUsuarioFormContactoId" value="{{Id}}">
+                            <div class="row">
+                                <div class="input-group mb-2 col-sm-12">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Contactos</span>
+                                    </div>
+                                    <div class="input-group-prepend">
+                                        <select disabled class="form-control" name="Tipo">
+                                            <option value="4">Email</option>
+                                            <option value="3">Fax</option>
+                                            <option value="1">Fijo</option>
+                                            <option value="2">Móvil</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Valor</span>
+                                    </div>
+                                    <input disabled autocomplete="off" value="" class="form-control" type="text" name="Valor">
+                                    <div class="input-group-prepend">
+                                        <button disabled id="addContactoUsuario" type="submit" class="btn btn-oficial  btn-lisoIzq" title="Añadir">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body" style="padding: 0">
+                                    <div class="responsive">
+                                        <table id="modalEditUsuarioContactosTable" class="table table-bordered table-striped table-hover">
+                                            <thead>
+                                            <tr class="text-center">
+                                                <th>#</th>
+                                                <th>Tipo</th>
+                                                <th>Valor</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="modalEditUsuarioContactosTableBody">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $( "#modalEditUsuarioEditaDatos" ).change(function() {
+        if($(this).prop('checked')){
+            $('#modalEditUsuarioForm').find('input').prop('disabled',false);
+            $('#modalEditUsuarioForm').find('select').prop('disabled',false);
+            $('#modalEditUsuarioForm').find('button').prop('disabled',false);
+        }else{
+            $('#modalEditUsuarioForm').find('input').prop('disabled','disabled');
+            $('#modalEditUsuarioForm').find('select').prop('disabled','disabled');
+            $('#modalEditUsuarioForm').find('button').prop('disabled','disabled');
+        }
+    });
+    $( "#modalEditUsuarioEditaContactos" ).change(function() {
+        if($(this).prop('checked')){
+            $('#modalEditUsuarioContactosForm').find('input').prop('disabled',false);
+            $('#modalEditUsuarioContactosForm').find('select').prop('disabled',false);
+            $('#modalEditUsuarioContactosForm').find('button').prop('disabled',false);
+        }else{
+            $('#modalEditUsuarioContactosForm').find('input').prop('disabled','disabled');
+            $('#modalEditUsuarioContactosForm').find('select').prop('disabled','disabled');
+            $('#modalEditUsuarioContactosForm').find('button').prop('disabled','disabled');
+        }
+    });
+    $('#modalEditUsuario').on('show.bs.modal', function (e) {
+        $.ajax({
+            url: "../usuarios/ajax/obterUsuario.php",
+            data: { Id:$(this).attr('data-IdUsuario') },
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                if(data.resultado===true){
+                    $("#modalEditUsuarioContactosTableBody").html(Mustache.render($('#modalEditUsuarioContactosTem').html(),data));
+                    $("#modalEditUsuarioForm").html(Mustache.render($('#modalEditUsuarioFormTem').html(),data));
+                }else if(data.resultado===false){
+
+                }else{
+                    alert("No se han encontrado usuarios para listar. Contacta con el CAU. Código 1.");
+                }
+            }
+        }).fail(function () {
+            alert("No se han encontrado usuarios para listar. Contacta con el CAU. Código 2.");
+        });
+    });
+    $('#modalEditUsuarioContactosForm').ajaxForm({
+        beforeSubmit : function(formData, $form, options){
+            if(!formData[0].value){
+                alert('Falta el Id del usuario. Contacta con el CAU. Código 1.');
+                return false;
+            }
+            if(!formData[1].value){
+                alert('Debe elegir un tipo de contacto.');
+                return false;
+            }
+            if(!formData[2].value){
+                alert('Debe elegir un valor para el contacto.');
+                return false;
+            }
+            return true;
+        },
+        success : function(data){
+            if(data.resultado===true){
+                $('#modalEditUsuarioContactosTableBody').html(Mustache.render($('#modalEditUsuarioContactosTem').html(),data));
+                $('#modalEditUsuarioContactosForm').resetForm();
+            }else{
+                alert('Se ha producido un error al guardar el contacto');
+            }
+        }
+    });
+    $('#modalEditUsuarioForm').ajaxForm({
+        beforeSubmit : function(formData, $form, options){
+            var f=$form[0];
+            if(!f.Id.value){
+                alert('Error en el Id del usuario.');
+                return false;
+            }
+            if(!f.DNI.value){
+                alert('Debes insertar un DNI/NIE. Código 1.');
+                return false;
+            }
+            if((f.DNI.value)&&(!validarNIEDNI(f.DNI.value))){
+                alert('EL NIE/DNI no es válido. Código 2.');
+                return false;
+            }
+            if(f.NSS.value){
+                if(!($.isNumeric(f.NSS.value))){
+                    alert('El número de la seguridad social no es válido. Código 4.');
+                    return false;
+                }
+            }
+            if(!f.Nombre.value){
+                alert('Debes insertar el nombre del Usuario. Código 6.');
+                return false;
+            }
+            if(!f.Apellidos.value){
+                alert('Debes insertar los apellidos del Usuario. Código 7.');
+                return false;
+            }
+            return true;
+        },
+        success : function(data){
+            if(data.resultado===true){
+                $('#modalEditUsuarioFormResult').html('<i class="fas fa-check text-success"></i>');
+
+            }else{
+                alert('Se ha producido un error al guardar el Usuario');
+                $('#modalEditUsuarioFormResult').html('<i class="fas fa-times text-danger"></i>');
+            }
+        }
+    });
+    $('body').on( 'click', '.delContacto', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "../usuarios/ajax/delContacto.php",
+            data: {IdContacto:$(this).attr('data-IdContacto'),IdUsuario:$(this).attr('data-IdUsuario')},
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                if(data.resultado===true){
+                    $("#modalEditUsuarioContactosTableBody").html(Mustache.render($('#modalEditUsuarioContactosTem').html(),data));
+                }else{
+                    alert('Se ha producido un error al guardar el contacto')
+                }
+            }
+        }).fail(function () {
+            alert("No se ha podido borrar al tutor del Grupo. Contacta con el CAU. Código 1.");
+        });
+    });
+</script>

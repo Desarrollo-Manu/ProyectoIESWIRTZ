@@ -16,18 +16,14 @@
     $('#modalModOcupacionForm').ajaxForm({
         beforeSubmit : function(formData, $form, options){
             if(!formData[0].value){
-                alert('Existe un problema con el Código de la ocupación. Contacte con el CAU. Código 1.');
+                alert('Existe un problema con el Id de la ocupación. Contacte con el CAU. Código 1.');
                 return false;
             }
             if(!formData[1].value){
-                alert('Existe un problema con la Modalidad de la ocupación. Contacte con el CAU. Código 1.');
+                alert('Existe un problema con el Código de la ocupación. Contacte con el CAU. Código 1.');
                 return false;
             }
             if(!formData[2].value){
-                alert('Debes seleccionar una Familia Profesional.');
-                return false;
-            }
-            if(!formData[3].value){
                 alert('Debes insertar un nombre a la ocupación.');
                 return false;
             }else{
@@ -35,7 +31,9 @@
             }
         },
         success : function(data){
-            if(!data.resultado){
+            if(data.resultado===true){
+                $("#OcupCertificadoTableBody").html(Mustache.render($('#OcupCertificadoTableTem').html(),data));
+                $('[data-toggle="popover"]').popover();
                 $('#modalModOcupacion').modal('hide');
             }else{
                 alert('Se ha producido un error al actualizar la ocupación al certificado. Código 1.');
@@ -45,31 +43,12 @@
     $('body').on( 'click', '.selOcupacion', function () {
         $.ajax({
             url: "ajax/obterOcupacion.php",
-            data: {IdOcupacion:$(this).attr('data-IdOcupacion')},
+            data: {IdOcupacion:$(this).attr('data-IdOcupacion'),'IdCert':{{IdCert}} },
             type: "POST",
             dataType: "json",
             success: function (data) {
-                if(!data.resultado){
-                    var template=$('#modalModOcupacionFormTem').html();
-                    var renderedTemplate = Mustache.render(template,data);
-                    $("#modalModOcupacionForm").html(renderedTemplate);
-                    $.ajax({
-                        url: "ajax/obterFamilias.php",
-                        data: {IdFamilia:$('#modalModOcupacionIdFamilia').val()},
-                        type: "POST",
-                        dataType: "json",
-                        success: function (data) {
-                            if(!data.resultado){
-                                var template=$('#modalModOcupacionListFamiliasTem').html();
-                                var renderedTemplate = Mustache.render(template,data);
-                                $("#modalModOcupacionListFamilias").html(renderedTemplate);
-                            }else{
-                                alert("No se ha podido cargar las familias formativas. Contacta con el CAU. Código 1.");
-                            }
-                        }
-                    }).fail(function () {
-                        alert("No se ha podido cargar las familias formativas. Contacta con el CAU. Código 2.");
-                    });
+                if(data.resultado===true){
+                    $("#modalModOcupacionForm").html(Mustache.render($('#modalModOcupacionFormTem').html(),data));
                 }else{
                     alert("No se ha podido cargar las familias formativas. Contacta con el CAU. Código 1.");
                 }
@@ -77,6 +56,5 @@
         }).fail(function () {
             alert("No se ha podido cargar las familias formativas. Contacta con el CAU. Código 2.");
         });
-
-    })
+    });
 </script>

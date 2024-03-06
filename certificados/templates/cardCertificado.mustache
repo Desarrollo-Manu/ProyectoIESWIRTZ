@@ -155,11 +155,13 @@
             return true;
         },
         success: function(data) {
-            if(data.resultado===false){
+            if(data.resultado===true){
                 $('#buttonSendCardCertificado').html('<i class="fas fa-check fa-lg text-success"></i>');
-            }else{
+            }else if(data.resultado!==false){
                 alert('Algo ha salido mal al crear el Certificado de Profesionalidad o ya existe. Contacta con el CAU. Código 3.')
                 $('#buttonSendCardCertificado').html('<i class="fas fa-times fa-lg text-danger"></i>');
+            }else{
+                $('#buttonSendCardCertificado').html('<i class="fas fa-check fa-lg text-success"></i>');
             }
         },
         error: function() {

@@ -6,16 +6,14 @@
             </div>
             <div class="modal-body">
                 <form method="post" id="formModalAddUF" action="ajax/addUFMF.php">
-                    <input type="hidden" name="IdCertificado" value="{{IdCertificado}}">
+                    <input type="hidden" name="IdCertificado" value="{{IdCert}}">
                     <input type="hidden" name="IdModulo" id="idMFAddUF" value="">
-                    <input type="hidden" name="Modo" value="2">
                     <div class="row">
                         <div class="input-group mb-2 col-sm-10">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addUFModal">Unidad Formativa</span>
                             </div>
-                            <input required list="listUFs" minlength="1" type="text" name="Unidad" autocomplete="off"  class="form-control" id="addUFModal">
-                            <datalist id="listUFs"></datalist>
+                            <select required name="IdUnidad"  class="form-control selectpicker" id="modalAddUFList"></select>
                         </div>
                         <div class="input-group mb-2 col-sm-2">
                             <div class="input-group-prepend">
@@ -45,7 +43,7 @@
             </div>
             <div class="modal-body">
                 <form method="post" id="formModalSaveUF" action="ajax/saveUFMF.php">
-                    <input type="hidden" name="IdCertificado" value="{{IdCertificado}}">
+                    <input type="hidden" name="IdCertificado" value="{{IdCert}}">
                     <input type="hidden" name="IdModulo" id="idMFnewUF" value="{{IdModulo}}">
                     <input type="hidden" name="Modo" value="1">
                     <div class="row">
@@ -123,7 +121,6 @@
 <script>
     $('#formModalAddUF').ajaxForm({
         beforeSubmit : function(formData, $form, options) {
-            var f=$form[0];
             if (!formData[0].value) {
                 alert('Error en el identificador del Certificado. Contacta con el CAU.');
                 return false;
@@ -133,18 +130,10 @@
                 return false;
             }
             if (!formData[2].value) {
-                alert('Error en el Modo del formulario. Contacta con el CAU.');
-                return false;
-            }
-            if (!formData[3].value) {
                 alert('Debes insertar el código de la Unidad Formativa.');
                 return false;
             }else{
-                if(!validarUF(formData[3].value.split(' - ')[0])){
-                    alert('Debes insertar un Código válido.');
-                    return false;
-                }
-                if(checkUFMF(formData[1].value,formData[3].value.split(' - ')[0])){
+                if(checkUFMF(formData[1].value,formData[2].value)){
                     alert('La Unidad Formativa ya está asignada al Módulo.');
                     return false;
                 }
@@ -152,16 +141,14 @@
             return true;
         },
         success: function(data) {
-            if(data.resultado){
-                alert("Se ha producido un error al guardar la Unidad Formativa. Contacte con el CAU.");
-                $('#sendformModalSaveUF').html('<i class="fas fa-times fa-lg" style="color:red"></i>');
-            }else{
-                var template=$('#estrCertTem').html();
-                var renderedTemplate = Mustache.render(template,data);
-                $('#tableBodyMFsUFs').html(renderedTemplate);
+            if(data.resultado===true){
+                $('#tableBodyMFsUFs').html(Mustache.render($('#estrCertTem').html(),data));
                 $('#formModalAddUF').clearForm();
                 $('#modalAddUF').modal('hide');
                 inicializarPopOver();
+            }else{
+                alert("Se ha producido un error al guardar la Unidad Formativa. Contacte con el CAU.");
+                $('#sendformModalSaveUF').html('<i class="fas fa-times fa-lg" style="color:red"></i>');
             }
         }
     });
@@ -202,20 +189,17 @@
             }
         },
         success: function(data) {
-            if(data.resultado){
-                alert("Se ha producido un error al guardar la Unidad Formativa. Contacte con el CAU.");
-                $('#sendformModalSaveUF').html('<i class="fas fa-times fa-lg" style="color:red"></i>');
-            }else{
-                var template=$('#estrCertTem').html();
-                var renderedTemplate = Mustache.render(template,data);
-                $('#tableBodyMFsUFs').html(renderedTemplate);
+            if(data.resultado===true){
+                $('#tableBodyMFsUFs').html(Mustache.render($('#estrCertTem').html(),data));
                 $('#formModalSaveUF').clearForm();
                 $('#modalAddUF').modal('hide');
                 inicializarPopOver();
+            }else{
+                alert("Se ha producido un error al guardar la Unidad Formativa. Contacte con el CAU.");
+                $('#sendformModalSaveUF').html('<i class="fas fa-times fa-lg" style="color:red"></i>');
             }
         }
     });
-
     $('#modalAddUF').on('show.bs.modal', function (e) {
         $('.loader').removeClass('d-none');
         $.ajax({
@@ -224,10 +208,9 @@
             type : 'POST',		//tipo de envio.
             dataType : 'json', //respuesta esperada.
             success : function(data) {
-                if(!data.resultado){
-                    var template=$('#modalAddUFTem').html();
-                    var renderedTemplate = Mustache.render(template,data);
-                    $('#listUFs').html(renderedTemplate);
+                if(data.resultado===true){
+                    $('#modalAddUFList').html(Mustache.render($('#modalAddUFListTem').html(),data));
+                    $('#modalAddUFList').selectpicker('refresh');
                 }else{
                     alert('Se ha producido un error al obtener UFs que no están asociadas al Módulo. Código 1.');
                 }

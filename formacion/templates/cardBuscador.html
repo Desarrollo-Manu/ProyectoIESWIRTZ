@@ -1,0 +1,23 @@
+<script id="searchTableBodyTem" type="text/x-mustache-template">
+    {{#listPlanes}}
+    <tr>
+        <td>
+            <a href="view.php?id={{IdPlan}}" target="_blank"  title="Acceder">
+                {{CodigoPlan}}
+            </a>
+        </td>
+        <td>
+            <a href="../certificados/view.php?Id={{IdCert}}" target="_blank"  title="Acceder">
+                {{TextoCert}}
+            </a>
+        </td>
+        <td class="text-center">{{FechaIni}}</td>
+        <td class="text-center">{{FechaFin}}</td>
+        <td class="text-center">{{Nivel}}</td>
+        <td class="text-center">{{Horas}}</td>
+    </tr>
+    {{/listPlanes}}
+    {{^listPlanes}}
+    <tr><td colspan="6" class="text-center text-danger">No tenemos resultados para la busqueda</td></tr>
+    {{/listPlanes}}
+</script>

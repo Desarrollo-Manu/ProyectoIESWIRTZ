@@ -1,0 +1,154 @@
+<div class="card" id="cardUsuarios">
+    <div class="card-header text-oficial">
+        Buscador de Usuarios
+        <span class="right">
+            <button class="btn btn-oficial" title="Añadir usuario departamento" data-toggle="modal" data-target="#modalAddUsuarioDepartamento">
+                <i class="fas fa-user-tag"></i>
+            </button>
+        </span>
+    </div>
+    <div class="card-body text-oficial">
+        <form id="formUsuarios" method="post" action="ajax/searchUsuarios.php">
+            <div class="row">
+                <div class="input-group mb-3 col-sm-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Nombre</span>
+                        <label class="sr-only" for="UsuarioSearch">Nombre</label>
+                    </div>
+                    <input value="" autocomplete="off"  type="text" class="form-control" name="Nombre">
+                </div>
+                <div class="input-group mb-3 col-sm-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Apellidos</span>
+                        <label class="sr-only" for="Apellidos">Apellidos</label>
+                    </div>
+                    <input value="" autocomplete="off"  type="text" class="form-control"  name="Apellidos">
+                </div>
+                <div class="input-group mb-3 col-sm-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">DNI</span>
+                        <label class="sr-only" for="DNI">DNI</label>
+                    </div>
+                    <input value="" autocomplete="off"  type="text" class="form-control"  name="DNI">
+                </div>
+                <div class="input-group mb-3 col-sm-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Departamento</span>
+                        <label class="sr-only" for="DepartamentoSearch">Departamento</label>
+                    </div>
+                    <select class="form-control" name="IdDepartamento">
+                        <option value="" selected>Selecciona un departamento</option>
+                        {{#listDepartamentos}}
+                            <option value="{{Id}}">{{Departamento}}</option>
+                        {{/listDepartamentos}}
+                        {{^listDepartamentos}}
+                            <option>No existen departamentos</option>
+                        {{/listDepartamentos}}
+                    </select>
+                </div>
+                <div class="input-group mb-3 col-sm-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Activo</span>
+                        <label class="sr-only" for="Activo">Activo</label>
+                    </div>
+                    <select class="form-control" name="Activo">
+                        <option value="" selected></option>
+                        <option value="1">Activo</option>
+                        <option value="0">Inactivo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="text-center mt-2">
+                <button class="btn btn-oficial" type="submit" title="Buscar">
+                    <i class="fas fa-search fa-lg"></i>
+                </button>
+                <button class="btn btn-oficial ml-3" type="reset" title="Borrar" id="resetFormUsuariosSearch">
+                    <i class="far fa-trash-alt"></i>
+                </button>
+            </div>
+        </form>
+        <div class="mt-3">
+            <table id="formUsuariosTable" class="d-none text-oficial table table-bordered table-striped">
+                <thead>
+                    <tr class="text-center">
+                        <th class="align-middle">Usuario</th>
+                        <th class="align-middle">IdEntidad</th>
+                        <th class="align-middle">Departamento</th>
+                        <th class="align-middle">Desactivar</th>
+                        <th class="align-middle">Eliminar del Departamento</th>
+                    </tr>
+                </thead>
+                <tbody id="formUsuariosTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $('#formUsuarios').ajaxForm({
+        beforeSubmit : function(formData, $form, options){
+            $('.loader').removeClass('d-none');
+            return true;
+        },
+        success : function(data){
+            if(data.resultado===true){
+                $("#formUsuariosTableBody").html(Mustache.render($('#formUsuariosTableBodyTem').html(), data));
+                $("#formUsuariosTable").removeClass('d-none');
+            }else if(data.resultado===false){
+                $("#formUsuariosTableBody").html(Mustache.render($('#formUsuariosTableBodyTem').html(), data));
+                $("#formUsuariosTable").removeClass('d-none');
+            }else{
+                alert('Se ha producido un error al buscar usuarios. Contacta con el CAU. Código 1.');
+            }
+            $('.loader').addClass('d-none');
+        }
+    });
+    $('body').on( 'click', '.desactivarUsuario', function (e) {
+        e.preventDefault();
+        var u=$(this);
+        $.ajax({
+            url: "ajax/activarUsuario.php",
+            data: {IdUsuario:$(this).attr('data-IdUsuario'),Activo:$(this).attr('data-Activo')},
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                if(data.resultado===true){
+                    if(data.Activo===1){
+                        u.html('<i class="far fa-eye-slash fa-lg text-oficial" title="Activar usuario"></i>');
+                    }else if(data.Activo===0){
+                        u.html('<i class="far fa-eye fa-lg text-oficial" title="Desactivar usuario"></i>');
+                    }else{
+                        u.html('<i class="fas fa-question fa-lg text-warning" title="Error de guardado"></i>');
+                    }
+                    u.attr('data-Activo',data.Activo);
+                }else{
+                    alert("No se ha podido desactivar al usuario. Contacta con el CAU. Código 1.");
+                }
+            }
+        }).fail(function () {
+            alert("No se ha podido desactivar al usuario. Contacta con el CAU. Código 2.");
+        });
+    });
+    $('body').on( 'click', '.delUsuarioDepartamento', function (e) {
+        var u=$(this);
+        $.ajax({
+            url: "ajax/delUsuarioDepartamento.php",
+            data: {
+                IdUsuario:$(this).attr('data-IdUsuario'),
+                IdDepartamento:$(this).attr('data-IdDepartamento'),
+                IdDepUsu:$(this).attr('data-IdDepUsu')
+            },
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                if(data.resultado===true){
+                    u.parent().parent().remove();
+                }else{
+                    alert("No se ha podido borrar al usuario del departamento. Contacta con el CAU. Código 1.");
+                }
+            }
+        }).fail(function () {
+            alert("No se ha podido borrar al usuario del departamento. Contacta con el CAU. Código 2.");
+        });
+    });
+</script>

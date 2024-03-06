@@ -1,43 +1,9 @@
-<!--<link rel="stylesheet" href="css/index.css">
-<script type="text/javascript" src="js/index.js"></script>-->
-
-<ul class="nav nav-tabs mt-2 ml-3 mr-3" id="tabsCertificados" role="tablist">
-    <li class="nav-item" role="presentation">
-        <a class="nav-link active" id="search-tab" data-toggle="tab" href="#search" role="tab" aria-controls="search" aria-selected="true">
-            Buscador Certificados
-        </a>
-    </li>
-    <li class="nav-item" role="presentation">
-        <a class="nav-link" id="Formaciones-tab" data-toggle="tab" href="#Formaciones" role="tab" aria-controls="Formaciones" aria-selected="false">
-            Buscador Formaciones
-        </a>
-    </li>
-    <li class="nav-item" role="presentation">
-        <a class="nav-link" id="AlumnosSearch-tab" data-toggle="tab" href="#AlumnosSearch" role="tab" aria-controls="AlumnosSearch" aria-selected="false">
-            Buscador Alumnos
-        </a>
-    </li>
-</ul>
-<div class="tab-content ml-3 mr-3" id="tabsCertificadosContent">
-    <div class="tab-pane fade show active" id="search" role="tabpanel" aria-labelledby="search-tab">
-        {{#cardSearchCerts}}
-            {{{.}}}
-        {{/cardSearchCerts}}
-        {{^cardSearchCerts}}
-            <div class="alert alert-danger">No se ha podido cargar el buscador de certificados</div>
-        {{/cardSearchCerts}}
-    </div>
-    <div class="tab-pane fade" id="Formaciones" role="tabpanel" aria-labelledby="Formaciones-tab">
-        {{#cardFormacionesSearch}}
-            {{{.}}}
-        {{/cardFormacionesSearch}}
-    </div>
-    <div class="tab-pane fade" id="AlumnosSearch" role="tabpanel" aria-labelledby="AlumnosSearch-tab">
-        {{#AlumnosSearch}}
-            {{{.}}}
-        {{/AlumnosSearch}}
-    </div>
-</div>
+{{#cardSearchCerts}}
+    {{{.}}}
+{{/cardSearchCerts}}
+{{^cardSearchCerts}}
+    <div class="alert alert-danger">No se ha podido cargar el buscador de certificados</div>
+{{/cardSearchCerts}}
 
 
 

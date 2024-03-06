@@ -1,0 +1,9 @@
+<script id="newPlanEstudiosModalCertificadosTem" type="text/x-mustache-template">
+    {{#listCertificados}}
+    <option value="{{Id}}">{{TextoCertificado}}</option>
+        {{/listCertificados}}
+    <option value="" selected>Selecciona un certificado</option>
+        {{^listCertificados}}
+    <option value="">No se ha podido cargar el listado de alumnos.</option>
+        {{/listCertificados}}
+</script>

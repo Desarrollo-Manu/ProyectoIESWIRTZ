@@ -1,0 +1,140 @@
+<div class="modal fade min-vw-100 mt-0" id="newPlanEstudiosModal" tabindex="-1" aria-labelledby="newPlanEstudiosModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" id="newAFDModalContainer">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Nuevo Plan de estudios.</h5>
+            </div>
+            <div class="modal-body">
+                <form id="newPlanEstudiosModalForm" method="post" action="ajax/savePlanEst.php">
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-newPlanEstudiosModalTipo">Tipo Formación</span>
+                            </div>
+                            <select required name="Tipo" autocomplete="off"  class="form-control" id="newPlanEstudiosModalTipo">
+                                {{#listTiposFormacions}}
+                                    <option value="{{Id}}">{{Tipo}}</option>
+                                {{/listTiposFormacions}}
+                            </select>
+                        </div>
+                        <div class="input-group mb-2 col-sm-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-newPlanEstudiosModalCodigo">Código</span>
+                            </div>
+                            <input required type="text" name="Codigo" autocomplete="off" class="form-control" id="newPlanEstudiosModalCodigo">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-12">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-newPlanEstudiosModalCertificado">Certificado</span>
+                            </div>
+                            <select required name="IdCert" class="form-control selectpicker" id="newPlanEstudiosModalCertificados" data-live-search="true"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-newPlanEstudiosModalFecIni">Inicio</span>
+                            </div>
+                            <input required type="date" name="FecIni" id="newPlanEstudiosModalFecIni" class="form-control">
+                        </div>
+                        <div class="input-group mb-2 col-sm-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-newPlanEstudiosModalFecFin">Fin</span>
+                            </div>
+                            <input required type="date" name="FecFin" id="newPlanEstudiosModalFecFin" class="form-control">
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-oficial" >
+                            <i class="fas fa-arrow-right"></i> Siguiente
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#newPlanEstudiosModalForm').ajaxForm({
+        beforeSubmit : function(formData, $form, options){
+            if(!formData[0].value){
+                alert('Existe un problema con el Modo del Formulario. Contacte con el CAU. Código 1.');
+                return false;
+            }
+            if(!formData[1].value){
+                alert('Debes insertar un código.');
+                return false;
+            }
+            if(!formData[4].value){
+                alert('Debes establecer una Fecha de Inicio.');
+                return false;
+            }else{
+                if(!moment(formData[3].value, 'YYYY-MM-DD', true).isValid()){
+                    alert('La Fecha de Inicio es incorrecta.');
+                    return false;
+                }
+            }
+            if(!formData[4].value){
+                alert('Debes establecer una Fecha de Finalización.');
+                return false;
+            }else{
+                if(!moment(formData[4].value, 'YYYY-MM-DD', true).isValid()){
+                    alert('La Fecha de Finalización es incorrecta.');
+                    return false;
+                }
+            }
+            if((formData[3].value)&&(formData[4].value)){
+                var Ini =moment(formData[3].value, 'YYYY-MM-DD', true);
+                var Fin =moment(formData[4].value, 'YYYY-MM-DD', true);
+                if(!moment(Fin).isAfter(Ini)){
+                    alert("La fecha inicio es posterior a la fecha fin.");
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+        },
+        success : function(data){
+            if(data.resultado===true){
+                window.location.href = "view.php?id="+data.id;
+            }else{
+                alert('Algo ha salido mal al crear el nuevo plan de estudios. Contacta con el CAU. Código 1.')
+            }
+        }
+    });
+    $('#newPlanEstudiosModal').on('show.bs.modal', function (e) {
+        $('.loader').removeClass('d-none');
+        $.ajax({
+            url : '../certificados/ajax/obterCertificados.php',
+            data : { }, // la información a enviar.
+            type : 'POST',		//tipo de envio.
+            dataType : 'json', //respuesta esperada.
+            success : function(data) {
+                if(data.resultado===true){
+                    $('#newPlanEstudiosModalCertificados').html(Mustache.render($('#newPlanEstudiosModalCertificadosTem').html(),data));
+                    $('#newPlanEstudiosModalCertificados').selectpicker('refresh');
+                }else if(data.resultado===false){
+                    alert('No existen certificados de profesionalidad. Código 1.');
+                }else{
+                    alert('Se ha producido un error al obtener los certificados de profesionalidad. Código 2.');
+                }
+            }
+        }).fail( function() {
+            alert('Se ha producido un error al obtener UFs que no están asociadas al Módulo. Código 3.');
+        });
+        $('.loader').addClass('d-none');
+    });
+
+
+
+</script>
+<style>
+    #basic-newPlanEstudiosModalTipo,#basic-newPlanEstudiosModalNombre,#basic-newPlanEstudiosModalFecIni{
+        min-width: 7rem;
+    }
+    #basic-newPlanEstudiosModalCodigo,#basic-newPlanEstudiosModalFecFin{
+        min-width: 4rem;
+    }
+</style>

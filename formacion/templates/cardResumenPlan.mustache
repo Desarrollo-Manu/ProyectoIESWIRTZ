@@ -1,0 +1,233 @@
+<div id="cardResumenPlan" class="card p-0 m-3">
+    <div class="card-header text-oficial">
+        Datos Generales del Plan de Estudios
+        <span class="right">
+            <input id="editarCardDatosPlan" type="checkbox" data-on='<i class="fas fa-play"></i> Editando' data-off='<i class="fas fa-ban"></i> Sin edición' data-toggle="toggle" data-width="150" data-height="30" data-onstyle="outline-danger" data-offstyle="outline-info">
+            <a class="btn btn-oficial" type="button" title="Volver" href="index.php">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
+        </span>
+    </div>
+    <div class="card-body p-0">
+        {{#Plan}}
+        <table id="cardDGTable" data-IdPlan="{{Id}}" class="table table-bordered table-striped table-hover mb-0">
+            <thead>
+                <tr class="text-center text-oficial">
+                    <th>Código</th>
+                    <th>Certificado</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Finalización</th>
+                    <th>Tipo</th>
+                </tr>
+            </thead>
+            <tbody id="cardDGTableBody">
+               <tr class="text-center text-oficial">
+                   <td class="campoMod">{{CodigoPlan}}</td>
+                   <td class="campoMod">{{CodigoCert}}</td>
+                   <td class="campoMod">{{FechaIni}}</td>
+                   <td class="campoMod">{{FechaFin}}</td>
+                   <td class="campoMod">
+                       <select size="1" id="TipoGrupoSelect" name="Tipo" disabled>
+                           {{#TipoFormacionSelect}}
+                               <option value="{{Id}}" {{Selected}}>{{Tipo}}</option>
+                           {{/TipoFormacionSelect}}
+                           {{^TipoFormacionSelect}}
+                               <option value="">
+                                   No se ha podido cargar la lista.
+                               </option>
+                           {{/TipoFormacionSelect}}
+                       </select>
+                   </td>
+               </tr>
+            </tbody>
+        </table>
+        {{/Plan}}
+        {{^Plan}}
+            <div class="alert alert-danger">
+                No se ha podido cargar los datos del plan.
+            </div>
+        {{/Plan}}
+        <div id="GruposFueraFecha" class="">
+            {{#activarListGFF}}
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="#">
+                            Los siguientes grupos están fuera de las fechas del plan de estudios:
+                        </a>
+                    </li>
+            {{/activarListGFF}}
+            {{#listGroupFueraFecha}}
+                <li class="list-group-item">
+                    <a href="#" data-Nombre="{{IdForm}} - {{NombreForm}}" class="selGroupFFecha alert-link text-danger" data-Tipo="{{Tipo}}" data-IdGrupo="{{IdGrupo}}" data-IdFormacion="{{IdFormacion}}"  data-FecIni="{{FecIniInput}}" data-FecFin="{{FecFinInput}}" data-NodoFormacion="{{NodoFormacion}}" data-IdPlan="{{PlanGrupo}}"  data-NodoGrupo="{{NodoGrupo}}">
+                        {{IdForm}} - {{NombreForm}} ({{FecIni}} - {{FecFin}})
+                    </a>
+                </li>
+            {{/listGroupFueraFecha}}
+            {{#activarListGFF}}
+                </ul>
+            {{/activarListGFF}}
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#editarCardDatosPlan').bootstrapToggle();
+       // inicializarcardDGTable();
+        $('body').on( 'change', '#editarCardDatosPlan', function (e) {
+            if($('#editarCardDatosPlan').prop('checked')){
+                $('#TipoGrupoSelect').prop('disabled',false);
+            }else{
+                $('#TipoGrupoSelect').prop('disabled','disabled');
+            }
+        } );
+        $('body').on( 'change', '#TipoGrupoSelect', function (e) {
+            $.ajax({
+                url : 'ajax/saveTipoPlan.php',
+                data : {
+                    IdPlan:$('#cardDGTable').attr('data-IdPlan'),
+                    Tipo: $(this).val()
+                }, // la información a enviar.
+                type : 'POST',		//tipo de envio.
+                dataType : 'json', //respuesta esperada.
+                success : function(data) {
+                    if(!data.resultado){
+                        $('#TipoGrupoSelect').parent().append('&nbsp;&nbsp;&nbsp;<i class="fas fa-check fa-lg text-success"></i>');
+                    }else{
+                        alert('Se ha producido un error al actualizar el Plan de Estudios. Codigo 4');
+                    }
+                }
+            }).fail(function() {
+                alert( "Se ha producido un error al actualizar el plan de formación. Contacta con el CAU. Codigo 3" );
+            });
+        });
+
+    } );
+    $('body').on( 'click', '.selGroupFFecha', function (e) {
+        e.preventDefault();
+        $('#grupoModal').modal('show');
+        $('#grupoModalModo').val('2');
+        $('#grupoModalIdPlan').val($(this).attr('data-IdPlan'));
+        $('#grupoModalNodoGrupo').val($(this).attr('data-NodoGrupo'));
+        $('#grupoModalFecIni').val($(this).attr('data-FecIni'));
+        $('#grupoModalFecFin').val($(this).attr('data-FecFin'));
+        $('#grupoModalHeader').text($(this).attr('data-Nombre'));
+    });
+    function devolverDateFormatAmerican(fecha){
+        if(moment(fecha, 'DD/MM/YYYY', true).isValid()){
+            return moment(fecha, 'DD/MM/YYYY', true).format('YYYY-MM-DD');
+        }else{
+            return moment(fecha, 'YYYY-MM-DD', true).format('YYYY-MM-DD');
+        }
+    }
+   /* function inicializarcardDGTable(){
+        var editor;
+        editor = new $.fn.dataTable.Editor( {
+            table: "#cardDGTable",
+            idSrc: "Codigo",
+            fields: [ {
+                label: "Codigo:",
+                name: "Codigo"
+            },{
+                label: "Nombre:",
+                name: "Nombre"
+            }, {
+                label: "FecIni:",
+                name: "FecIni",
+                type: "datetime",
+                def:   function () { return devolverDateFormatAmerican(editor.get( 'FecIni' ));}
+            }, {
+                label: "FecFin:",
+                name: "FecFin",
+                type: "datetime",
+                def:   function () { return devolverDateFormatAmerican(editor.get( 'FecFin' ));}
+            }, {
+                label: "Tipo:",
+                name: "Tipo"
+            }, {
+                label: "CosteXAl:",
+                name: "CosteXAl"
+            }
+            ]
+        } );
+        $('#cardDGTable').DataTable( {
+            dom: "Bfrtip",
+            columns: [
+                { data: "Codigo"},
+                { data: "Nombre"},
+                { data: "FecIni" },
+                { data: "FecFin" },
+                { data: "Tipo" },
+                { data: "CosteXAl" }
+            ],
+            autoWidth: true,
+            paging: false,
+            searching: false,
+            orderFixed: [ 0, 'asc' ]
+        } );
+        $('.dt-buttons').remove();
+        $('#cardDGTable_info').remove();
+        editor.on( 'postEdit', function (e, json, dataCell, id) {
+            var c=$(this);
+            var enviar=true;
+            if((editor.get( 'FecFin' )!='')&&(editor.get( 'FecIni' )!='')){
+                if(!moment(devolverDateFormatAmerican(editor.get( 'FecFin' ))).isAfter(devolverDateFormatAmerican(editor.get( 'FecIni' )))){
+                    alert("La fecha inicio es posterior a la fecha fin.");
+                    enviar=false;
+                }
+            }else{
+                if(isNaN(editor.get( 'CosteXAl' ))){
+                    alert("El coste del Plan no es válido. Tiene datos no númericos.");
+                    enviar=false;
+                }
+            }
+            if(enviar){
+                $.ajax({
+                    url: 'ajax/actPlanEstudios.php',
+                    data: {
+                        IdPlan: $('#cardDGTable').attr('data-IdPlan'),
+                        Codigo: editor.get('Codigo'),
+                        Nombre: editor.get('Nombre'),
+                        FecIni: devolverDateFormatAmerican(editor.get( 'FecIni' )),
+                        FecFin: devolverDateFormatAmerican(editor.get( 'FecFin' )),
+                        CosteXAl: editor.get('CosteXAl')
+                    }, // la información a enviar.
+                    type: 'POST',		//tipo de envio.
+                    dataType: 'json', //respuesta esperada.
+                    success: function (data) {
+                        if (!data.resultado) {
+                            if (data.gruposFueraFecha) {
+                                $("#GruposFueraFecha").removeClass('d-none');
+                                $("#GruposFueraFecha").html('');
+                                var template = $('#groupsFueraFechaListTem').html();
+                                var renderedTemplate = Mustache.render(template, data);
+                                $("#GruposFueraFecha").html(renderedTemplate);
+                            } else {
+                                $("#GruposFueraFecha").removeClass('d-none');
+                                $("#GruposFueraFecha").html('<div class="alert alert-success mb-0" role="alert">Se ha actualizado el plan de formación.</div>')
+                            }
+                            $('#cardDGTable').DataTable().destroy();
+                            $("#cardDGTableBody").html('');
+                            var template = $('#datosPlanTem').html();
+                            var renderedTemplate = Mustache.render(template, data);
+                            $("#cardDGTableBody").html(renderedTemplate);
+                            inicializarcardDGTable();
+
+                        } else {
+                            alert("Se ha producido un error al actualizar el plan de formación. Contacta con el CAU. Codigo 1");
+                        }
+                    }
+                }).fail(function () {
+                    alert("Se ha producido un error al actualizar el plan de formación. Contacta con el CAU. Codigo 2");
+                });
+            }
+        });
+        $('#cardDGTable').on( 'click', 'tbody td:not(:nth-child(5))', function (e) {
+            if($('#editarCardDatosPlan').prop('checked')){
+                editor.inline( this, {
+                    onBlur: 'submit'
+                } );
+            }
+        } );
+    }*/
+</script>

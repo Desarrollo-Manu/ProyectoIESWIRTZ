@@ -1,8 +1,8 @@
 <?php
 require_once(realpath($_SERVER["DOCUMENT_ROOT"]).'/ProyectoIESWIRTZ/config/fmaestras.php');
-
+comprobarPermisoAcceso(1,$_SESSION["Id"]);
 $IdFamilia      = obterPost('Familia',false,false,true,false,false);
-$Nivel      = obterPost('Nivel',false,false,true,false,false);
+$Nivel          = obterPost('Nivel',false,false,true,false,false);
 
 header('Content-Type: application/json');
 $json = json_encode(

@@ -1,6 +1,6 @@
 <?php
 require_once(realpath($_SERVER["DOCUMENT_ROOT"]).'/ProyectoIESWIRTZ/config/fmaestras.php');
-
+comprobarPermisoAcceso(1,$_SESSION["Id"]);
 $IdCert     = obterPost('IdCert',false,false,false,false,false);
 $IdFamilia  = obterPost('IdFamilia',true,false,false,false,false);
 $IdArea     = obterPost('IdArea',true,false,false,false,false);
@@ -13,11 +13,11 @@ $CompGeneral= obterPost('CompGeneral',true,false,false,false,false);
 
 
 /*INSERTAR UN CERTIFICADO POR PRIMERA VEZ*/
-if(!comprobarCert(null,$Codigo)&&comprobarFamilia($IdFamilia)&&comprobarAreaFam($IdArea,$IdFamilia)){
+if(!comprobarCert($IdCert)&&comprobarFamilia($IdFamilia)&&comprobarAreaFam($IdArea,$IdFamilia)){
     $Id=saveCertificado($IdArea,$Codigo,$Nombre,$Nivel,$CompGeneral,$CualifProfRef,$Horas);
     $resultado=is_int($Id);
-}else if(comprobarCert($IdCert,null)){/*ACTUALIZARLO*/
-    $resultado=actualizarCertificado($IdCert,$IdArea,$Codigo,$Nombre,$Nivel,$CompGeneral,$CualifProfRef,$Horas);
+}else if(comprobarCert($IdCert)){/*ACTUALIZARLO*/
+    $resultado=actualizarCertificado(intval($IdCert),intval($IdArea),$Codigo,$Nombre,intval($Nivel),$CompGeneral,$CualifProfRef,intval($Horas));
     $Id=null;
 }else{
     $resultado=true;$Id=null;

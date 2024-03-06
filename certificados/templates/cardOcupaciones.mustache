@@ -20,16 +20,16 @@
             {{#listOcupaCert}}
                 <tr>
                     <td class="align-middle text-center">
-                        <a href="#" class="delOcupaCertSel" data-IdOcupacion='{{IdOcupacion}}' data-IdCertificado='{{IdCertificado}}' data-toggle="popover" data-trigger="click" data-html="true" title="<span class='titlePopover' style='font-size:1rem'>¿Desea borrar la ocupación seleccionada?</span>" data-content="<p class='textPopover d-flex justify-content-around'><a class='delOcupCertButton' aria-Id='{{Id}}'  aria-IdOcupacion='{{IdOcupacion}}' aria-IdCertificado='{{IdCertificado}}' href='#' title='SI' ><i class='far fa-thumbs-up fa-2x text-success'></i></a><a title='NO' href='#' class='noDelOcupCertButton'><i class='far fa-thumbs-down fa-2x text-danger'></i></a></p>">
+                        <a href="#" class="delOcupaCertSel" data-IdOcupacion='{{IdOcup}}' data-IdCertificado='{{IdCert}}' data-toggle="popover" data-trigger="click" data-html="true" title="<span class='titlePopover' style='font-size:1rem'>¿Desea borrar la ocupación seleccionada?</span>" data-content="<p class='textPopover d-flex justify-content-around'><a class='delOcupCertButton' aria-Id='{{Id}}'  aria-IdOcupacion='{{IdOcup}}' aria-IdCertificado='{{IdCert}}' href='#' title='SI' ><i class='far fa-thumbs-up fa-2x text-success'></i></a><a title='NO' href='#' class='noDelOcupCertButton'><i class='far fa-thumbs-down fa-2x text-danger'></i></a></p>">
                             <i class="far fa-trash-alt"></i>
                         </a>
                     </td>
                     <td class="align-middle text-center">
-                        <a href="#" class="selOcupacion" data-IdOcupacion='{{IdOcupacion}}' data-IdCertificado='{{IdCertificado}}'  data-toggle="modal" data-target="#modalModOcupacion"  title="Modificar ocupación">
-                            {{IdOcupacion}}
+                        <a href="#" class="selOcupacion" data-IdOcupacion='{{IdOcup}}' data-IdCertificado='{{IdCert}}'  data-toggle="modal" data-target="#modalModOcupacion"  title="Modificar ocupación">
+                            {{CodOcup}}
                         </a>
                     </td>
-                    <td class="align-middle">{{Nombre}}</td>
+                    <td class="align-middle">{{Ocupacion}}</td>
                 </tr>
             {{/listOcupaCert}}
             {{^listOcupaCert}}
@@ -54,10 +54,8 @@
             dataType: "json",
             success: function (data) {
                 $('[data-toggle="popover"]').popover('hide');
-                if(!data.resultado){
-                    var template=$('#OcupCertificadoTableTem').html();
-                    var renderedTemplate = Mustache.render(template, data);
-                    $("#OcupCertificadoTableBody").html(renderedTemplate);
+                if(data.resultado===true){
+                    $("#OcupCertificadoTableBody").html(Mustache.render($('#OcupCertificadoTableTem').html(),data));
                 }else{
                     alert('Se ha producido un error al borrar la ocupación del certificado. Código 1.');
                 }

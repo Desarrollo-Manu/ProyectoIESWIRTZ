@@ -1,0 +1,162 @@
+<div class="card rounded-0" id="cardAlumnosSearch">
+    <div class="card-header">
+        Buscador de alumnos
+        <span class="right">
+        </span>
+    </div>
+    <div class="card-body">
+        <form id="cardAlumnosSearchForm" method="post" action="ajax/searchAlumnos.php">
+            <div class="row">
+                <div class="input-group mb-2 col-sm-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Certificado</span>
+                    </div>
+                    <select name="IdCertificado"  class="form-control selectpicker" data-live-search="true">
+                        <option value="" selected>Selecciona un certificado</option>
+                        {{#listCertificados}}
+                            <option value="{{Id}}">{{TextoCertificado}}</option>
+                        {{/listCertificados}}
+                    </select>
+                </div>
+                <div class="input-group mb-2 col-sm-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Nivel</span>
+                    </div>
+                    <select name="Nivel" class="form-control" id="cardAlumnosSearchFormNivel">
+                        <option value="" selected></option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="input-group mb-2 col-sm-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Planes</span>
+                    </div>
+                    <select name="IdPlan" class="form-control selectpicker" data-live-search="true" id="cardAlumnosListPlanes">
+                        <option value="" selected>Selecciona un plan</option>
+                        {{#listPlanes}}
+                            <option value="{{IdPlan}}">{{CodigoPlan}}</option>
+                        {{/listPlanes}}
+                    </select>
+                    <button type="button" class="btn btn-oficial btn-lisoIzq" id="borrarcardAlumnosSearchFormConv">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                </div>
+                <div class="input-group mb-2 col-sm-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Roles</span>
+                    </div>
+                    <select class="form-control" name="IdRol" autocomplete="off">
+                        <option value="" selected>Selecciona un Rol</option>
+                        {{#listRoles}}
+                            <option value="{{Id}}">{{Rol}}</option>
+                        {{/listRoles}}
+                    </select>
+                </div>
+            </div>
+            <div class="text-center mt-2">
+                <button type="submit" class="btn btn-oficial mb-4">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button type="reset" class="btn btn-oficial mb-4 ml-3 text-danger" id="borrarBusquedasAFD">
+                    <i class="far fa-trash-alt"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="card-body p-0">
+        <table id="tablaResultadosBusquedaAlumnos" class="d-none w-100 mb-0 table table-hover table-bordered table-striped text-oficial">
+            <thead>
+                <tr class="text-center">
+                    <th>Alumno</th>
+                    <th>Rol</th>
+                    <th>Plan</th>
+                    <th>Certificado</th>
+                    <th>Nivel</th>
+                    <th>Horas</th>
+                </tr>
+            </thead>
+            <tbody id="tablaBodyResultadosBusquedaAlumnos">
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $('#cardAlumnosSearchForm').ajaxForm({
+        beforeSubmit : function(formData, $form, options) {
+            $('.loader').removeClass('d-none');
+            return true;
+        },
+        success: function(data) {
+            if ($.fn.DataTable.isDataTable( '#tablaResultadosBusquedaAlumnos ' ) ) {
+                $('#tablaResultadosBusquedaAlumnos').DataTable().destroy();
+            }
+
+            if(!data.resultado){
+                $('#tablaBodyResultadosBusquedaAlumnos').html(Mustache.render($('#tablaBodyResultadosBusquedaAlumnosTem').html(), data));
+
+                $('#tablaResultadosBusquedaAlumnos').removeClass('d-none');
+                $('.loader').addClass('d-none');
+                if($('#tablaBodyResultadosBusquedaAlumnos tr td').length>=5){
+                    $('#tablaResultadosBusquedaAlumnos').DataTable( {
+                        dom: 'Bfrtip',
+                        order: [[ 1, "asc" ]],
+                        paging: false,
+                        buttons: [
+                            {
+                                title: '',
+                                extend: 'pdfHtml5',
+                                download: 'open',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3 ,4 ]
+                                }
+                            },
+                            {
+                                extend: 'print',
+                                orientation: 'portrait',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3 ,4 ]
+                                }
+                            }, {
+                                title: '',
+                                extend: 'copy',
+                                download: 'open',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3 ,4 ]
+                                }
+                            }, {
+                                title: '',
+                                extend: 'excel',
+                                download: 'open',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3 ,4 ]
+                                }
+                            }
+                        ]
+                    } );
+                }
+            }else{
+                alert('No se ha encontrado ningún resultado para la busqueda.');
+                $('#tablaResultadosBusquedaAlumnos').addClass('d-none');
+                $('.loader').addClass('d-none');
+            }
+        }
+    });
+    $('body').on( 'click', '.filaPadre', function (e) {
+        e.preventDefault();
+       if($(this).parent().parent().next().hasClass('filaHijo')){
+           if($(this).parent().parent().next().hasClass('d-none')){
+               $(this).parent().parent().next().removeClass('d-none');
+               $(this).html('<i class="fas fa-eye-slash"></i>');
+           }else{
+               $(this).parent().parent().next().addClass('d-none');
+               $(this).html('<i class="fas fa-eye"></i>');
+           }
+       }
+    });
+    $('body').on( 'click', '#borrarcardAlumnosSearchFormConv', function (e) {
+        e.preventDefault();
+        $('#cardAlumnosSearchFormConv').val('');
+    });
+</script>

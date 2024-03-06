@@ -1,0 +1,31 @@
+<script id="formUsuariosTableBodyTem" type="text/x-mustache-template">
+    {{#listUsuarios}}
+    <tr class="text-center">
+        <td class="align-middle">
+            {{DNI}}
+        </td>
+        <td class="align-middle">{{Nombre}} {{Apellidos}}</td>
+        <td class="align-middle">{{Departamento}}</td>
+        <td class="align-middle">
+            <a href="#" class="desactivarUsuario" data-IdUsuario="{{IdUsuario}}" data-Activo="{{Activo}}">
+                {{#Activo}}
+                    <i class="far fa-eye fa-lg text-oficial" title="Suspender usuario"></i>
+                {{/Activo}}
+                {{^Activo}}
+                    <i class="far fa-eye-slash fa-lg text-oficial" title="Activar usuario"></i>
+                {{/Activo}}
+            </a>
+        </td>
+        <td class="align-middle">
+            <a href="#" class="delUsuarioDepartamento" title="Quitar del departamento" data-IdUsuario="{{IdUsuario}}" data-IdDepartamento="{{IdDepartamento}}" data-IdDepUsu="{{IdDepUsu}}">
+                <i class="far fa-trash-alt fa-lg"></i>
+            </a>
+        </td>
+    </tr>
+    {{/listUsuarios}}
+    {{^listUsuarios}}
+    <tr class="text-center">
+        <td class="align-middle text-danger" colspan="5">No se han encontrado usuarios.</td>
+    </tr>
+    {{/listUsuarios}}
+</script>

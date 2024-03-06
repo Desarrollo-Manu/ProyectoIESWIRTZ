@@ -1,0 +1,78 @@
+<div class="card rounded-0">
+    <div class="card-header">
+        Buscador formacion
+        <span class="right">
+            <button class="btn btn-oficial" id="btnNewCert" data-toggle="modal" data-target="#newPlanEstudiosModal">
+                <i class="fas fa-plus"></i>
+            </button>
+        </span>
+    </div>
+    <div class="card-body">
+        <form id="searchForm" method="post" action="ajax/searchFormacion.php">
+            <div class="row">
+                <div class="input-group mb-2 col-sm-6">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Formacion</span>
+                    </div>
+                    <select class="form-control selectpicker" data-live-search="true" name="IdFormacion" autocomplete="off" title="Selecciona una Formación...">
+                        {{#listPlanes}}
+                            <option value="{{Id}}">{{CodigoPlan}}</option>
+                        {{/listPlanes}}
+                        {{^listPlanes}}
+                            <option value="">Error al cargar las formacion</option>
+                        {{/listPlanes}}
+                    </select>
+                    <button class="btn btn-oficial btn-lisoIzq" onclick="$('#FormacionSearch').val('');" type="button">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                </div>
+                <div class="input-group mb-2 col-sm-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Tipo</span>
+                    </div>
+                    <select class="form-control" name="Tipo" autocomplete="off">
+                        {{#listTiposFormacions}}
+                            <option value="{{Id}}">{{Tipo}}</option>
+                        {{/listTiposFormacions}}
+                    </select>
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-oficial mt-3" id="sendSearch" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive mt-4">
+            <table id="searchTableBody" class="mb-0 d-none table table-striped table-bordered">
+                <thead>
+                <tr class="text-center">
+                    <th class="align-middle">Plan</th>
+                    <th class="align-middle">Certificado</th>
+                    <th class="align-middle">Fecha Inicio</th>
+                    <th class="align-middle">Fecha Fin</th>
+                    <th class="align-middle">Nivel</th>
+                    <th class="align-middle">Horas</th>
+                </tr>
+                </thead>
+                <tbody id="searchCertTableBody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $('#searchForm').ajaxForm({
+        beforeSubmit : function(formData, $form, options) {
+            $('.loader').removeClass('d-none');
+            return true;
+        },
+        success: function(data) {
+            $('#searchCertTableBody').html(Mustache.render($('#searchTableBodyTem').html(), data));
+            $('#searchTableBody').removeClass('d-none');
+        }
+    });
+</script>

@@ -1,0 +1,63 @@
+<div class="modal fade" id="modalChangeAvatar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="card">
+                    <div class="card-header">
+                        Cambio de avatar
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="alert alert-warning">
+                            <b>¡AVISO!</b> Solo se acepta formato png.
+                        </div>
+                        {{#tutor}}
+                            <div id="modalChangeAvatarFileContainer" data-IdEntidad="{{IdEntidad}}">
+                            </div>
+                        {{/tutor}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#modalChangeAvatar').on('show.bs.modal', function (e) {
+        var t=null;
+        var fileAvatar=$("#modalChangeAvatarFileContainer").uploadFile({
+            url:"http://192.168.2.200/AIXA/config/file/ajax/saveDoc.php",
+            maxFileCount:1,
+            fileName:'ficheroSubida',
+            showProgress:true,
+            acceptFiles:"image/png",
+            dynamicFormData: function(){
+                return {
+                    servicio:'Tutor',
+                    id:'Avatar' ,
+                    IdEntidad:$('#modalChangeAvatarFileContainer').attr('data-IdEntidad'),
+                    cif:$('#modalChangeAvatarFileContainer').attr('data-IdEntidad'),
+                    tdoc: t,
+                    nombreDoc: moment().unix()+'_'+$('#modalChangeAvatarFileContainer').attr('data-IdEntidad')+'_Avatar',
+                    nombreCarpeta: ''
+                };
+            },
+            onSelect:function(files){
+                t=files[0].type;
+                return true; //to allow file submission.
+            },
+            onSuccess:function(files,data,xhr,pd){
+                if(data.resultado){
+                    $('#avatarCardImg').attr('src','http://192.168.2.200/AWF/Tutor/'+data.IdEntidad+'/'+data.nombre);
+                    $('#userMenu img').attr('src','http://192.168.2.200/AWF/Tutor/'+data.IdEntidad+'/'+data.nombre);
+                    $('#modalChangeAvatar').modal('hide');
+                    fileAvatar.reset();
+                }else{
+                    alert('No se ha podido guardar tu avatar. Contacta con el CAU. Código 1.');
+                }
+            },
+            onError: function(files,status,errMsg,pd){
+                alert('No se ha podido guardar tu avatar. Contacta con el CAU. Código 2.');
+            }
+        });
+
+    })
+</script>

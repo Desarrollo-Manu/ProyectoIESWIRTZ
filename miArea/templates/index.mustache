@@ -1,0 +1,121 @@
+<div class="p-3  ">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card mb-3">
+                <div class="row p-2" style="min-height: 100px">
+                    <div class="col-sm-2">
+                        <div class="position-relative">
+                            {{#misDatos}}
+                                {{#imgAvatar}}
+                                    <img width="75" id="avatarCardImg" height="75" src="{{fileSystem}}/Tutor/{{IdEntidad}}/{{.}}" class="rounded-circle position-absolute translate-middle" alt="Img Profile">
+                                {{/imgAvatar}}
+                                {{^imgAvatar}}
+                                    <img width="75" id="avatarCardImg" src="https://via.placeholder.com/75" class="roundedFull position-absolute translate-middle" alt="Img Profile">
+                                {{/imgAvatar}}
+                                <a href="#" class=" position-absolute top-100 start-100 translate-middle" data-toggle="modal" data-target="#modalChangeAvatar">
+                                    <span class="badge badge-danger">
+                                        <i class="fas fa-pen"></i>
+                                    </span>
+                                </a>
+                            {{/misDatos}}
+                        </div>
+                    </div>
+                    <div class="col-sm-10">
+                        {{#misDatos}}
+                            <h1 class="h5 text-oficial text-center">{{Completo}}</h1>
+                            <div class="text-oficial text-center">{{Departamento}}</div>
+                        {{/misDatos}}
+                    </div>
+                </div>
+            </div>
+            <div class="card text-oficial">
+                <div class="card-header">
+                    Datos personales
+                    {{#misDatos}}
+                        <span class="right">
+                        <button class="btn btn-outline-primary"  title="Editar mi perfil" data-toggle="modal" data-target="#modalEditUsuario" type="button">
+                            <i class="fas fa-user-edit"></i>
+                        </button>
+                    </span>
+                    {{/misDatos}}
+                </div>
+                <div class="card-body">
+                    {{#misDatos}}
+                        <p class="font-weight-bold">DNI</p>
+                        <p class="ml-4">{{DNI}}</p>
+                        <p class="font-weight-bold">Nombre y Apellidos</p>
+                        <p class="ml-4">{{TextoUsuario}}</p>
+                        <p class="font-weight-bold">Fec. Nacimiento</p>
+                        <p class="ml-4">{{FecNacimiento}}</p>
+                        <p class="font-weight-bold">Datos contacto</p>
+                    {{/misDatos}}
+                    <ul>
+                        {{#listContactos}}
+                            <li>{{Tipo}} - {{Valor}}</li>
+                        {{/listContactos}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="card text-oficial">
+                <div class="card-header">
+                    Acciones formativas activas
+                </div>
+                <div class="card-body p-0 pt-2">
+                    <table id="tableAccsFormActivas" class="table table-bordered table-striped text-oficial mb-0">
+                        <thead class="text-center">
+                        <tr>
+                            <th class="align-middle">Código</th>
+                            <th class="align-middle">Certificado</th>
+                            <th class="align-middle">Fecha<br>Inicio</th>
+                            <th class="align-middle">Fecha<br>Fin</th>
+                            <th class="align-middle">Nivel</th>
+                            <th class="align-middle">Horas</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {{#listFormaciones}}
+                                <tr>
+                                    <td>{{CodigoPlan}}</td>
+                                    <td>{{CodigoCert}} {{Certificado}}</td>
+                                    <td class="text-center">{{FecIniPlan}}</td>
+                                    <td class="text-center">{{FecFinPlan}}</td>
+                                    <td class="text-center">{{Nivel}}</td>
+                                    <td class="text-center">{{Horas}}</td>
+                                </tr>
+                            {{/listFormaciones}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-header text-oficial">
+                            Curriculum Vitae
+                            <span class="right">
+                                <button class="btn btn-oficial" data-toggle="modal" data-target="#modalUploadFile" title="Subir tu CV">
+                                    <i class="fas fa-file-upload text-oficial"></i>
+                                </button>
+                            </span>
+                        </div>
+                        <div class="card-body p-0" id="AreaPersonalCVContainer">
+                            {{#CVFile}}
+                                <div class="alert alert-success mb-0" role="alert">
+                                    <a href="{{URLCV}}" target="_blank" title="Ver tu CV" >Tienes disponible tu CV.</a>
+                                </div>
+                            {{/CVFile}}
+                            {{^CVFile}}
+                                <div class="alert alert-warning mb-0" role="alert">
+                                    <b>Aviso.</b> Aún no has subido tu CV al aplicativo.
+                                </div>
+                            {{/CVFile}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

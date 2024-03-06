@@ -1,0 +1,229 @@
+<div class="modal fade" id="CardsContainerModalNewUsuario"  data-keyboard="false" tabindex="-1" aria-labelledby="CardsContainerModalNewUsuarioTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="card">
+                    <div class="card-header">
+                        Comprobar si existe Usuario.
+                    </div>
+                    <div class="card-body">
+                        <form action="../usuarios/ajax/checkUsuario.php" method="post" id="CardsContainerModalCheckExistUsuario">
+                            <div class="row">
+                                <div class="input-group mb-0 col-sm-12">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">SOLO DNI</span>
+                                    </div>
+                                    <input type="text" class=" form-control" name="DNI">
+                                    <button type="submit" class="btn btn-oficial btn-lisoIzq"><i class="fas fa-question"></i></button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-group mb-0 col-sm-12">
+                                    <div id="CardsContainerModalCheckExistUsuarioResultado" class="w-100">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body d-none" id="CardsContainerModalNewUsuarioBody">
+                <form id="newUsuario" method="post" action="../usuarios/ajax/newUsuario.php">
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Documento</span>
+                            </div>
+                            <input autocomplete="off"  pattern="([0-9]{8}[A-Za-z]{1})|([xyzXYZ]{1}[0-9]{7}[A-Za-z]{1})" type="text" class="form-control" minlength="9" maxlength="9" id="dniInput" name="DNI">
+                            <button onclick="validarNIEDNI($('#dniInput').val())" id="btnComprobarDNI" type="button" class="btn btn-oficial btn-lisoIzq" title="Comprobar NDI">
+                                <i class="fas fa-question"></i>
+                            </button>
+                        </div>
+                        <div class="input-group mb-2 col-sm-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">NSS</span>
+                            </div>
+                            <input pattern="[0-9]{12}" type="text"  name="NSS" autocomplete="off" minlength="12" maxlength="12" class="form-control" id="NSS">
+                        </div>
+                        <div class="input-group mb-2 col-sm-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Fecha Nacimiento</span>
+                            </div>
+                            <input  type="date" name="FecNacimiento" autocomplete="off"  class="form-control" id="FecNacimiento">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Nombre</span>
+                            </div>
+                            <input type="text"   name="Nombre" autocomplete="off"  class="form-control" id="NombreInput">
+                        </div>
+                        <div class="input-group mb-2 col-sm-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Apellidos</span>
+                            </div>
+                            <input type="text"  name="Apellidos" autocomplete="off"  class="form-control" id="ApellidosInput">
+                        </div>
+                        <div class="input-group mb-2 col-sm-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-SexoInput">Sexo</span>
+                            </div>
+                            <select name="Sexo" class="form-control" id="SexoInput" autocomplete="off" >
+                                <option value="0">-</option>
+                                <option value="1">Hombre</option>
+                                <option value="2">Mujer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button id="btnCrearAl" type="submit" class="btn btn-outline-primary" title="Crear Usuario">
+                            Crear
+                        </button>
+                        <button  id="btnCerrarNewUsuario" type="button" class="btn btn-outline-secondary btnCloseNewUsuario" data-dismiss="modal" aria-hidden="true">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+                <div id="contactosContainerFormAl" style="display: none">
+                    <div class="alert alert-success" role="alert">
+                        El Usuario ha sido creado con exito. Inserte los contactos del Usuario.
+                    </div>
+                    <form id="contactosFormAl" method="post" action="../usuarios/ajax/saveContacto.php">
+                        <input type="hidden" name="IdUsuario" id="contactosContainerFormId" value="">
+                        <div class="row">
+                            <div class="input-group mb-2 col-sm-12">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Contactos</span>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <select class="form-control" name="Tipo">
+                                        <option value="4">Email</option>
+                                        <option value="3">Fax</option>
+                                        <option value="1">Fijo</option>
+                                        <option value="2">Móvil</option>
+                                    </select>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Valor</span>
+                                </div>
+                                <input autocomplete="off" value="" class="form-control" type="text" name="Valor">
+                                <div class="input-group-prepend">
+                                    <button id="addContactoUsuario" type="submit" class="btn btn-oficial  btn-lisoIzq" title="Añadir">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body" style="padding: 0">
+                                <div class="responsive">
+                                    <table id="contactosTable" class="table table-bordered table-striped table-hover">
+                                        <thead>
+                                        <tr class="text-center">
+                                            <th>#</th>
+                                            <th>Tipo</th>
+                                            <th>Valor</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="contactosTableBody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$('#contactosFormAl').ajaxForm({
+    beforeSubmit : function(formData, $form, options){
+        if(!formData[0].value){
+            alert('Falta el Id del usuario. Contacta con el CAU. Código 1.');
+            return false;
+        }
+        if(!formData[1].value){
+            alert('Debe elegir un tipo de contacto.');
+            return false;
+        }
+        if(!formData[2].value){
+            alert('Debe elegir un valor para el contacto.');
+            return false;
+        }
+        return true;
+    },
+    success : function(data){
+        if(data.resultado===true){
+            $('#contactosTableBody').html(Mustache.render($('#contactosTableBodyTem').html(),data));
+            $('#contactosFormAl').resetForm();
+
+        }else{
+            $('#contactosTableBody').html('<tr class="table-danger"><td colspan="2">Error al guardar la información</td></d');
+        }
+    }
+});
+$('#CardsContainerModalCheckExistUsuario').ajaxForm({
+    beforeSubmit : function(formData, $form, options){
+        if(!formData[0].value){
+            alert('Debes insertar un DNI.');
+            return false;
+        }else{
+            if(validarNIEDNI(formData[0].value)){
+                return true;
+            }else{
+                alert("El DNI/NIE no es correcto.Revisalo.");
+                return false;
+            }
+        }
+    },
+    success : function(data){
+        if(data.resultado===false){
+            $('#CardsContainerModalCheckExistUsuarioResultado').html('<div class="alert alert-success m-0" role="alert">El usuario no existe.</div>');
+            $('#CardsContainerModalNewUsuarioBody').removeClass('d-none');
+        }else{
+            $('#CardsContainerModalCheckExistUsuarioResultado').html('<div class="alert alert-danger m-0" role="alert">El usuario ya existe.</div>');
+        }
+    }
+});
+$('#newUsuario').ajaxForm({
+    beforeSubmit : function(formData, $form, options){
+        var f=$form[0];
+        if(!f.DNI.value){
+            alert('Debes insertar un DNI/NIE. Código 1.');
+            return false;
+        }
+        if((f.DNI.value)&&(!validarNIEDNI(f.DNI.value))){
+            alert('EL NIE/DNI no es válido. Código 2.');
+            return false;
+        }
+        if(f.NSS.value){
+            if(!($.isNumeric(f.NSS.value))){
+                alert('El número de la seguridad social no es válido. Código 4.');
+                return false;
+            }
+        }
+        if(!f.Nombre.value){
+            alert('Debes insertar el nombre del Usuario. Código 6.');
+            return false;
+        }
+        if(!f.Apellidos.value){
+            alert('Debes insertar los apellidos del Usuario. Código 7.');
+            return false;
+        }
+        return true;
+    },
+    success : function(data){
+        if(data.resultado===true){
+            $('#newUsuario').hide();
+            $('#contactosContainerFormAl').show();
+            $('#contactosContainerFormId').val(data.Id);
+        }else{
+            alert('Se ha producido un error al guardar el Usuario');
+        }
+    }
+});
+</script>

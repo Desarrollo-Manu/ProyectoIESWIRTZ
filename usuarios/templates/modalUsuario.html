@@ -1,0 +1,74 @@
+<script id="modalEditUsuarioFormTem" type="text/x-mustache-template">
+    {{#usuario}}
+    <input type="hidden" name="Id" value="{{Id}}">
+        <div class="row">
+            <div class="input-group mb-2 col-sm-4">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Documento</span>
+                </div>
+                <input disabled autocomplete="off" value="{{DNI}}"  pattern="([0-9]{8}[A-Za-z]{1})|([xyzXYZ]{1}[0-9]{7}[A-Za-z]{1})" type="text" class="form-control" minlength="9" maxlength="9" id="modalEditUsuarioFormDNI" name="DNI">
+                <button disabled onclick="validarNIEDNI($('#dniInput').val())" id="btnComprobarDNI" type="button" class="btn btn-oficial btn-lisoIzq" title="Comprobar NDI">
+                    <i class="fas fa-question"></i>
+                </button>
+            </div>
+            <div class="input-group mb-2 col-sm-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">NSS</span>
+                </div>
+                <input disabled pattern="[0-9]{12}" type="text"  name="NSS" value="{{NumSegSocial}}" autocomplete="off" minlength="12" maxlength="12" class="form-control">
+            </div>
+            <div class="input-group mb-2 col-sm-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Fecha Nacimiento</span>
+                </div>
+                <input disabled  type="date" value="{{FecNacimientoInput}}" name="FecNacimiento" autocomplete="off"  class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-group mb-2 col-sm-4">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Nombre</span>
+                </div>
+                <input disabled type="text" value="{{Nombre}}"  name="Nombre" autocomplete="off"  class="form-control">
+            </div>
+            <div class="input-group mb-2 col-sm-6">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Apellidos</span>
+                </div>
+                <input disabled type="text" value="{{Apellidos}}"  name="Apellidos" autocomplete="off"  class="form-control">
+            </div>
+            <div class="input-group mb-2 col-sm-2">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-SexoInput">Sexo</span>
+                </div>
+                <select disabled name="Sexo" class="form-control" id="SexoInput" autocomplete="off" >
+                    {{#listSexo}}
+                        <option value="{{Id}}" {{Selected}}>{{Texto}}</option>
+                    {{/listSexo}}
+                </select>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <button disabled type="submit" class="btn btn-outline-primary" id="modalEditUsuarioFormResult" title="Guardar">
+                Guardar
+            </button>
+            <button disabled type="button" class="btn btn-outline-secondary" data-dismiss="modal" aria-hidden="true">
+                Cancelar
+            </button>
+        </div>
+    {{/usuario}}
+</script>
+<script id="modalEditUsuarioContactosTem" type="text/x-mustache-template">
+    {{#listContactos}}
+    <tr class="text-center">
+        <td><a href="#" class="delContacto" data-IdContacto="{{Id}}" data-IdUsuario="{{IdUsuario}}" title="Borrar"><i class="far fa-trash-alt"></i></a></td>
+        <td>{{Tipo}}</td>
+        <td>{{Valor}}</td>
+    </tr>
+    {{/listContactos}}
+    {{^listContactos}}
+    <tr>
+        <td class="text-center text-danger" colspan="3">Este usuario no tiene contactos</td>
+    </tr>
+    {{/listContactos}}
+</script>
