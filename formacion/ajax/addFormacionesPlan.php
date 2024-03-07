@@ -10,7 +10,10 @@ if(comprobarIdPlan($IdPlan)){
     $resultado=true;
     foreach($Modulos as  $Modulo){
         if(comprobarMF($Modulo)){
-            $IdFormacion=saveModuloFormacion($IdPlan,$Modulo);
+            $IdFormacion=comprobarModuloFormacion($IdPlan,$Modulo);
+            if(!is_int($IdFormacion)){
+                $IdFormacion=saveModuloFormacion($IdPlan,$Modulo);
+            }
             if(is_int($IdFormacion)){
                 foreach($Usuarios as $Usuario){
                     if(comprobarUsuario($Usuario,null)){

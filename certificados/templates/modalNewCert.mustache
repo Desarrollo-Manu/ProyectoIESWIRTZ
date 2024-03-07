@@ -136,7 +136,7 @@
         },
         success: function(data) {
             if(data.resultado===true){
-                window.location.href = "http://localhost/ProyectoIESWIRTZ/certificados/view.php?id="+data.Id;
+                window.location.href = "view.php?Id="+data.Id;
             }else{
                 alert('Algo ha salido mal al crear el Certificado de Profesionalidad o ya existe. Contacta con el CAU. Código 1.');
             }

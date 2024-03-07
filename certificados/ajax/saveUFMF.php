@@ -15,7 +15,7 @@ $Orden          = obterPost('Orden',true,false,false,false,false);
 if(!comprobarUF($IdUF)&&comprobarMF($IdModulo)&&!comprobarUFMF($IdUF,$IdModulo)){
     $IdUF=newUF($Codigo,$Nombre,$HorasTotales,$HorasFormacion,$HorasTutoria,$HorasExamen);
     if(is_int($IdUF)){
-        $resultado=saveUFMF($IdModulo,$IdUF,$Orden);
+        $resultado=is_int(saveUFMF($IdModulo,$IdUF,$Orden));
     }else{
         $resultado=false;
     }

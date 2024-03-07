@@ -1,4 +1,4 @@
-<div class="modal fade" id="CardsContainerModalNewUsuario"  data-keyboard="false" tabindex="-1" aria-labelledby="CardsContainerModalNewUsuarioTitle" aria-hidden="true">
+<div class="modal fade" id="ModalNewUsuario"  data-keyboard="false" tabindex="-1" aria-labelledby="ModalNewUsuarioTitle" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-body p-0">
@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-body d-none" id="CardsContainerModalNewUsuarioBody">
+            <div class="modal-body d-none" id="ModalNewUsuarioBody">
                 <form id="newUsuario" method="post" action="../usuarios/ajax/newUsuario.php">
                     <div class="row">
                         <div class="input-group mb-2 col-sm-4">
@@ -154,7 +154,20 @@ $('#contactosFormAl').ajaxForm({
             alert('Debe elegir un valor para el contacto.');
             return false;
         }
-        return true;
+        if(formData[1].value && formData[2].value){
+            console.log(formData[1].value);
+            console.log(formData[2].value);
+            console.log(validarTipoContacto(parseInt(formData[1].value),formData[2].value));
+            if(validarTipoContacto(parseInt(formData[1].value),formData[2].value)){
+                return true;
+            }else{
+                alert('El contacto insertado no es válido para el tipo seleccionado.');
+                return false;
+            }
+        }else{
+            alert('Error desconocido. Contacte con el CAU. Código 1.');
+            return false;
+        }
     },
     success : function(data){
         if(data.resultado===true){
@@ -183,7 +196,7 @@ $('#CardsContainerModalCheckExistUsuario').ajaxForm({
     success : function(data){
         if(data.resultado===false){
             $('#CardsContainerModalCheckExistUsuarioResultado').html('<div class="alert alert-success m-0" role="alert">El usuario no existe.</div>');
-            $('#CardsContainerModalNewUsuarioBody').removeClass('d-none');
+            $('#ModalNewUsuarioBody').removeClass('d-none');
         }else{
             $('#CardsContainerModalCheckExistUsuarioResultado').html('<div class="alert alert-danger m-0" role="alert">El usuario ya existe.</div>');
         }

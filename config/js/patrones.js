@@ -1,13 +1,23 @@
-function validarPhone(v){
-    var patron =  /^\d{9}$/;
+function validarTipoContacto(Tipo,Valor){
+    switch(Tipo) {
+        case 1:
+            return validarFijo(Valor);
+        case 2:
+            return validarMovil(Valor);
+        case 3:
+            return validarFijo(Valor);
+        case 4:
+            return validarMail(Valor);
+        default:
+            return false;
+    }
+}
+function validarFijo(v){
+    var patron =/^[9]\d{8}$/;
     return patron.test(v);
 }
-function validarPhoneXTipo(v,t){
-    if(t==='Teléfono móvil'){
-        var patron =/^[67]\d{8}$/;
-    }else{
-        var patron =/^[9]\d{8}$/;
-    }
+function validarMovil(v){
+    var patron =/^[67]\d{8}$/;
     return patron.test(v);
 }
 function validarMail(v) {
@@ -26,16 +36,12 @@ function validarMP(v){
     var patron = /^MP\d{4}$/;
     return patron.test(v);
 }
+function validarCodigoUC(v){
+    var patron = /^UC\d{4}_[1-3]{1}$/;
+    return patron.test(v);
+}
 function validarUF(v){
     var patron = /^UF\d{4}$/;
-    return patron.test(v);
-}
-function validarTipoPhone(v){
-    var patron = /Fax|Fijo|Móvil|Teléfono\/Fax/g;
-    return patron.test(v);
-}
-function validarTipoEmail(v){
-    var patron = /E-Mail|E-Mail facturación|E-Mail mailing/g;
     return patron.test(v);
 }
 function validarCodOcupa(v){
@@ -76,9 +82,5 @@ function validarCodigoCertificado(v){
     patron.test(v);
 }
 function validarCodCertConArea(codigo,area){
-    if(codigo.substring(0,3)===area.substring(0,3)){
-        return true;
-    }else{
-        return false;
-    }
+    return codigo.substring(0, 3) === area.substring(0, 3);
 }

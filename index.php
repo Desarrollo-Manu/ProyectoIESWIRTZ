@@ -17,10 +17,10 @@ if (isset($_POST['user'])&&isset($_POST['pass'])&&(!isset($_COOKIE['PHPSESSID'])
         $_SESSION['Id']             =   $Id;
         $_SESSION['Sesion']         =   session_id();
         $_SESSION['SameSite']       =   'Lax';
-        $_SESSION['files']          =   'http://localhost/ProyectoIESWIRTZDATA';
         $_SESSION['root']           =   $root;
-        $_SESSION['url']            =   'http://localhost/ProyectoIESWIRTZ/';
-        header('Location: http://localhost/ProyectoIESWIRTZ/index.php');
+        $_SESSION['url']            =   $relative   =   $_SERVER["REQUEST_SCHEME"].'://'.$_SERVER ["SERVER_NAME"].'/ProyectoIESWIRTZ/';
+        $mainPage  =   $_SERVER["REQUEST_SCHEME"].'://'.$_SERVER ["SERVER_NAME"].'/ProyectoIESWIRTZ/index.php';
+        header('Location: '.$mainPage);
     }else{
         $logIncorrecto=true;
     }
@@ -34,12 +34,12 @@ require_once(realpath($_SERVER["DOCUMENT_ROOT"]).'/ProyectoIESWIRTZ/header/heade
 if(estarLogeado()){
     include_once($root.'config/bd/bdMariaBD.php');
     echo $m->render( file_get_contents($_SESSION['root']."login/templates/login.mustache") ,Array(
-        'root'          =>  'http://localhost/ProyectoIESWIRTZ/',
+        'root'          =>  $relative   =   $_SERVER["REQUEST_SCHEME"].'://'.$_SERVER ["SERVER_NAME"].'/ProyectoIESWIRTZ/',
         'listDepartamentos' =>obterDepartamentosUsuario($_SESSION['Id'])
     ));
 }else{
     echo $m->render( file_get_contents($root.'login/templates/noLogin.mustache') ,Array(
-        'root'          =>  'http://localhost/ProyectoIESWIRTZ/',
+        'root'          =>  $relative   =   $_SERVER["REQUEST_SCHEME"].'://'.$_SERVER ["SERVER_NAME"].'/ProyectoIESWIRTZ/',
         'errorLog'          =>  $logIncorrecto,
         'accessLog'         =>  isset($_POST['access'])
     ));

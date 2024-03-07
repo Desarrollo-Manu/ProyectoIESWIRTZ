@@ -1,6 +1,7 @@
 <?php
 function conectarDBSQL(){
     $mysqli = new mysqli("bbdd-manu3eeb5daa-desarrollomanucastro-7c74.a.aivencloud.com", "avnadmin", "AVNS_85lbfwLJ3AdtSKG-y0v", "defaultdb", 13205);
+    //$mysqli = new mysqli("bbdd-manu3eeb5daa-desarrollomanucastro-7c74.a.aivencloud.com:13209", "avnadmin", "AVNS_85lbfwLJ3AdtSKG-y0v", "defaultdb", 13209);
 
     if ($mysqli->connect_errno) {
         die(print_r( "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error,true));

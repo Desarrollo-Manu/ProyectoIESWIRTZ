@@ -10,6 +10,12 @@ echo $m->render( file_get_contents("templates/index.mustache"),Array(
 echo $m->render( file_get_contents("templates/modalAddUsuDep.mustache"),Array(
     'listDepartamentos' =>  obterDepartamentos()
 ));
+echo $m->render( file_get_contents("templates/modalAddUsuDep.mustache"),Array(
+    'listDepartamentos' =>  obterDepartamentos()
+));
+echo $m->render( file_get_contents("../usuarios/templates/modalNewUsuario.mustache"),Array(
 
-include_once('templates/modalAddUsuDep.html');
+));
+include_once('../usuarios/templates/modalNewUsuario.html');
 include_once('templates/cardSearch.html');
+include_once('templates/modalAddUsuDep.html');

@@ -1,6 +1,6 @@
 <?php
 $root       =   realpath($_SERVER["DOCUMENT_ROOT"]).'/ProyectoIESWIRTZ/';
-$relative   =   'http://localhost/ProyectoIESWIRTZ/';
+$relative   =   $relative   =   $_SERVER["REQUEST_SCHEME"].'://'.$_SERVER ["SERVER_NAME"].'/ProyectoIESWIRTZ/';
 
 require_once $root.'config/frameworks/mustache/src/Mustache/Autoloader.php';
 Mustache_Autoloader::register();

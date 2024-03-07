@@ -3,48 +3,37 @@ require_once(realpath($_SERVER["DOCUMENT_ROOT"]).'/ProyectoIESWIRTZ/config/confi
 comprobarPermisoAcceso(1,$_SESSION["Id"]);
 $Id= obterGet('Id',true,false,false,false,false);
 
-//CARGAMOS AS PLANTILLAS MUSTACHE PARA OS DATOS
-$cardCertificados   = file_get_contents("templates/cardCertificado.mustache");
-$cardEstrucCert     = file_get_contents("templates/cardEstructCert.mustache");
-$cardOcupaciones    = file_get_contents("templates/cardOcupaciones.mustache");
-$modalAddOcupaciones= file_get_contents("templates/modalNewOcupacion.mustache");
-$modalModOcupaciones= file_get_contents("templates/modalModOcupacion.mustache");
-$view               = file_get_contents("templates/view.mustache");
-$modalAddMFs        = file_get_contents("templates/modalAddMF.mustache");
-$modalAddUFs        = file_get_contents("templates/modalAddUF.mustache");
-
-//var_dump(obterMFsUFsCert(intval($Id)));
-echo $m->render( $view,Array(
+echo $m->render( file_get_contents("templates/view.mustache"),Array(
     'root'              =>  $relative,
     'IdCert'            =>  $Id,
-    'cardDatos'         =>  $m->render( $cardCertificados,Array(
+    'cardDatos'         =>  $m->render( file_get_contents("templates/cardCertificado.mustache"),Array(
         'root'                  =>  $relative,
         'IdCert'                =>  $Id,
         'datosCertificado'      =>  obterCertificado($Id),
     )),
-    'cardEstruc'            =>  $m->render( $cardEstrucCert,Array(
+    'cardEstruc'            =>  $m->render( file_get_contents("templates/cardEstructCert.mustache"),Array(
         'root'              =>  $relative,
         'IdCert'            =>  $Id,
         'listMFsUFs'        =>  obterMFsUFsCert($Id),
     )),
-    'modalAddMFs'           =>  $m->render( $modalAddMFs,Array(
+    'modalAddMFs'           =>  $m->render( file_get_contents("templates/modalAddMF.mustache"),Array(
         'root'              =>  $relative,
         'IdCert'            =>  $Id
     )),
-    'modalAddUFs'           =>  $m->render( $modalAddUFs,Array(
+    'modalAddUFs'           =>  $m->render( file_get_contents("templates/modalAddUF.mustache"),Array(
         'root'              =>  $relative,
         'IdCert'            =>  $Id
     )),
-   'cardOcupaciones'       =>  $m->render( $cardOcupaciones,Array(
+   'cardOcupaciones'       =>  $m->render( file_get_contents("templates/cardOcupaciones.mustache"),Array(
         'root'              =>  $relative,
         'IdCert'            =>  $Id,
         'listOcupaCert'     =>  obterOcupacionesCert($Id)
     )),
-    'modalAddOcupaciones' =>  $m->render( $modalAddOcupaciones,Array(
+    'modalAddOcupaciones' =>  $m->render( file_get_contents("templates/modalNewOcupacion.mustache"),Array(
         'root'              =>  $relative,
         'IdCert'            =>  $Id
     )),
-    'modalModOcupaciones' =>  $m->render( $modalModOcupaciones,Array(
+    'modalModOcupaciones' =>  $m->render( file_get_contents("templates/modalModOcupacion.mustache"),Array(
         'root'              =>  $relative,
         'IdCert'            =>  $Id
     ))

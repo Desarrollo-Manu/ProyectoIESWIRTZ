@@ -131,6 +131,30 @@
                             </button>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="input-group mb-2 col-sm-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-transversalCheck1M">
+                                    <input value="1" class="" type="checkbox" id="nuevaUCCheck1M" name="nuevaUC">
+                                </span>
+                            </div>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-nuevaUCCheck1M">Nueva UC</span>
+                            </div>
+                        </div>
+                        <div class="input-group mb-2 col-sm-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-newUCMFModal">Código</span>
+                            </div>
+                            <input disabled minlength="8" maxlength="8" value="" type="text" name="newCodUC" autocomplete="off"  class="form-control" id="newUCMFModal">
+                        </div>
+                        <div class="input-group mb-2 col-sm-7">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-newTextoUCModal">Denominación</span>
+                            </div>
+                            <input disabled type="text" name="newTextoUCModal" value="" autocomplete="off"  class="form-control" id="newTextoUCModal">
+                        </div>
+                    </div>
                     <div class="text-center">
                         <button type="submit" id="sendFormModalSaveMF" class="btn btn-oficial">
                             <i class="far fa-save fa-lg"></i>
@@ -169,21 +193,30 @@
                     alert('Debes insertar un Código válido.');
                     return false;
                 }
+                if(checkMF(formData[2].value)){
+                    alert('No puedes crear un Módulo Formativo que ya existe.');
+                    return false;
+                }
             }
             if (!f.Nivel.value) {
                 alert('Debes elegir el nivel del Módulo Formativo.');
                 return false;
             }
-            if(!(validarMP(formData[2].value)||validarMFTransversal(formData[2].value))){
-                if (!f.UC.value) {
-                    alert('Selecciona una Unidad de Competencia.');
+            if(validarMP(formData[2].value)){
+                if (f.UC.value||(f.newCodUC.value)||(f.newTextoUCModal.value)) {
+                    alert('Los módulos de prácticas no tienen Unidad de Competencia asociado.');
                     return false;
-                }else{
-                   /* if(!checkUC(f.UC.value.split(' - ')[0])){
-                        alert('La Unidad de Competencia seleccionada no es válida.');
-                        return false;
-                    }*/
                 }
+            }
+            if((f.newCodUC.value)&&(f.newTextoUCModal.value)){
+                if(!validarCodigoUC(f.newCodUC.value)){
+                    alert('El código de la Unidad de Competencia no es válido.');
+                    return false;
+                }
+            }
+            if((f.newCodUC.value)^(f.newTextoUCModal.value)){
+                alert('No puedes crear una unidad de competencia sin introducir ambos campos.');
+                return false;
             }
             if ((f.HorasFormacion.value)&&(f.HorasExamen.value)&&(f.HorasTotales.value)) {
                 if((parseInt(f.HorasFormacion.value)+parseInt(f.HorasTutoria.value)+parseInt(f.HorasExamen.value))==(parseInt(f.HorasTotales.value))){
@@ -223,7 +256,7 @@
                 alert('Debes insertar el código del Módulo Formativo.');
                 return false;
             }else{
-                if(!checkMF(formData[1].value)){
+                if(!checkIdMF(formData[1].value)){
                     alert('El Módulo Formativo no es válido.');
                     return false;
                 }
@@ -247,6 +280,21 @@
             }
         }
     });
+    $( "#nuevaUCCheck1M" ).change(function(){
+        if($(this).prop('checked')){
+            $('#newUCMFModal').prop('disabled',false);
+            $('#newTextoUCModal').prop('disabled',false);
+            $('#UCMFModal').prop('disabled','disabled');
+            $('#UCMFModal').val('');
+        }else{
+            $('#newUCMFModal').prop('disabled','disabled');
+            $('#newTextoUCModal').prop('disabled','disabled');
+            $('#UCMFModal').prop('disabled',false);
+            $('#newUCMFModal').val('');
+            $('#newTextoUCModal').val('');
+        }
+    });
+
     $('#modalAddMF').on('show.bs.modal', function (e) {
         $('#formModalAddMF').resetForm();
         $('#formModalSaveMF').resetForm();

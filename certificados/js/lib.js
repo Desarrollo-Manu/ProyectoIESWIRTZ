@@ -15,10 +15,27 @@ function checkUC(uc) {
     });
     return existe;
 }
-function checkMF(IdMF) {
+function checkMF(CodMF) {
     var existe=false;
     $.ajax({
         url: "ajax/checkMF.php",
+        data: {CodMF:CodMF},
+        type: "POST",
+        async:false,
+        dataType: "json",
+        success: function (data) {
+            existe = !!data.resultado;
+        }
+    }).fail(function () {
+        alert("Se ha producido un error al comprobar el Módulo. Código 5.");
+        existe= false;
+    });
+    return existe;
+}
+function checkIdMF(IdMF) {
+    var existe=false;
+    $.ajax({
+        url: "ajax/checkIdMF.php",
         data: {IdMF:IdMF},
         type: "POST",
         async:false,
@@ -27,7 +44,7 @@ function checkMF(IdMF) {
             existe = !!data.resultado;
         }
     }).fail(function () {
-        alert("Se ha producido un error al comprobar el Módulo. Código 4.");
+        alert("Se ha producido un error al comprobar el Módulo. Código 5.");
         existe= false;
     });
     return existe;

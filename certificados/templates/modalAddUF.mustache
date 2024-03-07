@@ -191,7 +191,7 @@
         success: function(data) {
             if(data.resultado===true){
                 $('#tableBodyMFsUFs').html(Mustache.render($('#estrCertTem').html(),data));
-                $('#formModalSaveUF').clearForm();
+                $('#formModalSaveUF').resetForm();
                 $('#modalAddUF').modal('hide');
                 inicializarPopOver();
             }else{

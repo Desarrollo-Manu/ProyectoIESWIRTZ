@@ -11,7 +11,7 @@ if (comprobarIdFormacion($IdFormacion)) {
 }
 header('Content-Type: application/json');
 $json = json_encode(array(
-    'resultado'     =>  !empty($listAlumnos) ,
+    'resultado'     =>  !empty($listAlumnos) || !empty($listTutores),
     'listAlumnos'   =>  $listAlumnos,
     'listTutores'   =>  $listTutores,
 ));

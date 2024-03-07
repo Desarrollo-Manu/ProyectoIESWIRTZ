@@ -11,7 +11,8 @@ if(estarLogeado1()){
     require_once($_SESSION['root'].'usuarios/lib.php');
     require_once($_SESSION['root'].'departamentos/lib.php');
 }else{
-    header('Location: http://localhost/ProyectoIESWIRTZ/index.php');
+    $mainPage  =   $_SERVER["REQUEST_SCHEME"].'://'.$_SERVER ["SERVER_NAME"].'/ProyectoIESWIRTZ/index.php';
+    header('Location: '.$mainPage);
 }
 function estarLogeado1(){
     if (isset($_COOKIE['PHPSESSID'])) {
@@ -22,7 +23,8 @@ function estarLogeado1(){
             return true;
         }
     } else {
-        header('Location: http://localhost/ProyectoIESWIRTZ/index.php');
+        $mainPage  =   $_SERVER["REQUEST_SCHEME"].'://'.$_SERVER ["SERVER_NAME"].'/ProyectoIESWIRTZ/index.php';
+        header('Location: '.$mainPage);
         return false;
     }
 }

@@ -173,6 +173,7 @@ function delContacto($IdContacto){
 function comprobarPermisoAcceso($IdDepartamento,$IdUsuario){
     require_once($_SESSION['root'].'config/bd/bdMariaBD.php');
     if(!comprobarUsuarioDepartamento($IdDepartamento,$IdUsuario)){
-        header('Location: http://localhost/ProyectoIESWIRTZ/index.php?log=1');
+        $mainPage  =   $_SERVER["REQUEST_SCHEME"].'://'.$_SERVER ["SERVER_NAME"].'/ProyectoIESWIRTZ/index.php';
+        header('Location: '.$mainPage);
     }
 }

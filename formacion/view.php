@@ -20,13 +20,14 @@ echo $m->render( file_get_contents("templates/view.mustache"),Array(
     )),
 
 ));
+var_dump();
 echo $m->render( file_get_contents("templates/modalAddAl.mustache"),Array(
     'Id'  =>  $Id,
 ));
-echo $m->render( file_get_contents("templates/modalAddformacion.mustache"),Array(
+echo $m->render( file_get_contents("templates/modalAddformaciones.mustache"),Array(
     'Plan'  =>  $InfoPlan,
 ));
-echo $m->render( file_get_contents("templates/modalNewUsuario.mustache"),Array(
+echo $m->render( file_get_contents("../usuarios/templates/modalNewUsuario.mustache"),Array(
     'Plan'  =>  $InfoPlan,
 ));
 echo $m->render( file_get_contents("../usuarios/templates/modalUsuario.mustache"),Array(
@@ -34,7 +35,7 @@ echo $m->render( file_get_contents("../usuarios/templates/modalUsuario.mustache"
 ));
 
 include_once('templates/cardPlanEstTem.html');
-include_once('templates/modalAddformacion.html');
+include_once('templates/modalAddformaciones.html');
 include_once('templates/modalAddAl.html');
-include_once('templates/modalNewUsuario.html');
+include_once('../usuarios/templates/modalNewUsuario.html');
 include_once('../usuarios/templates/modalUsuario.html');

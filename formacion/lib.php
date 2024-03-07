@@ -83,7 +83,7 @@ function actualizarPlan($Codigo,$IdTipo,$FecIni,$FecFin){
 /*FUNCIÓN QUE COMPROBA SI EXISTE O ID DA FORMACIÓN DO PLAN DE ESTUDIOS*/
 function comprobarIdFormacion($Id){
     $con  =   conectarDBSQL();
-    $stmt = $con->prepare("SELECT Id FROM tm_plan_estudios_formacion WHERE Id=?");
+    $stmt = $con->prepare("SELECT Id FROM tm_plan_estudios_formaciones WHERE Id=?");
     $stmt->bind_param('i',$Id);
     $stmt->execute();
     $Rows=$stmt->get_result()->num_rows;
@@ -156,7 +156,7 @@ function obterPlan($IdPlan){
 /*FUNCIÓN QUE AÑADE UNHA FORMACIÓN AO PLAN DE ESTUDIOS*/
 function saveModuloFormacion($IdPlan,$IdModulo){
     $con  =   conectarDBSQL();
-    $stmt = $con->prepare("INSERT INTO tm_plan_estudios_formacion(IdPlan,IdModulo,UsuAlta) VALUES (?,?,?)");
+    $stmt = $con->prepare("INSERT INTO tm_plan_estudios_formaciones(IdPlan,IdModulo,UsuAlta) VALUES (?,?,?)");
     $stmt->bind_param('iii', $IdPlan,$IdModulo,$_SESSION["Id"]);
     $stmt->execute();
     $Id=$stmt->insert_id;
@@ -167,7 +167,7 @@ function saveModuloFormacion($IdPlan,$IdModulo){
 /*FUNCIÓN QUE AÑADE UN USUARIO AO PLAN DE FORMACIÓN*/
 function saveUsuariosFormacion($IdFormacion,$Usuario,$IdRol){
     $con  =   conectarDBSQL();
-    $stmt = $con->prepare("INSERT INTO tr_formacion(IdFormacion,IdUsuario,IdRol,UsuAlta) VALUES (?,?,?,?)");
+    $stmt = $con->prepare("INSERT INTO tr_formaciones(IdFormacion,IdUsuario,IdRol,UsuAlta) VALUES (?,?,?,?)");
     $stmt->bind_param('iiii', $IdFormacion,$Usuario,$IdRol,$_SESSION["Id"]);
     $stmt->execute();
     $Id=$stmt->insert_id;
@@ -175,9 +175,21 @@ function saveUsuariosFormacion($IdFormacion,$Usuario,$IdRol){
     cerrarDBSQL($con);
     return $Id;
 }
+function comprobarModuloFormacion($IdPlan,$IdModulo){
+    $con  =   conectarDBSQL();
+    $stmt = $con->prepare("SELECT Id FROM tm_plan_estudios_formaciones WHERE IdPlan = ? AND IdModulo = ?");
+    $stmt->bind_param('ii', $IdPlan,$IdModulo);$IdFormacion=null;
+    if($stmt->execute()) {
+        $resultado = $stmt->get_result();
+        $IdFormacion=$resultado->fetch_array(MYSQLI_ASSOC)['Id'];
+    }
+    $stmt->close();
+    cerrarDBSQL($con);
+    return $IdFormacion;
+}
 function obterformacionPlan($IdPlan){
     $con  =   conectarDBSQL();
-    $stmt = $con->prepare("SELECT IdFormacion,IdPlan,FecIni,FecFin,IdModulo,Codigo,Nombre,Nivel,Transversal,HorasTotales FROM vw_planes_formacion WHERE IdPlan=?");
+    $stmt = $con->prepare("SELECT IdFormacion,IdPlan,FecIni,FecFin,IdModulo,Codigo,Nombre,Nivel,Transversal,HorasTotales FROM vw_planes_formaciones WHERE IdPlan=?");
     $stmt->bind_param('i', $IdPlan);
     $listformacion = array();
     if($stmt->execute()) {
@@ -208,7 +220,7 @@ function obterformacionPlan($IdPlan){
 }
 function obterFormacionUsuarios($IdFormacion,$IdRol){
     $con  =   conectarDBSQL();
-    $stmt = $con->prepare("SELECT IdUsuario,Nombre,Apellidos,IdFormUsuario,IdFormacion,IdRol,Rol FROM vw_formacion_usuarios WHERE IdFormacion=? AND IdRol=?");
+    $stmt = $con->prepare("SELECT IdUsuario,Nombre,Apellidos,IdFormUsuario,IdFormacion,IdRol,Rol FROM vw_formaciones_usuarios WHERE IdFormacion=? AND IdRol=?");
     $stmt->bind_param('ii', $IdFormacion,$IdRol);
     $listUsuarios = array();
     if($stmt->execute()) {
@@ -271,7 +283,7 @@ function obterFormacionUsuario($IdUsuario){
 }
 function delUsuariosFormacion($IdFormacion){
     $con  =   conectarDBSQL();
-    $stmt = $con->prepare("DELETE FROM tr_formacion WHERE IdFormacion=?");
+    $stmt = $con->prepare("DELETE FROM tr_formaciones WHERE IdFormacion=?");
     $stmt->bind_param('i', $IdFormacion);
     $stmt->execute();
     $Filas=$stmt->affected_rows;
@@ -281,7 +293,7 @@ function delUsuariosFormacion($IdFormacion){
 }
 function delUsuariosIdFormacion($IdUsuFormacion){
     $con  =   conectarDBSQL();
-    $stmt = $con->prepare("DELETE FROM tr_formacion WHERE Id=?");
+    $stmt = $con->prepare("DELETE FROM tr_formaciones WHERE Id=?");
     $stmt->bind_param('i', $IdUsuFormacion);
     $stmt->execute();
     $Filas=$stmt->affected_rows;
@@ -291,7 +303,7 @@ function delUsuariosIdFormacion($IdUsuFormacion){
 }
 function delFormacion($Id){
     $con  =   conectarDBSQL();
-    $stmt = $con->prepare("DELETE FROM tm_plan_estudios_formacion WHERE Id=?");
+    $stmt = $con->prepare("DELETE FROM tm_plan_estudios_formaciones WHERE Id=?");
     $stmt->bind_param('i', $Id);
     $stmt->execute();
     $Filas=$stmt->affected_rows;
@@ -301,7 +313,7 @@ function delFormacion($Id){
 }
 function comprobarUsuarioFormacion($IdFormacion, $Usuario){
     $con  =   conectarDBSQL();
-    $stmt = $con->prepare("SELECT Id FROM tr_formacion WHERE IdFormacion=? AND IdUsuario=?");
+    $stmt = $con->prepare("SELECT Id FROM tr_formaciones WHERE IdFormacion=? AND IdUsuario=?");
     $stmt->bind_param('ii',$IdFormacion, $Usuario);
     $stmt->execute();
     $Rows=$stmt->get_result()->num_rows;
@@ -311,7 +323,7 @@ function comprobarUsuarioFormacion($IdFormacion, $Usuario){
 }
 function comprobarIdUsuForm($IdUsuarioFormacion){
     $con  =   conectarDBSQL();
-    $stmt = $con->prepare("SELECT Id FROM tr_formacion WHERE Id=?");
+    $stmt = $con->prepare("SELECT Id FROM tr_formaciones WHERE Id=?");
     $stmt->bind_param('i', $IdUsuarioFormacion);
     $stmt->execute();
     $Rows=$stmt->get_result()->num_rows;

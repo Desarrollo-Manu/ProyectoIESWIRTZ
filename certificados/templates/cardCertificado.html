@@ -23,15 +23,15 @@
         </td>
         <td class="text-center align-middle {{ClassTransversal}}" rowspan="{{numUFs}}">
             {{#UC}}
-            {{IdUC}}
+                {{Codigo}}
             {{/UC}}
         </td>
-        <td class="text-center align-middle {{ClassTransversal}}" rowspan="{{numUFs}}">{{HorasModTotales}}</td>
-        <td class="text-center align-middle {{ClassTransversal}}" rowspan="{{numUFs}}">{{HorasModExamen}}</td>
+        <td class="text-center align-middle {{ClassTransversal}}" rowspan="{{numUFs}}">{{HorasTotales}}</td>
+        <td class="text-center align-middle {{ClassTransversal}}" rowspan="{{numUFs}}">{{HorasExamen}}</td>
         {{/datosMFs}}
         {{#listUFs}}
         <td class=" {{ClassTransversal}}">
-            <a tabindex="0" data-html="true" role="button" data-toggle="popover" class="textPopover" data-trigger="focus" title="<span class='titlePopover' style='font-size:1rem'>{{TextoUnidad}}</span>" data-content="<div class='d-flex justify-content-around'><a href='#' class='editUFModal' title='Editar Unidad Formativa' aria-IdUnidad='{{IdUnidad}}' aria-IdModulo='{{IdModulo}}' aria-IdCertificado='{{IdCertificado}}'><i class='fas fa-pencil-alt fa-lg text-warning'></i></a> <a href='#' aria-IdUnidad='{{IdUnidad}}' aria-IdModulo='{{IdModulo}}' aria-IdCertificado='{{IdCertificado}}' class='delUFMF' title='Quitar Unidad Formativa del Módulo Formativo'><i class='far fa-trash-alt fa-lg text-danger'></i></a></div>">
+            <a tabindex="0" data-html="true" role="button" data-toggle="popover" class="textPopover" data-trigger="focus" title="<span class='titlePopover' style='font-size:1rem'>{{TextoUnidad}}</span>" data-content="<div class='d-flex justify-content-around'><a href='#' class='editUFModal' title='Editar Unidad Formativa' aria-IdUnidad='{{IdUF}}' aria-IdModulo='{{IdModulo}}' aria-IdCertificado='{{IdCertificado}}'><i class='fas fa-pencil-alt fa-lg text-warning'></i></a> <a href='#' aria-IdUnidad='{{IdUF}}' aria-IdModulo='{{IdModulo}}' aria-IdCertificado='{{IdCertificado}}' class='delUFMF' title='Quitar Unidad Formativa del Módulo Formativo'><i class='far fa-trash-alt fa-lg text-danger'></i></a></div>">
                 {{TextoUnidad}}
             </a>
         </td>
@@ -43,9 +43,9 @@
     {{^listUFs}}
     {{#datosMFs}}
     <td class="text-center {{ClassTransversal}}"></td>
-    <td class="text-center align-middle {{ClassTransversal}}">{{HorasModFormacion}}</td>
-    <td class="text-center align-middle {{ClassTransversal}}">{{HorasModTutoria}}</td>
-    <td class="text-center align-middle {{ClassTransversal}}">{{HorasModTotales}}</td>
+    <td class="text-center align-middle {{ClassTransversal}}">{{HorasFormacion}}</td>
+    <td class="text-center align-middle {{ClassTransversal}}">{{HorasTutoria}}</td>
+    <td class="text-center align-middle {{ClassTransversal}}">{{HorasTotales}}</td>
     </tr>
     {{/datosMFs}}
     {{/listUFs}}

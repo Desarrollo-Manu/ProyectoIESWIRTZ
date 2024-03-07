@@ -1,12 +1,12 @@
 <?php
 require_once(realpath($_SERVER["DOCUMENT_ROOT"]).'/ProyectoIESWIRTZ/config/fmaestras.php');
 comprobarPermisoAcceso(1,$_SESSION["Id"]);
-$CodMF   = obterPost('CodMF',true,false,false,false,false);
+$IdMF   = obterPost('IdMF',true,false,false,false,false);
 
 header('Content-Type: application/json');
 $json = json_encode(
     Array(
-        'resultado'  =>  comprobarCodMF($CodMF)
+        'resultado'  =>  comprobarMF($IdMF)
     )
 );
 if ($json === false){

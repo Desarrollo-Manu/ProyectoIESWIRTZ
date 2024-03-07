@@ -316,7 +316,7 @@ function obterUFSolo($IdUF){
         return false;
     }
 }
-function obterIdUC($Codigo){
+function obterIdUCOLD($Codigo){
     $con  =   conectarDBSQL();
     $stmt = $con->prepare("SELECT Id FROM tm_unidades_competencia WHERE Codigo=?");
     $stmt->bind_param('s', $Codigo);
@@ -335,7 +335,18 @@ function obterIdUC($Codigo){
     cerrarDBSQL($con);
     return $listUnidades;
 }
-
+function obterIdUC($Codigo){
+    $con  =   conectarDBSQL();
+    $stmt = $con->prepare("SELECT Id FROM tm_unidades_competencia WHERE Codigo LIKE ?");
+    $stmt->bind_param('s', $Codigo);$Id=null;
+    if($stmt->execute()) {
+        $resultado = $stmt->get_result();
+        $Id=$resultado->fetch_array(MYSQLI_ASSOC)['Id'];
+    }
+    $stmt->close();
+    cerrarDBSQL($con);
+    return $Id;
+}
 
 function obterRelCertMF($IdCertificado,$IdModulo){
     $con  =   conectarDBSQL();
@@ -768,7 +779,7 @@ function comprobarOcupaCert($IdCertificado,$IdOcupacion){
 /*FUNCIÓN QUE OBTEN AS OCUPACIONS EN BASE A UNHA FAMILIA PROFESIONAL*/
 function obterOcupacionesCert($IdCertificado){
     $con  =   conectarDBSQL();
-    $stmt = $con->prepare("SELECT Id,IdCert,CodCert,Certificado,IdOcup,CodOcup,Ocupacion FROM vw_certificados_ocupaciones WHERE IdCert=?");
+    $stmt = $con->prepare("SELECT Id,IdCert,CodigoCert,Certificado,IdOcup,CodOcup,Ocupacion FROM vw_certificados_ocupaciones WHERE IdCert=?");
     $stmt->bind_param('i', $IdCertificado);
     $listOcupaciones=Array();
     if($stmt->execute()) {
@@ -778,7 +789,7 @@ function obterOcupacionesCert($IdCertificado){
                 $listOcupaciones[] = array(
                     'Id'                =>  $oc['Id'],
                     'IdCert'            =>  $oc['IdCert'],
-                    'CodCert'           =>  $oc['CodCert'],
+                    'CodCert'           =>  $oc['CodigoCert'],
                     'Certificado'       =>  $oc['Certificado'],
                     'IdOcup'            =>  $oc['IdOcup'],
                     'CodOcup'           =>  $oc['CodOcup'],
@@ -972,6 +983,16 @@ function comprobarMF($IdMF){
     cerrarDBSQL($con);
     return ($Rows=== 1);
 }
+function comprobarCodMF($Codigo){
+    $con  =   conectarDBSQL();
+    $stmt = $con->prepare("SELECT Id  FROM tm_modulos WHERE  Codigo=?");
+    $stmt->bind_param('s', $Codigo);
+    $stmt->execute();
+    $Rows=$stmt->get_result()->num_rows;
+    $stmt->close();
+    cerrarDBSQL($con);
+    return ($Rows=== 1);
+}
 /*FUNCION QUE COMPROBA SE XA EXISTE UN CERTIFICADO DE PROFESIONALIDAD*/
 function comprobarCert($Id){
     $con  =   conectarDBSQL();
@@ -1048,13 +1069,6 @@ function updateOcupacion($Id,$Codigo,$Denominacion){
     cerrarDBSQL($con);
     return ($Filas===1);
 }
-
-/*FUNCIÓN QUE ELIMINA A ASIGNACIÓN DUNHA UNIDAD DE COMPETENCIA NUN MÓDULO FORMATIVO*/
-function eliminarUCMF($Id){
-    $sentencia =   "DELETE FROM TR_Modulos_UCs WHERE Id=?";
-    $datos     =   Array($Id);
-    return DBSQLDelete($sentencia,$datos);
-}
 /*FUNCIÓN QUE COMPROBA SE UN MÓDULO FORMATIVO TEN UNHA UNIDAD DE COMPETENCIA ASIGNADA*/
 function comprobarMFTieneUC($IdModulo){
     $con  =   conectarDBSQL();
@@ -1076,6 +1090,16 @@ function comprobarUFsModulo($IdModulo){
     $stmt->close();
     cerrarDBSQL($con);
     return ($Rows === 1);
+}
+function saveUC($CodUC,$TextoUC){
+    $con  =   conectarDBSQL();
+    $stmt = $con->prepare("INSERT INTO tm_unidades_competencia(Codigo,Denominacion,UsuAlta) VALUES (?,?,?)");
+    $stmt->bind_param('ssi', $CodUC,$TextoUC,$_SESSION["Id"]);
+    $stmt->execute();
+    $Id=$stmt->insert_id;
+    $stmt->close();
+    cerrarDBSQL($con);
+    return $Id;
 }
 function saveCertUFMF($IdModulo,$IdUnidad,$Orden){
     $con  =   conectarDBSQL();
