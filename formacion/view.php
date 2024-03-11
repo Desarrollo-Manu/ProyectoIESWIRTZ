@@ -20,7 +20,7 @@ echo $m->render( file_get_contents("templates/view.mustache"),Array(
     )),
 
 ));
-var_dump();
+
 echo $m->render( file_get_contents("templates/modalAddAl.mustache"),Array(
     'Id'  =>  $Id,
 ));
