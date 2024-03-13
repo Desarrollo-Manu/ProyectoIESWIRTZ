@@ -340,7 +340,7 @@ function searchFormacion($IdPlan,$Tipo){
         $sqlWhere   .= ' WHERE IdPlan='.$IdPlan;
     }
     if($Tipo){
-        $sqlWhere   .= empty($sqlWhere) ? ' WHERE IdTipo='.$Tipo : 'AND IdTipo='.$Tipo;
+        $sqlWhere   .= empty($sqlWhere) ? ' WHERE IdTipo='.$Tipo : ' AND IdTipo='.$Tipo;
     }
     $listPlanes = array();
     $sentencia   = $sqlSelect.$sqlFrom.$sqlWhere.$sqlOrder;
