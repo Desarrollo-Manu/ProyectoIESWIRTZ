@@ -14,9 +14,6 @@ echo $m->render( $index,Array(
 $newCertificado         = file_get_contents("templates/modalNewCert.mustache");
 echo $m->render( $newCertificado,Array());
 
-$footer         = file_get_contents($relative."header/templates/footer.mustache");
-echo $m->render( $footer,Array());
-
 include_once('templates/cardCertificado.html');
 include_once('templates/cardBuscador.html');
 include_once('templates/modalNewCert.html');
