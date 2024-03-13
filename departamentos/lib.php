@@ -21,19 +21,19 @@ function searchUsuarios($Nombre,$Apellidos,$DNI,$IdDepartamento,$Activo){
     $sqlWhere   = '';
     $sqlOrder   = ' ORDER BY Nombre';
     if($Nombre){
-        $sqlWhere   .= ' WHERE Nombre LIKE "%'.$Nombre.'%"';
+        $sqlWhere   .= " WHERE Nombre LIKE '%$Nombre%'";
     }
     if($Apellidos){
-        $sqlWhere   .= empty($sqlWhere) ? ' WHERE Apellidos LIKE "%'.$Apellidos.'%"' : 'AND Apellidos LIKE %"'.$Apellidos.'"%';
+        $sqlWhere   .= empty($sqlWhere) ? " WHERE Apellidos LIKE '%$Apellidos%'" : "AND Apellidos LIKE '%$Apellidos%'";
     }
     if($DNI){
-        $sqlWhere   .= empty($sqlWhere) ? ' WHERE DNI LIKE "%'.$DNI.'%"' : 'AND DNI LIKE "%'.$DNI.'%"';
+        $sqlWhere   .= empty($sqlWhere) ? " WHERE DNI LIKE '%$DNI%'" : "AND DNI LIKE '%$DNI%'";
     }
     if($IdDepartamento){
-        $sqlWhere   .= empty($sqlWhere) ? ' WHERE IdDepartamento='.$IdDepartamento : 'AND IdDepartamento='.$IdDepartamento;
+        $sqlWhere   .= empty($sqlWhere) ? " WHERE IdDepartamento=".$IdDepartamento : 'AND IdDepartamento='.$IdDepartamento;
     }
     if($Activo){
-        $sqlWhere   .= empty($sqlWhere) ? ' WHERE Activo='.$Activo : 'AND Activo='.$Activo;
+        $sqlWhere   .= empty($sqlWhere) ? " WHERE Activo=".$Activo : "AND Activo=".$Activo;
     }
     $listUsuarios = array();
     $sentencia   = $sqlSelect.$sqlFrom.$sqlWhere.$sqlOrder;
