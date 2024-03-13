@@ -20,9 +20,6 @@ echo $m->render( file_get_contents("templates/modalNewPlanEstudios.mustache"),Ar
     'listTiposFormacions'   => $tiposFormacion
 ));
 
-$footer         = file_get_contents($relative."header/templates/footer.mustache");
-echo $m->render( $footer,Array());
-
 include_once('templates/cardBuscarAlumnos.html');
 include_once('templates/cardBuscador.html');
 include_once('templates/modalNewPlanEstudios.html');
