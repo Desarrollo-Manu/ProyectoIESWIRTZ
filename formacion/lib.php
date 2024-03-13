@@ -380,13 +380,13 @@ function searchAlumnos($IdCertificado,$IdPlan,$Nivel,$IdRol){
         $sqlWhere   .= ' WHERE IdCert='.$IdCertificado;
     }
     if($IdPlan){
-        $sqlWhere   .= empty($sqlWhere) ? ' WHERE IdPlan='.$IdPlan : 'AND IdPlan='.$IdPlan;
+        $sqlWhere   .= empty($sqlWhere) ? ' WHERE IdPlan='.$IdPlan : ' AND IdPlan='.$IdPlan;
     }
     if($Nivel){
-        $sqlWhere   .= empty($sqlWhere) ? ' WHERE Nivel='.$IdPlan : 'AND Nivel='.$IdPlan;
+        $sqlWhere   .= empty($sqlWhere) ? ' WHERE Nivel='.$IdPlan : ' AND Nivel='.$IdPlan;
     }
     if($IdRol){
-        $sqlWhere   .= empty($sqlWhere) ? ' WHERE IdRol='.$IdRol : 'AND IdRol='.$IdRol;
+        $sqlWhere   .= empty($sqlWhere) ? ' WHERE IdRol='.$IdRol : ' AND IdRol='.$IdRol;
     }
     $listUsuarios = array();
     $sentencia   = $sqlSelect.$sqlFrom.$sqlWhere.$sqlOrder;
